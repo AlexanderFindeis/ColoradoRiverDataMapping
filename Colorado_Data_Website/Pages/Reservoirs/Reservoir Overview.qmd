@@ -1,0 +1,33 @@
+---
+title: "Overview and Trends at Major Reservoirs"
+author: "Colorado River Data Mapping Project"
+format: html
+---
+
+```{ojs}
+//| echo: false
+
+// Load elevation data
+Res_Elv = await d3.csv("Data/Reservoir_Elevation.csv")
+```
+
+```{ojs}
+//| echo: false
+
+// Reservoir selector
+viewof reservoir_choice = Inputs.select(
+  ["Lake Mead", "Lake Powell"],
+  { label: "Reservoir:", value: "Mead" }
+)
+
+// Filter data based on selection
+filtered = reservoir_choice === "Mead"
+  ? Res_Elv
+  : Res_Elv.filter(d => d.Reservoir === reservoir_choice)
+```
+
+```{ojs}
+//| echo: false
+
+Plot.lineY(filtered, {x: "Year", y: "Elevation"}).plot({y: {grid: true}})
+```

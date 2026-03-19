@@ -1,0 +1,9 @@
+---
+title: "About"
+---
+
+The Colorado River Data Mapping Project is a collaborative effort to make data and information about the history and current status of the Colorado River Basin available to the public. 
+
+Data resources can be difficult to access and analyze for the general public, making critical information about the history and future of the United State's most over stressed river out of reach for many. 
+
+This project seeks to make this information easier to access and interact with, giving people an important resource to inform themselves and others about the crisis on the Colorado. 

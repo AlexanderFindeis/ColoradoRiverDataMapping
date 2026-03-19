@@ -34,14 +34,14 @@ Flow.Data <- rbind(Mead.Flow, Powell.Flow) %>%
   mutate(Flow.MAF = Flow / 1000000) %>%
   filter(Year < 2026) 
 
-Flow.Plot <- ggplot(Flow.Data, aes(x = Year, y = Flow.MAF, group = Reservoir, color = Reservoir)) +
-  geom_line() +
-  labs(title = "Lake Powell vs Lake Mead Releases",
-       x = "Date",
-       y = "Flow (MAF)") +
-  theme_minimal()
+# Flow.Plot <- ggplot(Flow.Data, aes(x = Year, y = Flow.MAF, group = Reservoir, color = Reservoir)) +
+#   geom_line() +
+#   labs(title = "Lake Powell vs Lake Mead Releases",
+#        x = "Date",
+#        y = "Flow (MAF)") +
+#   theme_minimal()
 
-Flow.Plot
+# Flow.Plot
 
 
 # Elevation Plot
@@ -57,15 +57,16 @@ Mead.Pow.Elv <- dplyr::bind_rows(
   group_by(Year, Reservoir) %>%
   summarize(Elevation = mean(Elevation, na.rm = TRUE), .groups = "drop") %>%
   mutate(Year = as.integer(Year))
+write.csv(Mead.Pow.Elv, "Colorado_Data_Website/Pages/Reservoirs/Data/Reservoir_Elevation.csv")
 
-Elv.Plot <- ggplot(Mead.Pow.Elv, aes(x = Year, y = Elevation, group = Reservoir, color = Reservoir)) +
-  geom_line() +
-  facet_wrap(~Reservoir) +
-  labs(title = "Lake Powell vs Lake Mead Elevation",
-       x = "Date",
-       y = "Elevation (ft)") +
-  theme_minimal()
-Elv.Plot
+# Elv.Plot <- ggplot(Mead.Pow.Elv, aes(x = Year, y = Elevation, group = Reservoir, color = Reservoir)) +
+#   geom_line() +
+#   facet_wrap(~Reservoir) +
+#   labs(title = "Lake Powell vs Lake Mead Elevation",
+#        x = "Date",
+#        y = "Elevation (ft)") +
+#   theme_minimal()
+# Elv.Plot
 
 Powell.Elv.Plot <- ggplot(data = subset(Mead.Pow.Elv, Reservoir == "Lake Powell"), aes(x = Year, y = Elevation, group = Reservoir)) +
   geom_line(color = "blue") +
@@ -77,18 +78,18 @@ Powell.Elv.Plot <- ggplot(data = subset(Mead.Pow.Elv, Reservoir == "Lake Powell"
   theme_minimal(plot.title = element_text(hjust = 0.5))
 Powell.Elv.Plot
 
-Mead.Elv.Plot <- ggplot(data = subset(Mead.Pow.Elv, Reservoir == "Lake Mead"), aes(x = Year, y = Elevation, group = Reservoir)) +
-  geom_line(color = "blue") +
-  geom_hline(yintercept = 1075, linetype = "dashed", color = "black") +
-  geom_hline(yintercept = 1050, linetype = "dashed", color = "black") +
-  geom_hline(yintercept = 1025, linetype = "dashed", color = "black") +
-  geom_hline(yintercept = 950, linetype = "solid", color = "black") +
-  geom_hline(yintercept = 895, linetype = "solid", color = "black") +
-  labs(title = "Lake Mead Elevation",
-       x = "Date",
-       y = "Elevation (ft)") +
-  theme_minimal(plot.title = element_text(hjust = 0.5))
-Mead.Elv.Plot
+# Mead.Elv.Plot <- ggplot(data = subset(Mead.Pow.Elv, Reservoir == "Lake Mead"), aes(x = Year, y = Elevation, group = Reservoir)) +
+#   geom_line(color = "blue") +
+#   geom_hline(yintercept = 1075, linetype = "dashed", color = "black") +
+#   geom_hline(yintercept = 1050, linetype = "dashed", color = "black") +
+#   geom_hline(yintercept = 1025, linetype = "dashed", color = "black") +
+#   geom_hline(yintercept = 950, linetype = "solid", color = "black") +
+#   geom_hline(yintercept = 895, linetype = "solid", color = "black") +
+#   labs(title = "Lake Mead Elevation",
+#        x = "Date",
+#        y = "Elevation (ft)") +
+#   theme_minimal(plot.title = element_text(hjust = 0.5))
+# Mead.Elv.Plot
 
 
 # Inflow vs Outflow - Need to collect additional data for Lake Mead inflows but can largely assume releases from Powell equals inflow to Mead
@@ -102,15 +103,15 @@ Mead.Powell.Balance <- dplyr::bind_rows(
   summarize(Flow = sum(Flow, na.rm = TRUE), .groups = "drop") %>%
   mutate(Flow.MAF = Flow / 1000000)
 
-Powell.Balance.Plot <- Mead.Powell.Balance %>%
-  filter(Reservoir == "Lake Powell", Year < 2026) %>%
-  ggplot(aes(x = Year, y = Flow.MAF, group = Type, color = Type)) +
-  geom_line() +
-  labs(title = "Lake Powell Inflow vs Outflow",
-       x = "Date",
-       y = "Flow (MAF)") +
-  theme_minimal()
-ggplotly(Powell.Balance.Plot)
+# Powell.Balance.Plot <- Mead.Powell.Balance %>%
+#   filter(Reservoir == "Lake Powell", Year < 2026) %>%
+#   ggplot(aes(x = Year, y = Flow.MAF, group = Type, color = Type)) +
+#   geom_line() +
+#   labs(title = "Lake Powell Inflow vs Outflow",
+#        x = "Date",
+#        y = "Flow (MAF)") +
+#   theme_minimal()
+# ggplotly(Powell.Balance.Plot)
 
 
 ## Lake Mead Outflow vs Lower Basin Consumption from Mainstem (not counting tributary consumption) 
@@ -142,6 +143,6 @@ Mead.Out <- Mead.Rel %>%
 Mead.OutCons <- rbind(Mex.LB.Cons, Mead.Out) %>%
   mutate(Volume.MAF = Volume / 1000000)
 
-Mead.OutCons.Plot <- ggplot(Mead.OutCons, aes(x = YEAR, y = Volume.MAF, group = Type, color = Type)) +
-  geom_line() 
-Mead.OutCons.Plot
+# Mead.OutCons.Plot <- ggplot(Mead.OutCons, aes(x = YEAR, y = Volume.MAF, group = Type, color = Type)) +
+#   geom_line() 
+# Mead.OutCons.Plot

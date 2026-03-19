@@ -1,0 +1,47 @@
+project:
+  execute-dir: project
+  resources:
+    - Data/
+  type: website
+
+website:
+  title: "Colorado River Data Mapping Project"
+  navbar:
+    right:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
+      - text: "Reservoirs"
+        menu:
+          - text: Reservoir Overview
+            href: Pages/Reservoirs/Reservoir Overview.qmd
+          - text: Lake Mead
+            href: Pages/Reservoirs/Mead.qmd
+          - text: Lake Powell
+            href: Pages/Reservoirs/Powell.qmd 
+          - text: Flaming Gorge
+            href: Pages/Reservoirs/Flaming Gorge.qmd
+          - text: Lake Mohave
+            href: Pages/Reservoirs/Mohave.qmd
+          - text: Lake Navajo
+            href: Pages/Reservoirs/Navajo.qmd
+          - text: Strawberry Reservoir
+            href: Pages/Reservoirs/Strawberry.qmd
+          - text: Blue Mesa
+            href: Pages/Reservoirs/Blue Mesa.qmd
+          - text: Lake Havasu
+            href: Pages/Reservoirs/Havasu.qmd
+          - text: Granby Reservoir
+            href: Pages/Reservoirs/Granby.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+
+

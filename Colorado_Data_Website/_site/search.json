@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "The Colorado River Data Mapping Project is a collaborative effort to make data and information about the history and current status of the Colorado River Basin available to the public.\nData resources can be difficult to access and analyze for the general public, making critical information about the history and future of the United State’s most over stressed river out of reach for many.\nThis project seeks to make this information easier to access and interact with, giving people an important resource to inform themselves and others about the crisis on the Colorado."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Colorado_Data_Website",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "Pages/Reservoirs/Total Storage.html",
+    "href": "Pages/Reservoirs/Total Storage.html",
+    "title": "Total Basin Storage and Current Conditions",
+    "section": "",
+    "text": "Test\n\n#|context: setup\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(shiny)\n\n\n\n\nselectInput(\n    \"reservoirs\", \"Reservoirs:\",\n    c(\"Mead\", \"Powell\", \"Flaming Gorge\")\n)\n\n\nReservoirs:\n\nMead\nPowell\nFlaming Gorge"
+  },
+  {
+    "objectID": "Pages/Reservoirs/Reservoir Overview.html",
+    "href": "Pages/Reservoirs/Reservoir Overview.html",
+    "title": "Overview and Trends at Major Reservoirs",
+    "section": "",
+    "text": "# Mead.Elv &lt;- read.csv(\"https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/49.csv\")\n# write.csv(Mead.Elv, \"Data/mead_elevation.csv\")\n\n# Powell.Elv &lt;- read.csv(\"https://www.usbr.gov/uc/water/hydrodata/reservoir_data/919/csv/49.csv\")\n# write.csv(Powell.Elv, \"Data/powell_elevation.csv\")\n\n\nmead_raw = await d3.csv(\"../../Data/mead_elevation.csv\")\npowell_raw = await d3.csv(\"../../Data/powell_elevation.csv\")\n\n// Parse and label each dataset\nmead = mead_raw.map(d =&gt; ({\n  date: new Date(d.datetime),\n  year: +d.datetime.substring(0, 4),\n  elevation: +d[\"pool elevation\"],\n  reservoir: \"Lake Mead\"\n})).filter(d =&gt; !isNaN(d.elevation))\n\npowell = powell_raw.map(d =&gt; ({\n  date: new Date(d.datetime),\n  year: +d.datetime.substring(0, 4),\n  elevation: +d[\"pool elevation\"],\n  reservoir: \"Lake Powell\"\n})).filter(d =&gt; !isNaN(d.elevation))\n\n// Combine and average by year\nall_data = [...mead, ...powell]\n\nyearly = d3.rollups(\n  all_data,\n  v =&gt; d3.mean(v, d =&gt; d.elevation),\n  d =&gt; d.reservoir,\n  d =&gt; d.year\n).flatMap(([reservoir, years]) =&gt;\n  years.map(([year, elevation]) =&gt; ({ reservoir, year, elevation }))\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nviewof reservoir_choice = Inputs.select(\n  [\"Lake Mead\", \"Lake Powell\", \"Both\"],\n  { label: \"Reservoir:\", value: \"Both\" }\n)\n\n// Filter data based on selection\nfiltered = reservoir_choice === \"Both\"\n  ? yearly\n  : yearly.filter(d =&gt; d.reservoir === reservoir_choice)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlot.plot({\n  title: \"Average Annual Reservoir Elevation\",\n  width: 700,\n  height: 400,\n  x: { label: \"Year\", tickFormat: \"d\" },\n  y: { label: \"Elevation (ft)\" },\n  color: { legend: true },\n  marks: [\n    Plot.lineY(filtered, {\n      x: \"year\",\n      y: \"elevation\",\n      stroke: \"reservoir\",\n      strokeWidth: 2,\n      tip: true\n    }),\n    Plot.dotY(filtered, {\n      x: \"year\",\n      y: \"elevation\",\n      stroke: \"reservoir\",\n      r: 2\n    })\n  ]\n})"
+  }
+]
