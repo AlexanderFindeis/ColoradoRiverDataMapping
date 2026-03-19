@@ -25,6 +25,27 @@
     "href": "Pages/Reservoirs/Reservoir Overview.html",
     "title": "Overview and Trends at Major Reservoirs",
     "section": "",
-    "text": "Plotly = require(\"https://cdn.plot.ly/plotly-latest.min.js\")\n\n\n\n\n\n\n\nRes_Elv = (await FileAttachment(\"Data/Reservoir_Elevation.csv\").csv()).map(d =&gt; ({\n  ...d,\n  Year: +d.Year,\n  Elevation: +d.Elevation,\n}))\n\n\n\n\n\n\n\nviewof reservoir_choice = Inputs.select(\n  [\"Lake Mead\", \"Lake Powell\"],\n  { label: \"Reservoir:\", value: \"Lake Mead\" }\n)\n\n\n\n\n\n\n\nfiltered = Res_Elv.filter(d =&gt; d.Reservoir === reservoir_choice)\n\n\n\n\n\n\n\n{\n  const div = html`&lt;div style=\"width: 100%; min-height: 750px;\"&gt;&lt;/div&gt;`\n  \n  Plotly.newPlot(div, [\n    {\n      x: filtered.map(d =&gt; d.Year),\n      y: filtered.map(d =&gt; d.Elevation),\n      type: \"scatter\",\n      mode: \"lines\",\n      name: \"Reservoir Elevation\",\n      line: { color: \"blue\", width: 2 }\n    }\n  ], {\n    title: \"Reservoir Elevation Over Time\",\n    xaxis: { title: \"Year\", tickformat: \"d\" },\n    yaxis: { title: \"Elevation (ft)\" },\n    font: { family: \"sans-serif\" },\n    plot_bgcolor: \"white\",\n    paper_bgcolor: \"white\",\n    showlegend: true,\n    legend: { x: 1, xanchor: \"right\", y: 1 }\n  })\n\n  return div\n}"
+    "text": "Plotly = require(\"https://cdn.plot.ly/plotly-latest.min.js\")\n\n\n\n\n\n\n\nRes_Elv = (await FileAttachment(\"Data/Reservoir_Elevation.csv\").csv()).map(d =&gt; ({\n  ...d,\n  Year: +d.Year,\n  Elevation: +d.Elevation\n}))\n\nRes_Stor = (await FileAttachment(\"Data/Reservoir_Storage.csv\").csv()).map(d =&gt;({\n  ...d,\n  Date: d.Date,\n  Elevation: +d.Elevation\n}))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nviewof reservoir_choice = Inputs.select(\n  [\"Total\", \"Lake Mead\", \"Lake Powell\", \"Flaming Gorge\"],\n  { label: \"Reservoir:\", value: \"Lake Mead\" }\n)\n\n\n\n\n\n\n\nfiltered_elv = Res_Elv.filter(d =&gt; d.Reservoir === reservoir_choice)\n\n\n\n\n\n\n\nElevationStorage\n\n\n\n{\n  const div = html`&lt;div style=\"width: 1000px; min-height: 750px;\"&gt;&lt;/div&gt;`\n  \n  Plotly.newPlot(div, [\n    {\n      x: filtered_elv.map(d =&gt; d.Year),\n      y: filtered_elv.map(d =&gt; d.Elevation),\n      type: \"scatter\",\n      mode: \"lines\",\n      name: \"Reservoir Elevation\",\n      line: { color: \"blue\", width: 2 }\n    }\n  ], {\n    title: \"Reservoir Elevation Over Time\",\n    xaxis: { title: \"Year\", type: \"date\"},\n    yaxis: { title: \"Elevation (ft)\" },\n    font: { family: \"sans-serif\" },\n    plot_bgcolor: \"white\",\n    paper_bgcolor: \"white\",\n    showlegend: true,\n    legend: { x: 1, xanchor: \"right\", y: 1 }\n  })\n\n  return div\n}\n\n\n\n\n\n\n\n\n\nfiltered_stor = Res_Stor.filter(d =&gt; d.Reservoir === reservoir_choice)\n\n\n\n\n\n\n\n{\n  const div = html`&lt;div style=\"width: 1000px; min-height: 750px;\"&gt;&lt;/div&gt;`\n  \n  Plotly.newPlot(div, [\n    {\n      x: filtered_stor.map(d =&gt; d.Date),\n      y: filtered_stor.map(d =&gt; d.Storage),\n      type: \"scatter\",\n      mode: \"lines\",\n      name: \"Reservoir Storage\",\n      line: { color: \"blue\", width: 2 }\n    }\n  ], {\n    title: \"Reservoir Storage Over Time\",\n    xaxis: { title: \"Date\", type: \"date\" },\n    yaxis: { title: \"Storage (AF)\" },\n    font: { family: \"sans-serif\" },\n    plot_bgcolor: \"white\",\n    paper_bgcolor: \"white\",\n    showlegend: true,\n    legend: { x: 1, xanchor: \"right\", y: 1 }\n  })\n\n  return div\n}"
+  },
+  {
+    "objectID": "Pages/Reservoirs/Reservoir Overview.html#page-layout-full",
+    "href": "Pages/Reservoirs/Reservoir Overview.html#page-layout-full",
+    "title": "Overview and Trends at Major Reservoirs",
+    "section": "",
+    "text": "Plotly = require(\"https://cdn.plot.ly/plotly-latest.min.js\")\n\n\n\n\n\n\n\n// Data\nRes_Elv = (await FileAttachment(\"Data/Reservoir_Elevation.csv\").csv()).map(d =&gt; ({\n  ...d,\n  Year: +d.Year,\n  Elevation: +d.Elevation,\n}))\n\n\n\n\n\n\n\n\nviewof reservoir_choice = Inputs.select(\n  [\"Lake Mead\", \"Lake Powell\"],\n  { label: \"Reservoir:\", value: \"Lake Mead\" }\n)\n\n\n\n\n\n\n\n\nfiltered = Res_Elv.filter(d =&gt; d.Reservoir === reservoir_choice)"
+  },
+  {
+    "objectID": "Pages/Reservoirs/Reservoir Overview.html#elevation",
+    "href": "Pages/Reservoirs/Reservoir Overview.html#elevation",
+    "title": "Overview and Trends at Major Reservoirs",
+    "section": "Elevation",
+    "text": "Elevation\n\n{\n  const div = html`&lt;div style=\"width: 100%; min-height: 750px;\"&gt;&lt;/div&gt;`\n  \n  Plotly.newPlot(div, [\n    {\n      x: filtered.map(d =&gt; d.Year),\n      y: filtered.map(d =&gt; d.Elevation),\n      type: \"scatter\",\n      mode: \"lines\",\n      name: \"Reservoir Elevation\",\n      line: { color: \"blue\", width: 2 }\n    }\n  ], {\n    title: \"Reservoir Elevation Over Time\",\n    xaxis: { title: \"Year\", tickformat: \"d\" },\n    yaxis: { title: \"Elevation (ft)\" },\n    font: { family: \"sans-serif\" },\n    plot_bgcolor: \"white\",\n    paper_bgcolor: \"white\",\n    showlegend: true,\n    legend: { x: 1, xanchor: \"right\", y: 1 }\n  })\n\n  return div\n}"
+  },
+  {
+    "objectID": "Pages/Reservoirs/Reservoir Overview.html#storage",
+    "href": "Pages/Reservoirs/Reservoir Overview.html#storage",
+    "title": "Overview and Trends at Major Reservoirs",
+    "section": "Storage",
+    "text": "Storage"
   }
 ]

@@ -1,43 +1,56 @@
 ---
 title: "Overview and Trends at Major Reservoirs"
-author: "Colorado River Data Mapping Project"
-format: html
+format: 
+  html: 
+    page-layout: full
 ---
 
 ```{ojs}
 //| echo: false
 Plotly = require("https://cdn.plot.ly/plotly-latest.min.js")
 ```
+
 ```{ojs}
 //| echo: false
+// Data
 Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
   ...d,
   Year: +d.Year,
-  Elevation: +d.Elevation,
+  Elevation: +d.Elevation
+}))
+
+Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
+  ...d,
+  Date: d.Date,
+  Elevation: +d.Elevation
 }))
 ```
 ```{ojs}
 //| echo: false
+//| panel: sidebar
 viewof reservoir_choice = Inputs.select(
-  ["Lake Mead", "Lake Powell"],
+  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge"],
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```
 ```{ojs}
 //| echo: false
-filtered = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
+filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
 
+::: {#reservoir-tabset .panel-tabset .ojs-track-layout}
+
+## Elevation
 ```{ojs}
 //| echo: false
 
 {
-  const div = html`<div style="width: 100%; min-height: 750px;"></div>`
+  const div = html`<div style="width: 1000px; min-height: 750px;"></div>`
   
   Plotly.newPlot(div, [
     {
-      x: filtered.map(d => d.Year),
-      y: filtered.map(d => d.Elevation),
+      x: filtered_elv.map(d => d.Year),
+      y: filtered_elv.map(d => d.Elevation),
       type: "scatter",
       mode: "lines",
       name: "Reservoir Elevation",
@@ -45,8 +58,45 @@ filtered = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
     }
   ], {
     title: "Reservoir Elevation Over Time",
-    xaxis: { title: "Year", tickformat: "d" },
+    xaxis: { title: "Year", type: "date"},
     yaxis: { title: "Elevation (ft)" },
+    font: { family: "sans-serif" },
+    plot_bgcolor: "white",
+    paper_bgcolor: "white",
+    showlegend: true,
+    legend: { x: 1, xanchor: "right", y: 1 }
+  })
+
+  return div
+}
+```
+
+## Storage
+
+```{ojs}
+//| echo: false
+filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
+```
+
+```{ojs}
+//| echo: false
+
+{
+  const div = html`<div style="width: 1000px; min-height: 750px;"></div>`
+  
+  Plotly.newPlot(div, [
+    {
+      x: filtered_stor.map(d => d.Date),
+      y: filtered_stor.map(d => d.Storage),
+      type: "scatter",
+      mode: "lines",
+      name: "Reservoir Storage",
+      line: { color: "blue", width: 2 }
+    }
+  ], {
+    title: "Reservoir Storage Over Time",
+    xaxis: { title: "Date", type: "date" },
+    yaxis: { title: "Storage (AF)" },
     font: { family: "sans-serif" },
     plot_bgcolor: "white",
     paper_bgcolor: "white",
