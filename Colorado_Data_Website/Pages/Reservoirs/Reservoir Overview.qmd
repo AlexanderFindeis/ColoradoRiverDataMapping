@@ -6,53 +6,54 @@ format: html
 
 ```{ojs}
 //| echo: false
-// Load elevation data
-Res_Elv = await d3.csv("Data/Reservoir_Elevation.csv")
+Plotly = require("https://cdn.plot.ly/plotly-latest.min.js")
 ```
 ```{ojs}
 //| echo: false
-Plotly = require("plotly.js-dist")
+Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
+  ...d,
+  Year: +d.Year,
+  Elevation: +d.Elevation,
+}))
 ```
 ```{ojs}
 //| echo: false
-// Reservoir selector
 viewof reservoir_choice = Inputs.select(
   ["Lake Mead", "Lake Powell"],
   { label: "Reservoir:", value: "Lake Mead" }
 )
-
-// Filter data based on selection
-filtered = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
 ```{ojs}
 //| echo: false
+filtered = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
+```
 
-traces = [{
-  x: filtered.map(d => d.Year),
-  y: filtered.map(d => +d.Elevation),
-  type: "scatter",
-  mode: "lines+markers",
-  name: reservoir_choice,
-  line: { width: 2 },
-  marker: { size: 4 }
-}]
+```{ojs}
+//| echo: false
 
-layout = ({
-  title: reservoir_choice + " Elevation",
-  width: 800,
-  height: 450,
-  margin: { t: 50, r: 30, b: 50, l: 60 },
-  xaxis: {
-    title: "Year",
-    tickformat: "d",
-    showgrid: false
-  },
-  yaxis: {
-    title: "Elevation (ft)",
-    showgrid: true
-  }
-})
+{
+  const div = html`<div style="width: 100%; min-height: 750px;"></div>`
+  
+  Plotly.newPlot(div, [
+    {
+      x: filtered.map(d => d.Year),
+      y: filtered.map(d => d.Elevation),
+      type: "scatter",
+      mode: "lines",
+      name: "Reservoir Elevation",
+      line: { color: "blue", width: 2 }
+    }
+  ], {
+    title: "Reservoir Elevation Over Time",
+    xaxis: { title: "Year", tickformat: "d" },
+    yaxis: { title: "Elevation (ft)" },
+    font: { family: "sans-serif" },
+    plot_bgcolor: "white",
+    paper_bgcolor: "white",
+    showlegend: true,
+    legend: { x: 1, xanchor: "right", y: 1 }
+  })
 
-html`<div id="elv-plot" style="width:800px; margin: 0 auto;"></div>`
-Plotly.newPlot("elv-plot", traces, layout)
+  return div
+}
 ```
