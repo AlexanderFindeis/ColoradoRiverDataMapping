@@ -6,28 +6,53 @@ format: html
 
 ```{ojs}
 //| echo: false
-
 // Load elevation data
 Res_Elv = await d3.csv("Data/Reservoir_Elevation.csv")
 ```
-
 ```{ojs}
 //| echo: false
-
+Plotly = require("plotly.js-dist")
+```
+```{ojs}
+//| echo: false
 // Reservoir selector
 viewof reservoir_choice = Inputs.select(
   ["Lake Mead", "Lake Powell"],
-  { label: "Reservoir:", value: "Mead" }
+  { label: "Reservoir:", value: "Lake Mead" }
 )
 
 // Filter data based on selection
-filtered = reservoir_choice === "Mead"
-  ? Res_Elv
-  : Res_Elv.filter(d => d.Reservoir === reservoir_choice)
+filtered = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
-
 ```{ojs}
 //| echo: false
 
-Plot.lineY(filtered, {x: "Year", y: "Elevation"}).plot({y: {grid: true}})
+traces = [{
+  x: filtered.map(d => d.Year),
+  y: filtered.map(d => +d.Elevation),
+  type: "scatter",
+  mode: "lines+markers",
+  name: reservoir_choice,
+  line: { width: 2 },
+  marker: { size: 4 }
+}]
+
+layout = ({
+  title: reservoir_choice + " Elevation",
+  width: 800,
+  height: 450,
+  margin: { t: 50, r: 30, b: 50, l: 60 },
+  xaxis: {
+    title: "Year",
+    tickformat: "d",
+    showgrid: false
+  },
+  yaxis: {
+    title: "Elevation (ft)",
+    showgrid: true
+  }
+})
+
+html`<div id="elv-plot" style="width:800px; margin: 0 auto;"></div>`
+Plotly.newPlot("elv-plot", traces, layout)
 ```
