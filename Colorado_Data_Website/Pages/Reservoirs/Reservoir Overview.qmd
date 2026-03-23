@@ -3,6 +3,8 @@ title: "Overview and Trends at Major Reservoirs"
 format: 
   html: 
     page-layout: full
+    grid:
+      body-width: 1000px
 ---
 
 ```{ojs}
@@ -15,21 +17,24 @@ Plotly = require("https://cdn.plot.ly/plotly-latest.min.js")
 // Data
 Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
   ...d,
-  Year: +d.Year,
+  Date: new Date(d.Date),
   Elevation: +d.Elevation
 }))
 
 Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
   ...d,
-  Date: d.Date,
-  Elevation: +d.Elevation
+  Date: new Date(d.Date),
+  Storage_MAF: +d.Storage_MAF
 }))
 ```
+
+# {.sidebar}
+
 ```{ojs}
 //| echo: false
 //| panel: sidebar
 viewof reservoir_choice = Inputs.select(
-  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge"],
+  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge", "Lake Mohave", "Navajo Reservoir", "Strawberry Reservoir", "Blue Mesa Reservoir", "Lake Havasu", "Granby Reservoir"],
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```
@@ -43,31 +48,49 @@ filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ## Elevation
 ```{ojs}
 //| echo: false
-
 {
-  const div = html`<div style="width: 1000px; min-height: 750px;"></div>`
-  
-  Plotly.newPlot(div, [
-    {
-      x: filtered_elv.map(d => d.Year),
-      y: filtered_elv.map(d => d.Elevation),
-      type: "scatter",
-      mode: "lines",
-      name: "Reservoir Elevation",
-      line: { color: "blue", width: 2 }
-    }
-  ], {
-    title: "Reservoir Elevation Over Time",
-    xaxis: { title: "Year", type: "date"},
-    yaxis: { title: "Elevation (ft)" },
-    font: { family: "sans-serif" },
-    plot_bgcolor: "white",
-    paper_bgcolor: "white",
-    showlegend: true,
-    legend: { x: 1, xanchor: "right", y: 1 }
+  // Define reservoir-specific horizontal lines
+  const refLines = reservoir_choice === "Lake Mead" ? [
+    { y: 1075, label: "Tier 1 Shortage", color: "orange" },
+    { y: 1050, label: "Tier 2 Shortage", color: "red" },
+    { y: 1025, label: "Tier 3 Shortage", color: "darkred" },
+    { y: 895,  label: "Dead Pool", color: "black" }
+  ] : reservoir_choice === "Lake Powell" ? [
+    { y: 3490, label: "Minimum Power Pool", color: "orange" },
+    { y: 3370, label: "Dead Pool", color: "black" }
+  ] : []  // empty array for "Total" or reservoirs with no reference lines
+
+  // Build marks array dynamically
+  const marks = [
+    Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
+    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" })),
+
+    // Add a ruleY and text annotation for each reference line
+    ...refLines.map(ref => Plot.ruleY([ref.y], {
+      stroke: ref.color,
+      strokeWidth: 1.5,
+      strokeDasharray: "4,4"
+    })),
+    ...refLines.map(ref => Plot.text([ref.y], {
+      y: ref.y,
+      text: [ref.label],
+      frameAnchor: "middle",
+      dy: -8,
+      fill: ref.color,
+      fontSize: 11
+    }))
+  ]
+
+  const Elevation_Chart = Plot.plot({
+    title: "Reservoir Elevation",
+    width: width,
+    height: 500,
+    y: { grid: true, label: "Reservoir Elevation (ft)" },
+    x: { label: "Date" },
+    marks: marks
   })
 
-  return div
+  return Elevation_Chart
 }
 ```
 
@@ -80,30 +103,20 @@ filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
 
 ```{ojs}
 //| echo: false
-
 {
-  const div = html`<div style="width: 1000px; min-height: 750px;"></div>`
-  
-  Plotly.newPlot(div, [
-    {
-      x: filtered_stor.map(d => d.Date),
-      y: filtered_stor.map(d => d.Storage),
-      type: "scatter",
-      mode: "lines",
-      name: "Reservoir Storage",
-      line: { color: "blue", width: 2 }
-    }
-  ], {
-    title: "Reservoir Storage Over Time",
-    xaxis: { title: "Date", type: "date" },
-    yaxis: { title: "Storage (AF)" },
-    font: { family: "sans-serif" },
-    plot_bgcolor: "white",
-    paper_bgcolor: "white",
-    showlegend: true,
-    legend: { x: 1, xanchor: "right", y: 1 }
+  const Storage_Chart = Plot.plot({
+    title: "Reservoir Storage",
+    width: width,
+    height: 500,
+    y: { grid: true, label: "Storage (Million Acre-Feet)",
+        domain: [0, d3.max(filtered_stor, d => d.Storage_MAF)]
+     },
+    x: { label: "Date" },
+    marks: [
+      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
+      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
+    ]
   })
-
-  return div
+  return Storage_Chart
 }
 ```

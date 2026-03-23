@@ -3,6 +3,7 @@ project:
   resources:
     - Data/
   type: website
+  output-dir: docs
 
 website:
   title: "Colorado River Data Mapping Project"
