@@ -1,5 +1,7 @@
 ---
 title: "Overview and Trends at Major Reservoirs"
+execute:
+  echo: false
 format: 
   html: 
     page-layout: full
@@ -17,18 +19,25 @@ Plotly = require("https://cdn.plot.ly/plotly-latest.min.js")
 // Data
 Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
   ...d,
-  Date: new Date(d.Date),
-  Elevation: +d.Elevation
-}))
-
-Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
-  ...d,
-  Date: new Date(d.Date),
-  Storage_MAF: +d.Storage_MAF
+  Date: new Date(d.Date + "T00:00:00"), // adjusts for JS messing with time zone
+  Elevation: parseFloat((+d.Elevation).toFixed(2)),
+  Elv_1yr_Ago: parseFloat((+d.Elv_1yr_Ago).toFixed(2)),
+  Elv_Day_Avg_10yr: parseFloat((+d.Elv_Day_Avg_10yr).toFixed(2)),
+  Elv_Day_Avg_30yr: parseFloat((+d.Elv_Day_Avg_30yr).toFixed(2))
 }))
 ```
-
-# {.sidebar}
+```{ojs}
+//| echo: false
+Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
+  ...d,
+  Date: new Date(d.Date + "T00:00:00"),
+  Storage_MAF: parseFloat((+d.Storage_MAF).toFixed(2)),
+  Stor_1yr_Ago: parseFloat((+d.StorMAF_1yr_Ago).toFixed(2)),
+  Stor_Day_Avg_10yr: parseFloat((+d.Stor_Day_Avg_10yr).toFixed(2)),
+  Stor_Day_Avg_30yr: parseFloat((+d.Stor_Day_Avg_30yr).toFixed(2)),
+  Perc_Full: parseFloat((+d.Percent_Full_MAF).toFixed(2))
+}))
+```
 
 ```{ojs}
 //| echo: false
@@ -38,14 +47,121 @@ viewof reservoir_choice = Inputs.select(
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```
+
+::: {#reservoir-tabset .panel-tabset .ojs-track-layout}
+
+## Elevation
+
 ```{ojs}
 //| echo: false
 filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
 
-::: {#reservoir-tabset .panel-tabset .ojs-track-layout}
+```{ojs}
+// Summary stats from filtered data
 
-## Elevation
+elv_stats = {
+  const target      = filtered_elv.find(d => 
+    d.Date.toISOString().slice(0, 10) === "2000-02-06"
+  ) 
+  const elv_2000    = target?.Elevation ?? "N/A"
+  const Date = filtered_elv[filtered_elv.length - 1]?.Date
+    ? filtered_elv[filtered_elv.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
+  const last        = filtered_elv[filtered_elv.length - 1]
+  const current     = last?.Elevation          ?? "N/A"
+  const dif_2000    = current !== "N/A" && elv_2000 !== "N/A"
+    ? parseFloat((current - elv_2000).toFixed(2)) : "N/A"
+  const perc_2000   = dif_2000 !== "N/A" && elv_2000 !== "N/A"
+    ? parseFloat(((dif_2000 / elv_2000)*100).toFixed(2)) : "N/A"
+  const dif_2000_color   = dif_2000 !== "N/A"
+    ? (dif_2000 >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const prior_yr    = last?.Elv_1yr_Ago        ?? "N/A"
+  const avg_10yr    = last?.Elv_Day_Avg_10yr   ?? "N/A"
+  const avg_30yr    = last?.Elv_Day_Avg_30yr   ?? "N/A"
+  const dif_1yr     = current !== "N/A" && prior_yr !== "N/A"
+    ? parseFloat((current - prior_yr).toFixed(2)) : "N/A"
+  const dif_1yr_color   = dif_1yr !== "N/A"
+    ? (dif_1yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_1yr    = dif_1yr !== "N/A" && prior_yr !== "N/A"
+    ? parseFloat(((dif_1yr / prior_yr)*100).toFixed(2)) : "N/A"
+  const dif_10yr    = current !== "N/A" && avg_10yr !== "N/A"
+    ? parseFloat((current - avg_10yr).toFixed(2)) : "N/A"
+  const dif_10yr_color   = dif_10yr !== "N/A"
+    ? (dif_10yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_10yr   = dif_10yr !== "N/A" && avg_10yr !== "N/A"
+    ? parseFloat(((dif_10yr / avg_10yr)*100).toFixed(2)) : "N/A"
+  const dif_30yr    = current !== "N/A" && avg_30yr !== "N/A"
+    ? parseFloat((current - avg_30yr).toFixed(2)) : "N/A"
+  const dif_30yr_color   = dif_30yr !== "N/A"
+    ? (dif_30yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_30yr   = dif_30yr !== "N/A" && avg_30yr !== "N/A"
+    ? parseFloat(((dif_30yr / avg_30yr)*100).toFixed(2)) : "N/A"
+  
+  return { perc_2000, dif_2000, dif_2000_color, Date, current, prior_yr, avg_10yr, avg_30yr, dif_1yr, dif_1yr_color, perc_1yr, dif_10yr, dif_10yr_color, perc_10yr, dif_30yr, dif_30yr_color, perc_30yr }
+}
+```
+```{ojs}
+// Summary stats cards
+html`
+<div style="
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+">
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #0d6efd;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Elevation</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.current} <span style="font-size:14px; font-weight:400;">ft</span></div>
+    <div style="font-size: 12px; color: ${elv_stats.dif_2000_color}; margin-top: 4px;">${elv_stats.dif_2000}ft | ${elv_stats.perc_2000}% Change Since 2000</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #198754;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Elevation ${elv_stats.Date} Last Year</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.prior_yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+    <div style="font-size: 12px; color: ${elv_stats.dif_1yr_color}; margin-top: 4px;">${elv_stats.dif_1yr}ft | ${elv_stats.perc_1yr}% Change</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #ffc107;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 10yrs</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+    <div style="font-size: 12px; color: ${elv_stats.dif_10yr_color}; margin-top: 4px;">${elv_stats.dif_10yr}ft | ${elv_stats.perc_10yr}% Change</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #dc3545;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 30yrs</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+    <div style="font-size: 12px; color: ${elv_stats.dif_30yr_color}; margin-top: 4px;">${elv_stats.dif_30yr}ft | ${elv_stats.perc_30yr}% Change</div>
+  </div>
+
+</div>
+`
+```
+
 ```{ojs}
 //| echo: false
 {
@@ -63,7 +179,8 @@ filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
   // Build marks array dynamically
   const marks = [
     Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
-    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" })),
+    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }), { anchor: "top-right" }),
+    Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
 
     // Add a ruleY and text annotation for each reference line
     ...refLines.map(ref => Plot.ruleY([ref.y], {
@@ -99,6 +216,112 @@ filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```{ojs}
 //| echo: false
 filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
+```
+
+```{ojs}
+// Summary stats from filtered data
+
+stor_stats = {
+  const target      = filtered_stor.find(d => 
+    d.Date.toISOString().slice(0, 10) === "2000-02-06"
+  ) 
+  const stor_2000   = target?.Storage_MAF ?? "N/A"
+  const Date = filtered_stor[filtered_stor.length - 1]?.Date
+    ? filtered_stor[filtered_stor.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
+  const last        = filtered_stor[filtered_stor.length - 1]
+  const current     = last?.Storage_MAF          ?? "N/A"
+  const perc_full   = last?.Perc_Full            ?? "N/A"
+  const dif_2000    = current !== "N/A" && stor_2000 !== "N/A"
+    ? parseFloat((current - stor_2000).toFixed(2)) : "N/A"
+  const perc_2000   = dif_2000 !== "N/A" && stor_2000 !== "N/A"
+    ? parseFloat(((dif_2000 / stor_2000)*100).toFixed(2)) : "N/A"
+  const dif_2000_color   = dif_2000 !== "N/A"
+    ? (dif_2000 >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const prior_yr    = last?.Stor_1yr_Ago        ?? "N/A"
+  const avg_10yr    = last?.Stor_Day_Avg_10yr   ?? "N/A"
+  const avg_30yr    = last?.Stor_Day_Avg_30yr   ?? "N/A"
+  const dif_1yr     = current !== "N/A" && prior_yr !== "N/A"
+    ? parseFloat((current - prior_yr).toFixed(2)) : "N/A"
+  const dif_1yr_color   = dif_1yr !== "N/A"
+    ? (dif_1yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_1yr    = dif_1yr !== "N/A" && prior_yr !== "N/A"
+    ? parseFloat(((dif_1yr / prior_yr)*100).toFixed(2)) : "N/A"
+  const dif_10yr    = current !== "N/A" && avg_10yr !== "N/A"
+    ? parseFloat((current - avg_10yr).toFixed(2)) : "N/A"
+  const dif_10yr_color   = dif_10yr !== "N/A"
+    ? (dif_10yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_10yr   = dif_10yr !== "N/A" && avg_10yr !== "N/A"
+    ? parseFloat(((dif_10yr / avg_10yr)*100).toFixed(2)) : "N/A"
+  const dif_30yr    = current !== "N/A" && avg_30yr !== "N/A"
+    ? parseFloat((current - avg_30yr).toFixed(2)) : "N/A"
+  const dif_30yr_color   = dif_30yr !== "N/A"
+    ? (dif_30yr >= 0 ? "#198754" : "#dc3545") : "#6c757d"
+  const perc_30yr   = dif_30yr !== "N/A" && avg_30yr !== "N/A"
+    ? parseFloat(((dif_30yr / avg_30yr)*100).toFixed(2)) : "N/A"
+  
+  return { perc_2000, perc_full, dif_2000, dif_2000_color, Date, current, prior_yr, avg_10yr, avg_30yr, dif_1yr, dif_1yr_color, perc_1yr, dif_10yr, dif_10yr_color, perc_10yr, dif_30yr, dif_30yr_color, perc_30yr }
+}
+```
+```{ojs}
+// Summary stats cards
+html`
+<div style="
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+">
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #0d6efd;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Storage</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.current} <span style="font-size:14px; font-weight:400;">MAF</span> <span style="font-size:28px; font-weight: 700;">  | ${stor_stats.perc_full}%</span></div>
+    <div style="font-size: 12px; color: ${stor_stats.dif_2000_color}; margin-top: 4px;">${stor_stats.dif_2000}MAF | ${stor_stats.perc_2000}% Change Since 2000</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #198754;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Elevation ${stor_stats.Date} Last Year</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.prior_yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+    <div style="font-size: 12px; color: ${stor_stats.dif_1yr_color}; margin-top: 4px;">${stor_stats.dif_1yr}MAF | ${stor_stats.perc_1yr}% Change</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #ffc107;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 10yrs</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+    <div style="font-size: 12px; color: ${stor_stats.dif_10yr_color}; margin-top: 4px;">${stor_stats.dif_10yr}MAF | ${stor_stats.perc_10yr}% Change</div>
+  </div>
+
+  <div style="
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #dc3545;
+    border-radius: 6px;
+    padding: 16px;
+  ">
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 30yrs</div>
+    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+    <div style="font-size: 12px; color: ${stor_stats.dif_30yr_color}; margin-top: 4px;">${stor_stats.dif_30yr}MAF | ${stor_stats.perc_30yr}% Change</div>
+  </div>
+
+</div>
+`
 ```
 
 ```{ojs}
