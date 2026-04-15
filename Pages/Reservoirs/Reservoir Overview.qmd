@@ -11,11 +11,6 @@ format:
 
 ```{ojs}
 //| echo: false
-Plotly = require("https://cdn.plot.ly/plotly-latest.min.js")
-```
-
-```{ojs}
-//| echo: false
 // Data
 Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
   ...d,
@@ -180,7 +175,7 @@ html`
   const marks = [
     Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
     Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }), { anchor: "top-right" }),
-    Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
+    //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
 
     // Add a ruleY and text annotation for each reference line
     ...refLines.map(ref => Plot.ruleY([ref.y], {
@@ -343,3 +338,4 @@ html`
   return Storage_Chart
 }
 ```
+:::

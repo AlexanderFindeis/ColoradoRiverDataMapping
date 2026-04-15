@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Basin State Usage – Colorado River Data Mapping Project</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f9958316283a66cd39213c7e42b019fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Colorado River Data Mapping Project</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Pages/Reservoirs/Reservoir Overview.html"> 
+<span class="menu-text">Reservoirs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../Pages/States/State Overview.html" aria-current="page"> 
+<span class="menu-text">State Usage</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#total-basin-usage" id="toc-total-basin-usage" class="nav-link active" data-scroll-target="#total-basin-usage">Total Basin Usage</a></li>
+  <li><a href="#regional-water-consumption" id="toc-regional-water-consumption" class="nav-link" data-scroll-target="#regional-water-consumption">Regional Water Consumption</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Basin State Usage</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="257" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 256;"><span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>WY_State_Use <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/WaterYear_State_Sum.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Water_Year</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">Water_Year</span>)<span class="op">,</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Date</span><span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Consumptive_Use_MAF</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>WY_Region_Use <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/WaterYear_Region_Sum.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Water_Year</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">Water_Year</span>)<span class="op">,</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Date</span><span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Consumptive_Use_MAF</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>WY_Basin_Use <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/WaterYear_Basin_Sum.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Water_Year</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">Water_Year</span>)<span class="op">,</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Date</span><span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Consumptive_Use_MAF</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<section id="total-basin-usage" class="level1">
+<h1>Total Basin Usage</h1>
+<p>Consumptive water use* in the Colorado River basin has been roughly 13 to 14 million acre-feet annually over the past 20 years, declining from a high in the 1990s of 16-17maf. This use is split between three main regions: the Upper Basin (Colorado, Wyoming, New Mexico, Utah), the Lower Basin (California, Arizona, Nevada) and Mexico.</p>
+<p>The Upper and Lower Basins are allocated 7.5maf each but the Lower Basin is also apportioned up to 1maf in years of surplus supply. Mexico is apportioned 1.5maf a year through a 1944 treaty with the US for a total system allocation of 16.5maf.</p>
+<p>Data for consumptive use is provided by the US Bureau of Reclamation. For data on Mexico the USBR tracks total deliveries and not exact consumptive use. Therefore, excess flood waters during the unusually wet 1980s and 1990s are reflected in the data as deliveries but true consumptive use was likely closer to the 1.5maf the region was accustomed to using.</p>
+<p>As discussed further down, evaporation from Lower Basin reservoirs are not counted towards its consumptive use total but are included in the chart below to illustrate scale of evaporative losses. Lake Powell is also included as a separate category because Upper Basin states share responsibility for the reservoir. Upper Basin reservoir evaporation is counted towards Upper Basin consumptive use totals.</p>
+<p><font size="1">*Water that is “consumed” is lost as evaporation and transpiration from plants and is different from “withdrawals”, which return part of the water to streams and aquifers for other users.</font></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="291" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 290;"><span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a>Basin_wEvap <span class="op">=</span> WY_Basin_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="295" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 294;"><span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
+<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a>    <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Consumptive Use in Millions of Acre-Feet"</span></span>
+<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> { <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span> }<span class="op">,</span></span>
+<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="fl">16.5</span>]<span class="op">,</span> {<span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4,4"</span>})<span class="op">,</span></span>
+<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"Total Apportioned Water - 16.5maf"</span>]<span class="op">,</span> {<span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"top"</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fl">17.2</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="st">"2010-01-01"</span>)})<span class="op">,</span></span>
+<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(Basin_wEvap<span class="op">,</span> { </span>
+<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span> </span>
+<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span><span class="op">,</span> </span>
+<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a>      <span class="dt">channels</span><span class="op">:</span> {</span>
+<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Water Year"</span><span class="op">:</span>                 { <span class="dt">value</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Water_Year</span> }<span class="op">,</span></span>
+<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Total Use (MAF)"</span><span class="op">:</span> { <span class="dt">value</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span> }</span>
+<span id="cb3-313"><a href="#cb3-313" aria-hidden="true" tabindex="-1"></a>      }<span class="op">,</span></span>
+<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> {</span>
+<span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a>        <span class="dt">anchor</span><span class="op">:</span> <span class="st">"top"</span><span class="op">,</span></span>
+<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a>        <span class="dt">format</span><span class="op">:</span> {</span>
+<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a>          <span class="dt">x</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y1</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y2</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a>          <span class="dt">fill</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Water Year"</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Total Use (MAF)"</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a>      } </span>
+<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(WY_State_Use<span class="op">,</span> Plot<span class="op">.</span><span class="fu">stackY</span>({</span>
+<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span></span>
+<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span><span class="op">,</span></span>
+<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
+<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a>      <span class="dt">order</span><span class="op">:</span> <span class="st">"-sum"</span><span class="op">,</span> <span class="co">// Orders largest at the bottom</span></span>
+<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.7</span><span class="op">,</span></span>
+<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a>      <span class="dt">channels</span><span class="op">:</span> {</span>
+<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a>        <span class="st">"State"</span><span class="op">:</span>                 { <span class="dt">value</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">State</span> }<span class="op">,</span></span>
+<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Water Year"</span><span class="op">:</span>            { <span class="dt">value</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Water_Year</span> }<span class="op">,</span></span>
+<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Consumptive Use (MAF)"</span><span class="op">:</span> { <span class="dt">value</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span> }</span>
+<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a>      }<span class="op">,</span></span>
+<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> {</span>
+<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a>        <span class="dt">anchor</span><span class="op">:</span> <span class="st">"top"</span><span class="op">,</span></span>
+<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a>        <span class="dt">format</span><span class="op">:</span> {</span>
+<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a>          <span class="dt">x</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-342"><a href="#cb3-342" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-343"><a href="#cb3-343" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y1</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-344"><a href="#cb3-344" aria-hidden="true" tabindex="-1"></a>          <span class="dt">y2</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-345"><a href="#cb3-345" aria-hidden="true" tabindex="-1"></a>          <span class="dt">fill</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-346"><a href="#cb3-346" aria-hidden="true" tabindex="-1"></a>          <span class="st">"State"</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-347"><a href="#cb3-347" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Water Year"</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-348"><a href="#cb3-348" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Consumptive Use (MAF)"</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb3-349"><a href="#cb3-349" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-350"><a href="#cb3-350" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb3-351"><a href="#cb3-351" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb3-352"><a href="#cb3-352" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb3-353"><a href="#cb3-353" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="regional-water-consumption" class="level1">
+<h1>Regional Water Consumption</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="360" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 359;"><span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>Region_wEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>Region_woEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"No Evap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p>Significant differences between the Upper and Lower Basin affect how their consumptive use is calculated. The Upper Basin Compact of 1948 stipulates that evaporative losses from reservoirs count towards the consumptive use of the state the reservoir is in (Lake Powell losses are shared proportionately among the states). No such provision applies to the Lower Basin and so roughly 800,000af of consumptive use are not accounted for.</p>
+<p>The chart below illustrates how the Lower Basin has consistently used above it’s annual allocation even into the 2020s if evaporative losses are inluded. If they are excluded the Lower Basin’s response the current drought is made clearer as uses drop below 7.5maf in 2003.</p>
+<p>Additionally, Arizona’s ~1.1maf consumption from the Gila River is not reflected in Lower Basin figures because it is not legally considered part of the Lower Basin’s apportionment, recognized by the 1963 Supreme Court ruling in Arizona v. California as Arizona’s exclusive right.</p>
+<p>Upper Basin use has rarely exceeded 4.5maf owning to a combination of climate, terrain and infrastructure. The Lower Basin has a longer and hotter growing season and larger areas suitable for irrigation. Meanwhile, the Upper Basin largely lacks the large reservoir infrastructure of the Lower Basin, making less efficient flood irrigation more common.</p>
+<p>Spikes in deliveries in Mexico reflect release of excess flood water during periods when Lakes Mead and Powell were near full capacity.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Include Lower Basin Reservoir Evaporation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Exclude Lower Basin Reservoir Evaporation</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="379" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 378;"><span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Region_Use_wEvap <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
+<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Consumptive Use (MAF)"</span><span class="op">,</span></span>
+<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a>        <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">max</span>(Region_wEvap<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span>)]</span>
+<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a>     }<span class="op">,</span></span>
+<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Date"</span> }<span class="op">,</span></span>
+<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> [<span class="st">"Lower Basin"</span><span class="op">,</span> <span class="st">"Upper Basin"</span><span class="op">,</span> <span class="st">"Mexico"</span>]<span class="op">,</span></span>
+<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a>      <span class="dt">range</span><span class="op">:</span> [<span class="st">"red"</span><span class="op">,</span> <span class="st">"green"</span><span class="op">,</span> <span class="st">"orange"</span>]<span class="op">,</span></span>
+<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(Region_wEvap<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"Region"</span> })<span class="op">,</span></span>
+<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">tip</span>(Region_wEvap<span class="op">,</span> Plot<span class="op">.</span><span class="fu">pointerX</span>({ <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span> }))<span class="op">,</span></span>
+<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="fl">7.5</span>]<span class="op">,</span> {<span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4,4"</span>})<span class="op">,</span></span>
+<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="fl">1.5</span>]<span class="op">,</span> {<span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4,4"</span>})<span class="op">,</span></span>
+<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"US Region Apportionments"</span>]<span class="op">,</span> {<span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"bottom"</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">7</span>})<span class="op">,</span></span>
+<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"Obligatitions to Mexico"</span>]<span class="op">,</span> {<span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"bottom"</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">1</span>})</span>
+<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Region_Use_wEvap</span>
+<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="407" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 406;"><span id="cb6-407"><a href="#cb6-407" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-408"><a href="#cb6-408" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Region_Use_woEvap <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb6-409"><a href="#cb6-409" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
+<span id="cb6-410"><a href="#cb6-410" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb6-411"><a href="#cb6-411" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Consumptive Use (MAF)"</span><span class="op">,</span></span>
+<span id="cb6-412"><a href="#cb6-412" aria-hidden="true" tabindex="-1"></a>        <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">max</span>(Region_woEvap<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Consumptive_Use_MAF</span>)]</span>
+<span id="cb6-413"><a href="#cb6-413" aria-hidden="true" tabindex="-1"></a>     }<span class="op">,</span></span>
+<span id="cb6-414"><a href="#cb6-414" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Date"</span> }<span class="op">,</span></span>
+<span id="cb6-415"><a href="#cb6-415" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb6-416"><a href="#cb6-416" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> [<span class="st">"Lower Basin"</span><span class="op">,</span> <span class="st">"Upper Basin"</span><span class="op">,</span> <span class="st">"Mexico"</span>]<span class="op">,</span></span>
+<span id="cb6-417"><a href="#cb6-417" aria-hidden="true" tabindex="-1"></a>      <span class="dt">range</span><span class="op">:</span> [<span class="st">"red"</span><span class="op">,</span> <span class="st">"green"</span><span class="op">,</span> <span class="st">"orange"</span>]<span class="op">,</span></span>
+<span id="cb6-418"><a href="#cb6-418" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb6-419"><a href="#cb6-419" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb6-420"><a href="#cb6-420" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb6-421"><a href="#cb6-421" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(Region_woEvap<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"Region"</span> })<span class="op">,</span></span>
+<span id="cb6-422"><a href="#cb6-422" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">tip</span>(Region_woEvap<span class="op">,</span> Plot<span class="op">.</span><span class="fu">pointerX</span>({ <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Consumptive_Use_MAF"</span> }))<span class="op">,</span></span>
+<span id="cb6-423"><a href="#cb6-423" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="fl">7.5</span>]<span class="op">,</span> {<span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4,4"</span>})<span class="op">,</span></span>
+<span id="cb6-424"><a href="#cb6-424" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="fl">1.5</span>]<span class="op">,</span> {<span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4,4"</span>})<span class="op">,</span></span>
+<span id="cb6-425"><a href="#cb6-425" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"US Region Apportionments"</span>]<span class="op">,</span> {<span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"bottom"</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">7</span>})<span class="op">,</span></span>
+<span id="cb6-426"><a href="#cb6-426" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"Obligatitions to Mexico"</span>]<span class="op">,</span> {<span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"bottom"</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">1</span>})</span>
+<span id="cb6-427"><a href="#cb6-427" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb6-428"><a href="#cb6-428" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb6-429"><a href="#cb6-429" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Region_Use_woEvap</span>
+<span id="cb6-430"><a href="#cb6-430" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IldZX1N0YXRlX1VzZSA9IChhd2FpdCBGaWxlQXR0YWNobWVudChcIkRhdGEvV2F0ZXJZZWFyX1N0YXRlX1N1bS5jc3ZcIikuY3N2KCkpLm1hcChkID0+KHtcbiAgLi4uZCxcbiAgV2F0ZXJfWWVhcjogU3RyaW5nKGQuV2F0ZXJfWWVhciksXG4gIERhdGU6IG5ldyBEYXRlKGQuRGF0ZSksXG4gIENvbnN1bXB0aXZlX1VzZV9NQUY6IHBhcnNlRmxvYXQoKCtkLkNvbnN1bXB0aXZlX1VzZV9NQUYpLnRvRml4ZWQoMikpXG59KSlcblxuV1lfUmVnaW9uX1VzZSA9IChhd2FpdCBGaWxlQXR0YWNobWVudChcIkRhdGEvV2F0ZXJZZWFyX1JlZ2lvbl9TdW0uY3N2XCIpLmNzdigpKS5tYXAoZCA9Pih7XG4gIC4uLmQsXG4gIFdhdGVyX1llYXI6IFN0cmluZyhkLldhdGVyX1llYXIpLFxuICBEYXRlOiBuZXcgRGF0ZShkLkRhdGUpLFxuICBDb25zdW1wdGl2ZV9Vc2VfTUFGOiBwYXJzZUZsb2F0KCgrZC5Db25zdW1wdGl2ZV9Vc2VfTUFGKS50b0ZpeGVkKDIpKVxufSkpXG5cbldZX0Jhc2luX1VzZSA9IChhd2FpdCBGaWxlQXR0YWNobWVudChcIkRhdGEvV2F0ZXJZZWFyX0Jhc2luX1N1bS5jc3ZcIikuY3N2KCkpLm1hcChkID0+KHtcbiAgLi4uZCxcbiAgV2F0ZXJfWWVhcjogU3RyaW5nKGQuV2F0ZXJfWWVhciksXG4gIERhdGU6IG5ldyBEYXRlKGQuRGF0ZSksXG4gIENvbnN1bXB0aXZlX1VzZV9NQUY6IHBhcnNlRmxvYXQoKCtkLkNvbnN1bXB0aXZlX1VzZV9NQUYpLnRvRml4ZWQoMikpXG59KSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IkJhc2luX3dFdmFwID0gV1lfQmFzaW5fVXNlLmZpbHRlcihkID0+IGQuVHlwZSA9PT0gXCJFdmFwXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJQbG90LnBsb3Qoe1xuICB3aWR0aDogd2lkdGgsXG4gIGhlaWdodDogNTAwLFxuICB5OiB7XG4gICAgZ3JpZDogdHJ1ZSxcbiAgICBsYWJlbDogXCJDb25zdW1wdGl2ZSBVc2UgaW4gTWlsbGlvbnMgb2YgQWNyZS1GZWV0XCJcbiAgfSxcbiAgY29sb3I6IHsgbGVnZW5kOiB0cnVlIH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5ydWxlWShbMTYuNV0sIHtzdHJva2VEYXNoYXJyYXk6IFwiNCw0XCJ9KSxcbiAgICBQbG90LnRleHQoW1wiVG90YWwgQXBwb3J0aW9uZWQgV2F0ZXIgLSAxNi41bWFmXCJdLCB7ZnJhbWVBbmNob3I6IFwidG9wXCIsIHRleHRBbmNob3I6IFwibWlkZGxlXCIsIHk6IDE3LjIsIHg6IG5ldyBEYXRlKFwiMjAxMC0wMS0wMVwiKX0pLFxuICAgIFBsb3QubGluZVkoQmFzaW5fd0V2YXAsIHsgXG4gICAgICB4OiBcIkRhdGVcIiwgXG4gICAgICB5OiBcIkNvbnN1bXB0aXZlX1VzZV9NQUZcIiwgXG4gICAgICBzdHJva2U6IFwiYmxhY2tcIixcbiAgICAgIGNoYW5uZWxzOiB7XG4gICAgICAgIFwiV2F0ZXIgWWVhclwiOiAgICAgICAgICAgICAgICAgeyB2YWx1ZTogZCA9PiBkLldhdGVyX1llYXIgfSxcbiAgICAgICAgXCJUb3RhbCBVc2UgKE1BRilcIjogeyB2YWx1ZTogZCA9PiBkLkNvbnN1bXB0aXZlX1VzZV9NQUYgfVxuICAgICAgfSxcbiAgICAgIHRpcDoge1xuICAgICAgICBhbmNob3I6IFwidG9wXCIsXG4gICAgICAgIGZvcm1hdDoge1xuICAgICAgICAgIHg6IGZhbHNlLFxuICAgICAgICAgIHk6IGZhbHNlLFxuICAgICAgICAgIHkxOiBmYWxzZSxcbiAgICAgICAgICB5MjogZmFsc2UsXG4gICAgICAgICAgZmlsbDogZmFsc2UsXG4gICAgICAgICAgXCJXYXRlciBZZWFyXCI6IHRydWUsXG4gICAgICAgICAgXCJUb3RhbCBVc2UgKE1BRilcIjogdHJ1ZVxuICAgICAgICB9XG4gICAgICB9IFxuICAgIH0pLFxuICAgIFBsb3QuYXJlYVkoV1lfU3RhdGVfVXNlLCBQbG90LnN0YWNrWSh7XG4gICAgICB4OiBcIkRhdGVcIixcbiAgICAgIHk6IFwiQ29uc3VtcHRpdmVfVXNlX01BRlwiLFxuICAgICAgZmlsbDogXCJTdGF0ZVwiLFxuICAgICAgb3JkZXI6IFwiLXN1bVwiLCAvLyBPcmRlcnMgbGFyZ2VzdCBhdCB0aGUgYm90dG9tXG4gICAgICBmaWxsT3BhY2l0eTogMC43LFxuICAgICAgY2hhbm5lbHM6IHtcbiAgICAgICAgXCJTdGF0ZVwiOiAgICAgICAgICAgICAgICAgeyB2YWx1ZTogZCA9PiBkLlN0YXRlIH0sXG4gICAgICAgIFwiV2F0ZXIgWWVhclwiOiAgICAgICAgICAgIHsgdmFsdWU6IGQgPT4gZC5XYXRlcl9ZZWFyIH0sXG4gICAgICAgIFwiQ29uc3VtcHRpdmUgVXNlIChNQUYpXCI6IHsgdmFsdWU6IGQgPT4gZC5Db25zdW1wdGl2ZV9Vc2VfTUFGIH1cbiAgICAgIH0sXG4gICAgICB0aXA6IHtcbiAgICAgICAgYW5jaG9yOiBcInRvcFwiLFxuICAgICAgICBmb3JtYXQ6IHtcbiAgICAgICAgICB4OiBmYWxzZSxcbiAgICAgICAgICB5OiBmYWxzZSxcbiAgICAgICAgICB5MTogZmFsc2UsXG4gICAgICAgICAgeTI6IGZhbHNlLFxuICAgICAgICAgIGZpbGw6IGZhbHNlLFxuICAgICAgICAgIFwiU3RhdGVcIjogdHJ1ZSxcbiAgICAgICAgICBcIldhdGVyIFllYXJcIjogdHJ1ZSxcbiAgICAgICAgICBcIkNvbnN1bXB0aXZlIFVzZSAoTUFGKVwiOiB0cnVlXG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9KSlcbiAgXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlJlZ2lvbl93RXZhcCA9IFdZX1JlZ2lvbl9Vc2UuZmlsdGVyKGQgPT4gZC5UeXBlID09PSBcIkV2YXBcIilcblxuUmVnaW9uX3dvRXZhcCA9IFdZX1JlZ2lvbl9Vc2UuZmlsdGVyKGQgPT4gZC5UeXBlID09PSBcIk5vIEV2YXBcIilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgUmVnaW9uX1VzZV93RXZhcCA9IFBsb3QucGxvdCh7XG4gICAgd2lkdGg6IHdpZHRoLFxuICAgIGhlaWdodDogNTAwLFxuICAgIHk6IHsgZ3JpZDogdHJ1ZSwgbGFiZWw6IFwiQ29uc3VtcHRpdmUgVXNlIChNQUYpXCIsXG4gICAgICAgIGRvbWFpbjogWzAsIGQzLm1heChSZWdpb25fd0V2YXAsIGQgPT4gZC5Db25zdW1wdGl2ZV9Vc2VfTUFGKV1cbiAgICAgfSxcbiAgICB4OiB7IGxhYmVsOiBcIkRhdGVcIiB9LFxuICAgIGNvbG9yOiB7XG4gICAgICBkb21haW46IFtcIkxvd2VyIEJhc2luXCIsIFwiVXBwZXIgQmFzaW5cIiwgXCJNZXhpY29cIl0sXG4gICAgICByYW5nZTogW1wicmVkXCIsIFwiZ3JlZW5cIiwgXCJvcmFuZ2VcIl0sXG4gICAgICBsZWdlbmQ6IHRydWVcbiAgICB9LFxuICAgIG1hcmtzOiBbXG4gICAgICBQbG90LmxpbmVZKFJlZ2lvbl93RXZhcCwgeyB4OiBcIkRhdGVcIiwgeTogXCJDb25zdW1wdGl2ZV9Vc2VfTUFGXCIsIHN0cm9rZTogXCJSZWdpb25cIiB9KSxcbiAgICAgIFBsb3QudGlwKFJlZ2lvbl93RXZhcCwgUGxvdC5wb2ludGVyWCh7IHg6IFwiRGF0ZVwiLCB5OiBcIkNvbnN1bXB0aXZlX1VzZV9NQUZcIiB9KSksXG4gICAgICBQbG90LnJ1bGVZKFs3LjVdLCB7c3Ryb2tlRGFzaGFycmF5OiBcIjQsNFwifSksXG4gICAgICBQbG90LnJ1bGVZKFsxLjVdLCB7c3Ryb2tlRGFzaGFycmF5OiBcIjQsNFwifSksXG4gICAgICBQbG90LnRleHQoW1wiVVMgUmVnaW9uIEFwcG9ydGlvbm1lbnRzXCJdLCB7ZnJhbWVBbmNob3I6IFwiYm90dG9tXCIsIHRleHRBbmNob3I6IFwibWlkZGxlXCIsIHk6IDd9KSxcbiAgICAgIFBsb3QudGV4dChbXCJPYmxpZ2F0aXRpb25zIHRvIE1leGljb1wiXSwge2ZyYW1lQW5jaG9yOiBcImJvdHRvbVwiLCB0ZXh0QW5jaG9yOiBcIm1pZGRsZVwiLCB5OiAxfSlcbiAgICBdXG4gIH0pXG4gIHJldHVybiBSZWdpb25fVXNlX3dFdmFwXG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IFJlZ2lvbl9Vc2Vfd29FdmFwID0gUGxvdC5wbG90KHtcbiAgICB3aWR0aDogd2lkdGgsXG4gICAgaGVpZ2h0OiA1MDAsXG4gICAgeTogeyBncmlkOiB0cnVlLCBsYWJlbDogXCJDb25zdW1wdGl2ZSBVc2UgKE1BRilcIixcbiAgICAgICAgZG9tYWluOiBbMCwgZDMubWF4KFJlZ2lvbl93b0V2YXAsIGQgPT4gZC5Db25zdW1wdGl2ZV9Vc2VfTUFGKV1cbiAgICAgfSxcbiAgICB4OiB7IGxhYmVsOiBcIkRhdGVcIiB9LFxuICAgIGNvbG9yOiB7XG4gICAgICBkb21haW46IFtcIkxvd2VyIEJhc2luXCIsIFwiVXBwZXIgQmFzaW5cIiwgXCJNZXhpY29cIl0sXG4gICAgICByYW5nZTogW1wicmVkXCIsIFwiZ3JlZW5cIiwgXCJvcmFuZ2VcIl0sXG4gICAgICBsZWdlbmQ6IHRydWVcbiAgICB9LFxuICAgIG1hcmtzOiBbXG4gICAgICBQbG90LmxpbmVZKFJlZ2lvbl93b0V2YXAsIHsgeDogXCJEYXRlXCIsIHk6IFwiQ29uc3VtcHRpdmVfVXNlX01BRlwiLCBzdHJva2U6IFwiUmVnaW9uXCIgfSksXG4gICAgICBQbG90LnRpcChSZWdpb25fd29FdmFwLCBQbG90LnBvaW50ZXJYKHsgeDogXCJEYXRlXCIsIHk6IFwiQ29uc3VtcHRpdmVfVXNlX01BRlwiIH0pKSxcbiAgICAgIFBsb3QucnVsZVkoWzcuNV0sIHtzdHJva2VEYXNoYXJyYXk6IFwiNCw0XCJ9KSxcbiAgICAgIFBsb3QucnVsZVkoWzEuNV0sIHtzdHJva2VEYXNoYXJyYXk6IFwiNCw0XCJ9KSxcbiAgICAgIFBsb3QudGV4dChbXCJVUyBSZWdpb24gQXBwb3J0aW9ubWVudHNcIl0sIHtmcmFtZUFuY2hvcjogXCJib3R0b21cIiwgdGV4dEFuY2hvcjogXCJtaWRkbGVcIiwgeTogN30pLFxuICAgICAgUGxvdC50ZXh0KFtcIk9ibGlnYXRpdGlvbnMgdG8gTWV4aWNvXCJdLCB7ZnJhbWVBbmNob3I6IFwiYm90dG9tXCIsIHRleHRBbmNob3I6IFwibWlkZGxlXCIsIHk6IDF9KVxuICAgIF1cbiAgfSlcbiAgcmV0dXJuIFJlZ2lvbl9Vc2Vfd29FdmFwXG59XG4ifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../Pages/States";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

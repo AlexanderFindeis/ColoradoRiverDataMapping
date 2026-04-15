@@ -203,11 +203,12 @@ CU.PerState <- rbind(
   Trib.CU.Annual.Total %>% select(STATE_NAME, Year, CU.Millions) %>% rename(YEAR = Year) %>% mutate(Region = "Lower Basin"),
   UB.StateCons %>% select(State, YEAR, CU.Millions) %>% rename(STATE_NAME = State) %>% mutate(Region = "Upper Basin")
 ) %>%
-  #mutate(Source = STATE_NAME) %>%
+  # Set the names of reservoirs to their states
+  # Lake Powell needs to be distributed across the Upper Basin
   mutate(State = case_when(
     STATE_NAME == "Blue Mesa" ~ "Colorado",
     STATE_NAME == "Flaming Gorge" ~ "Utah",
-    STATE_NAME == "Lake Powell" ~ "Arizona",
+    #STATE_NAME == "Lake Powell" ~ "Arizona",
     STATE_NAME == "Morrow Point" ~ "Colorado",
     TRUE ~ STATE_NAME
   )) %>%
@@ -226,7 +227,7 @@ CU.PerState <- rbind(
     TRUE ~ "Upper Basin"
   ))
 
-# Plot consumptive use w/ evaporatoin by state
+# Plot consumptive use w/ evaporation by state
 CU.PerState.Plot <- ggplot(CU.PerState, aes(x = YEAR, y = CU.Millions, group = State, color = State)) +
   geom_line() +
   #facet_wrap(~State) +

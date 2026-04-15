@@ -1,0 +1,433 @@
+---
+title: "Basin State Usage"
+execute:
+  echo: false
+format: 
+  html: 
+    page-layout: full
+    grid:
+      body-width: 1000px
+---
+
+```{r}
+#| output: false
+
+library(pacman)
+pacman::p_load(tidyverse, openxlsx)
+
+### Lower Basin Consumptive Use Report
+# Area reference sheet with key for location/tributary names and codes
+area.reference <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Area_Reference")
+# Reservoir evaporation rates
+res.evap <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mainstream_Reservoirs")
+# Mainstream consumptive use data
+main.cu <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mainstream")
+# Tributary consumptive use data
+trib.cu <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Tributary")
+# Mexico deliveries
+mex.del <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mexico")
+# Tributary Irrigated Acreage
+trib.irr.acre <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Tributary_Irrigated_Acreage")
+# Population data 
+lb.pop <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Population")
+
+
+## Mainstream Consumptive Use Pivot Table
+Main.Jan <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = January) %>% mutate(Month = "01")
+Main.Feb <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = February) %>% mutate(Month = "02")
+Main.Mar <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = March) %>% mutate(Month = "03")
+Main.Apr <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = April) %>% mutate(Month = "04")
+Main.May <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = May) %>% mutate(Month = "05")
+Main.Jun <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = June) %>% mutate(Month = "06")
+Main.Jul <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = July) %>% mutate(Month = "07")
+Main.Aug <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = August) %>% mutate(Month = "08")
+Main.Sep <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = September) %>% mutate(Month = "09")
+Main.Oct <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = October) %>% mutate(Month = "10")
+Main.Nov <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = November) %>% mutate(Month = "11")
+Main.Dec <- main.cu %>% select(STATE_NAME, SOURCE, CALC_TYPE, YEAR, CONSUMPTIVE_USE = December) %>% mutate(Month = "12")
+
+Main.CU.Pivot <- rbind(Main.Jan, Main.Feb, Main.Mar, Main.Apr, Main.May, Main.Jun, Main.Jul, Main.Aug, Main.Sep, Main.Oct, Main.Nov, Main.Dec) %>%
+  mutate(Date = as.Date(paste(YEAR, Month, "01", sep = "-"))) %>% # Make date field for each month, using the first day of the month as a placeholder
+  mutate(Month = as.integer(Month)) %>%
+  mutate(Water_Year = as.integer(if_else(Month < 10, YEAR, YEAR+1))) %>%
+  group_by(STATE_NAME, SOURCE, CALC_TYPE, Date, YEAR, Water_Year) %>%
+  summarise(CONSUMPTIVE_USE = sum(CONSUMPTIVE_USE, na.rm = TRUE)) %>% # Ensuring one use record for each date and type
+  #mutate(CONSUMPTIVE_USE = as.integer(CONSUMPTIVE_USE)) %>%
+  ungroup() %>%
+  select(State = STATE_NAME, Category = CALC_TYPE, Date, Water_Year, Consumptive_Use = CONSUMPTIVE_USE) %>%
+  mutate(Category = case_when(
+    Category == "AGRICULTURE" ~ "Agriculture",
+    Category == "M_I_OTHER" ~ "Municipal and Industrial",
+    Category == "OUTSIDE_SYSTEM" ~ "Export",
+    Category == "TEP" ~ "Power",
+    Category == "WITHIN_SYSTEM" ~ "Export Within System" # This category likely refers primarily to the Central Arizona Project. See if can breakdown into other categories like municipal and agricultural
+  )) %>%
+  mutate(Consumptive_Use_MAF = Consumptive_Use / 1000000) %>%
+  mutate(Region = "Lower Basin") %>%
+  mutate(Apportionment_Countable = "Yes")
+
+rm(Main.Jan, Main.Feb, Main.Mar, Main.Apr, Main.May, Main.Jun, Main.Jul, Main.Aug, Main.Sep, Main.Oct, Main.Nov, Main.Dec)
+
+
+# ## Tributary Consumptive Use Pivot Table
+# Trib.Jan <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "01")
+# Trib.Feb <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "02")
+# Trib.Mar <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "03")
+# Trib.Apr <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "04")
+# Trib.May <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "05")
+# Trib.Jun <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "06")
+# Trib.Jul <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "07")
+# Trib.Aug <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "08")
+# Trib.Sep <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "09")
+# Trib.Oct <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "10")
+# Trib.Nov <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "11")
+# Trib.Dec <- trib.cu %>% select(NODE_CODE, CALC_TYPE, Year, CONSUMPTIVE_USE = January) %>% mutate(Month = "12")
+
+# Trib.CU.Pivot <- rbind(Trib.Jan, Trib.Feb, Trib.Mar, Trib.Apr, Trib.May, Trib.Jun, Trib.Jul, Trib.Aug, Trib.Sep, Trib.Oct, Trib.Nov, Trib.Dec) %>%
+#   mutate(Date = as.Date(paste(Year, Month, "01", sep = "-"))) %>% # Make date field for each month, using the first day of the month as a placeholder
+#   select(-Month) %>%
+#   group_by(NODE_CODE, CALC_TYPE, Date, Year) %>%
+#   summarise(CONSUMPTIVE_USE = sum(CONSUMPTIVE_USE, na.rm = TRUE)) %>%
+#   ungroup() %>%
+#   left_join(area.reference, by = c("NODE_CODE" = "NODE_CODE")) %>%
+#   #filter(DOWNSTREAM_NODE != 31) %>% # Filter out consumptive use for Gila River since it is not considered part of Arizona's apportionment from the Colorado River
+#   select(-STATE_CODE, -DOWNSTREAM_NODE, -HU8_CODE)
+# rm(Trib.Jan, Trib.Feb, Trib.Mar, Trib.Apr, Trib.May, Trib.Jun, Trib.Jul, Trib.Aug, Trib.Sep, Trib.Oct, Trib.Nov, Trib.Dec)
+
+
+## Mexico Deliveries
+Mex.Total.Del.Jan <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = January) %>% mutate(Month = "01")
+Mex.Total.Del.Feb <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = February) %>% mutate(Month = "02")
+Mex.Total.Del.Mar <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = March) %>% mutate(Month = "03")
+Mex.Total.Del.Apr <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = April) %>% mutate(Month = "04")
+Mex.Total.Del.May <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = May) %>% mutate(Month = "05")
+Mex.Total.Del.Jun <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = June) %>% mutate(Month = "06")
+Mex.Total.Del.Jul <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = July) %>% mutate(Month = "07")
+Mex.Total.Del.Aug <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = August) %>% mutate(Month = "08")
+Mex.Total.Del.Sep <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = September) %>% mutate(Month = "09")
+Mex.Total.Del.Oct <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = October) %>% mutate(Month = "10")
+Mex.Total.Del.Nov <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = November) %>% mutate(Month = "11")
+Mex.Total.Del.Dec <- mex.del %>% filter(DELIVERY_TYPE == "TOTAL") %>% select(YEAR, Deliveries = December) %>% mutate(Month = "12")
+
+Mex.Total.Deliveries <- rbind(Mex.Total.Del.Jan, Mex.Total.Del.Feb, Mex.Total.Del.Mar, Mex.Total.Del.Apr, Mex.Total.Del.May, Mex.Total.Del.Jun, Mex.Total.Del.Jul, Mex.Total.Del.Aug, Mex.Total.Del.Sep, Mex.Total.Del.Oct, Mex.Total.Del.Nov, Mex.Total.Del.Dec) %>%
+  mutate(
+    Date = as.Date(paste(YEAR, Month, "01", sep = "-")), # Make date field for each month, using the first day of the month as a placeholder
+    Month = as.integer(Month),
+    State = "Mexico",
+    Water_Year = as.integer(if_else(Month < 10, YEAR, YEAR + 1)),
+    Region = "Mexico",
+    Consumptive_Use = Deliveries,
+    Consumptive_Use_MAF = Deliveries / 1000000,
+    Category = "Mexico Deliveries"
+  ) %>%
+  select(State, Category, Date, Water_Year, Consumptive_Use, Consumptive_Use_MAF, Region) %>%
+  mutate(Apportionment_Countable = "Yes") %>%
+  # Summarize to ensure one record per date per group
+  group_by(State, Category, Date, Water_Year, Region, Apportionment_Countable) %>%
+  summarize(
+    Consumptive_Use = sum(Consumptive_Use, na.rm=T),
+    Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  ungroup()  
+  
+
+rm(Mex.Total.Del.Jan, Mex.Total.Del.Feb, Mex.Total.Del.Mar, Mex.Total.Del.Apr, Mex.Total.Del.May, Mex.Total.Del.Jun, Mex.Total.Del.Jul, Mex.Total.Del.Aug, Mex.Total.Del.Sep, Mex.Total.Del.Oct, Mex.Total.Del.Nov, Mex.Total.Del.Dec)
+
+### Upper Basin Consumptive Use
+## NOTE: Upper Basin includes tributaries and reservoir evaporation in consumptive use towards compact apportionment -- Lower Basin does not 
+UB.Data <- read.xlsx("D:/Water Data/v24.5_CUL_ResultsCU.xlsx", sheet = "monthlyData") 
+
+UB.CU <- UB.Data %>%
+    mutate(Date = as.Date(Date, origin = "1899-12-30")) %>%
+    mutate(Year = substr(Date,0,4)) %>% mutate(Month = substr(Date,6,7)) %>%
+    mutate(Date = as.Date(paste(Year, Month, "01", sep = "-"))) %>%
+    # Adding major tributary evap to its state
+    mutate(State = case_when(
+        State == "Blue Mesa" ~ "Colorado",
+        State == "Flaming Gorge" ~ "Utah",
+        #STATE_NAME == "Lake Powell" ~ "Arizona", # Lake Powell losses shared by states. Leaving as own state category to highlight losses
+        State == "Morrow Point" ~ "Colorado",
+        TRUE ~ State)) %>%
+    mutate(Category = case_when(
+        Category == "MandI" ~ "Municipal and Industrial",
+        Category == "MajorResEvap" ~ "Reservoir Evaporation",
+        Category == "MinorResEvap" ~ "Reservoir Evaporation",
+        Category == "Ag" ~ "Agriculture",
+        Category == "Livestock" ~ "Agriculture",
+        Category == "Stockpond" ~ "Agriculture",
+        TRUE ~ Category
+    )) %>%
+    select(State, Category, Date, Water_Year = Water.Year, Consumptive_Use = Value) %>%
+    mutate(Consumptive_Use_MAF = Consumptive_Use / 1000000) %>%
+    mutate(Region = "Upper Basin") %>%
+    mutate(Apportionment_Countable = "Yes") %>%
+    # Summarize to ensure one record per date per group
+    group_by(State, Category, Date, Water_Year, Region, Apportionment_Countable) %>%
+    summarize(
+        Consumptive_Use = sum(Consumptive_Use, na.rm=T),
+        Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+    ungroup() 
+
+## Lower Basin Reservoir evaporation rates (summarized to monthly to conform with consumptive use data)
+Res.Jan <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = January) %>% mutate(Month = "01")
+Res.Feb <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = February) %>% mutate(Month = "02")
+Res.Mar <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = March) %>% mutate(Month = "03")
+Res.Apr <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = April) %>% mutate(Month = "04")
+Res.May <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = May) %>% mutate(Month = "05")
+Res.Jun <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = June) %>% mutate(Month = "06")
+Res.Jul <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = July) %>% mutate(Month = "07")
+Res.Aug <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = August) %>% mutate(Month = "08")
+Res.Sep <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = September) %>% mutate(Month = "09")
+Res.Oct <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = October) %>% mutate(Month = "10")
+Res.Nov <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = November) %>% mutate(Month = "11")
+Res.Dec <- res.evap %>% select(STATE_NAME, RESERVOIR_NAME, YEAR, Consumptive_Use = December) %>% mutate(Month = "12")
+# Lower basin reservoir evaporation pivot table
+LB.Evap.Pivot <- rbind(Res.Jan, Res.Feb, Res.Mar, Res.Apr, Res.May, Res.Jun, Res.Jul, Res.Aug, Res.Sep, Res.Oct, Res.Nov, Res.Dec) %>%
+    mutate(
+        Date = as.Date(paste(YEAR, Month, "01", sep = "-")), # Make date field for each month, using the first day of the month as a placeholder
+        Month = as.integer(Month),
+        Water_Year = as.integer(if_else(Month < 10, YEAR, YEAR + 1)),
+        Region = "Lower Basin",
+        State = "Lower Basin Reservoirs",
+        Category = "Reservoir Evaporation") %>%
+    mutate() %>%
+    select(State, Category, Date, Water_Year, Consumptive_Use) %>%
+    mutate(Consumptive_Use_MAF = Consumptive_Use / 1000000) %>%
+    mutate(Region = "Lower Basin") %>%
+    mutate(Apportionment_Countable = "No") %>%
+    # Summarize to ensure one record per date per group
+    group_by(State, Category, Date, Water_Year, Region, Apportionment_Countable) %>%
+    summarize(
+        Consumptive_Use = sum(Consumptive_Use, na.rm=T),
+        Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+    ungroup() 
+
+rm(Res.Jan, Res.Feb, Res.Mar, Res.Apr, Res.May, Res.Jun, Res.Jul, Res.Aug, Res.Sep, Res.Oct, Res.Nov, Res.Dec)
+
+# Combining consumptive use for each state and Mexico into one dataframe
+Consumptive_Use_Data <- rbind(UB.CU, Mex.Total.Deliveries, Main.CU.Pivot, LB.Evap.Pivot)
+
+# Lower Basin reservoir evaporation mapped as separate state for graph display
+WY_State_Sum <- Consumptive_Use_Data %>%
+  filter(Water_Year != 2025) %>%
+  group_by(Water_Year, State) %>%
+  summarize(Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  mutate(Date = as.Date(paste(Water_Year, "01", "01", sep = "-")))
+
+# Regional summarization, with components for lower basin reservoir evaporation
+WY_Region_Sum_Evap <- Consumptive_Use_Data %>%
+  filter(Water_Year != 2025) %>%
+  group_by(Water_Year, Region) %>%
+  summarize(Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  mutate(Date = as.Date(paste(Water_Year, "01", "01", sep = "-")),
+        Type = "Evap")
+
+WY_Region_Sum_NoEvap <- Consumptive_Use_Data %>%
+  filter(Water_Year != 2025) %>% filter(Apportionment_Countable == "Yes") %>%
+  group_by(Water_Year, Region) %>%
+  summarize(Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  mutate(Date = as.Date(paste(Water_Year, "01", "01", sep = "-")),
+        Type = "No Evap")
+
+WY_Region_Sum <- rbind(WY_Region_Sum_Evap, WY_Region_Sum_NoEvap)
+
+# Basin summarization, with components for lower basin reservoir evaporation
+WY_Basin_Sum_Evap <- Consumptive_Use_Data %>%
+  filter(Water_Year != 2025) %>%
+  group_by(Water_Year) %>%
+  summarize(Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  mutate(Date = as.Date(paste(Water_Year, "01", "01", sep = "-")),
+        Type = "Evap")
+
+WY_Basin_Sum_NoEvap <- Consumptive_Use_Data %>%
+  filter(Water_Year != 2025) %>% filter(Apportionment_Countable == "Yes") %>%
+  group_by(Water_Year) %>%
+  summarize(Consumptive_Use_MAF = sum(Consumptive_Use_MAF, na.rm=T)) %>%
+  mutate(Date = as.Date(paste(Water_Year, "01", "01", sep = "-")),
+        Type = "No Evap")
+
+WY_Basin_Sum <- rbind(WY_Basin_Sum_Evap, WY_Basin_Sum_NoEvap)
+
+write.csv(Consumptive_Use_Data, "Pages/States/Data/Consumptive_Use_Data.csv")
+write.csv(WY_State_Sum, "Pages/States/Data/WaterYear_State_Sum.csv")
+write.csv(WY_Region_Sum, "Pages/States/Data/WaterYear_Region_Sum.csv")
+write.csv(WY_Basin_Sum, "Pages/States/Data/WaterYear_Basin_Sum.csv")
+```
+
+```{ojs}
+WY_State_Use = (await FileAttachment("Data/WaterYear_State_Sum.csv").csv()).map(d =>({
+  ...d,
+  Water_Year: String(d.Water_Year),
+  Date: new Date(d.Date),
+  Consumptive_Use_MAF: parseFloat((+d.Consumptive_Use_MAF).toFixed(2))
+}))
+
+WY_Region_Use = (await FileAttachment("Data/WaterYear_Region_Sum.csv").csv()).map(d =>({
+  ...d,
+  Water_Year: String(d.Water_Year),
+  Date: new Date(d.Date),
+  Consumptive_Use_MAF: parseFloat((+d.Consumptive_Use_MAF).toFixed(2))
+}))
+
+WY_Basin_Use = (await FileAttachment("Data/WaterYear_Basin_Sum.csv").csv()).map(d =>({
+  ...d,
+  Water_Year: String(d.Water_Year),
+  Date: new Date(d.Date),
+  Consumptive_Use_MAF: parseFloat((+d.Consumptive_Use_MAF).toFixed(2))
+}))
+```
+
+# Total Basin Usage
+
+Consumptive water use* in the Colorado River basin has been roughly 13 to 14 million acre-feet annually over the past 20 years, declining from a high in the 1990s of 16-17maf. This use is split between three main regions: the Upper Basin (Colorado, Wyoming, New Mexico, Utah), the Lower Basin (California, Arizona, Nevada) and Mexico. 
+
+The Upper and Lower Basins are allocated 7.5maf each but the Lower Basin is also apportioned an additional 1maf in years of surplus supply. Mexico is apportioned 1.5maf a year through a 1944 treaty with the US for a total system allocation of 16.5maf. 
+
+Data for consumptive use is provided by the US Bureau of Reclamation. For data on Mexico the USBR tracks total deliveries and not exact consumptive use. Therefore, excess flood waters during the unusually wet 1980s and 1990s are reflected in the data as deliveries but true consumptive use was likely closer to the 1.5maf the region was accustomed to using. 
+
+As discussed further down, evaporation from Lower Basin reservoirs are not counted towards its consumptive use total but are included in the chart below to illustrate scale of evaporative losses. Lake Powell is also included as a separate category because Upper Basin states share responsibility for the reservoir proportionately. Upper Basin reservoir evaporation is counted towards Upper Basin consumptive use totals. 
+
+<font size="1">*Water that is "consumed" is lost as evaporation and transpiration from plants and is different from "withdrawals", which return part of the water to streams and aquifers for other users.</font> 
+
+```{ojs}
+Basin_wEvap = WY_Basin_Use.filter(d => d.Type === "Evap")
+```
+
+```{ojs}
+Plot.plot({
+  width: width,
+  height: 500,
+  y: {
+    grid: true,
+    label: "Consumptive Use in Millions of Acre-Feet"
+  },
+  color: { legend: true },
+  marks: [
+    Plot.ruleY([16.5], {strokeDasharray: "4,4"}),
+    Plot.text(["Total Apportioned Water - 16.5maf"], {frameAnchor: "top", textAnchor: "middle", y: 17.2, x: new Date("2010-01-01")}),
+    Plot.lineY(Basin_wEvap, { 
+      x: "Date", 
+      y: "Consumptive_Use_MAF", 
+      stroke: "black",
+      channels: {
+        "Water Year":                 { value: d => d.Water_Year },
+        "Total Use (MAF)": { value: d => d.Consumptive_Use_MAF }
+      },
+      tip: {
+        anchor: "top",
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Water Year": true,
+          "Total Use (MAF)": true
+        }
+      } 
+    }),
+    Plot.areaY(WY_State_Use, Plot.stackY({
+      x: "Date",
+      y: "Consumptive_Use_MAF",
+      fill: "State",
+      order: "-sum", // Orders largest at the bottom
+      fillOpacity: 0.7,
+      channels: {
+        "State":                 { value: d => d.State },
+        "Water Year":            { value: d => d.Water_Year },
+        "Consumptive Use (MAF)": { value: d => d.Consumptive_Use_MAF }
+      },
+      tip: {
+        anchor: "top",
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "State": true,
+          "Water Year": true,
+          "Consumptive Use (MAF)": true
+        }
+      }
+    }))
+  ]
+})
+```
+
+# Regional Water Consumption
+
+```{ojs}
+Region_wEvap = WY_Region_Use.filter(d => d.Type === "Evap")
+
+Region_woEvap = WY_Region_Use.filter(d => d.Type === "No Evap")
+```
+
+
+Significant differences between the Upper and Lower Basin affect how their consumptive use is calculated. The Upper Basin Compact of 1948 stipulates that evaporative losses from reservoirs count towards the consumptive use of the state the reservoir is in (Lake Powell losses are shared proportionately among the states). No such provision applies to the Lower Basin and so roughly 800,000af of consumptive use are not accounted for. 
+
+The chart below illustrates how the Lower Basin has consistently used above it's annual allocation even into the 2020s if evaporative losses are inluded. If they are excluded the Lower Basin's response the current drought is made clearer as uses drop below 7.5maf in 2003. 
+
+Additionally, Arizona's ~1.1maf consumption from the Gila River is not reflected in Lower Basin figures because it is not legally considered part of the Lower Basin's apportionment, recognized by the 1963 Supreme Court ruling in Arizona v. California as Arizona's exclusive right. 
+
+Upper Basin use has rarely exceeded 4.5maf owning to a combination of climate, terrain and infrastructure. The Lower Basin has a longer and hotter growing season and larger areas suitable for irrigation. Meanwhile, the Upper Basin largely lacks the large reservoir infrastructure of the Lower Basin, making less efficient flood irrigation more common. 
+
+Spikes in deliveries in Mexico reflect release of excess flood water during periods when Lakes Mead and Powell were near full capacity. 
+
+::: {.panel-tabset}
+## Include Lower Basin Reservoir Evaporation
+
+```{ojs}
+{
+  const Region_Use_wEvap = Plot.plot({
+    width: width,
+    height: 500,
+    y: { grid: true, label: "Consumptive Use (MAF)",
+        domain: [0, d3.max(Region_wEvap, d => d.Consumptive_Use_MAF)]
+     },
+    x: { label: "Date" },
+    color: {
+      domain: ["Lower Basin", "Upper Basin", "Mexico"],
+      range: ["red", "green", "orange"],
+      legend: true
+    },
+    marks: [
+      Plot.lineY(Region_wEvap, { x: "Date", y: "Consumptive_Use_MAF", stroke: "Region" }),
+      Plot.tip(Region_wEvap, Plot.pointerX({ x: "Date", y: "Consumptive_Use_MAF" })),
+      Plot.ruleY([7.5], {strokeDasharray: "4,4"}),
+      Plot.ruleY([1.5], {strokeDasharray: "4,4"}),
+      Plot.text(["US Region Apportionments"], {frameAnchor: "bottom", textAnchor: "middle", y: 7}),
+      Plot.text(["Obligatitions to Mexico"], {frameAnchor: "bottom", textAnchor: "middle", y: 1})
+    ]
+  })
+  return Region_Use_wEvap
+}
+```
+
+## Exclude Lower Basin Reservoir Evaporation
+```{ojs}
+{
+  const Region_Use_woEvap = Plot.plot({
+    width: width,
+    height: 500,
+    y: { grid: true, label: "Consumptive Use (MAF)",
+        domain: [0, d3.max(Region_woEvap, d => d.Consumptive_Use_MAF)]
+     },
+    x: { label: "Date" },
+    color: {
+      domain: ["Lower Basin", "Upper Basin", "Mexico"],
+      range: ["red", "green", "orange"],
+      legend: true
+    },
+    marks: [
+      Plot.lineY(Region_woEvap, { x: "Date", y: "Consumptive_Use_MAF", stroke: "Region" }),
+      Plot.tip(Region_woEvap, Plot.pointerX({ x: "Date", y: "Consumptive_Use_MAF" })),
+      Plot.ruleY([7.5], {strokeDasharray: "4,4"}),
+      Plot.ruleY([1.5], {strokeDasharray: "4,4"}),
+      Plot.text(["US Region Apportionments"], {frameAnchor: "bottom", textAnchor: "middle", y: 7}),
+      Plot.text(["Obligatitions to Mexico"], {frameAnchor: "bottom", textAnchor: "middle", y: 1})
+    ]
+  })
+  return Region_Use_woEvap
+}
+```
+:::
