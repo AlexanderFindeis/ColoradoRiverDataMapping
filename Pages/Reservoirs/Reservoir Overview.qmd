@@ -8,6 +8,32 @@ format:
     grid:
       body-width: 1000px
 ---
+```{=html}
+<style>
+  /* Override the library's internal scoped width */
+  .scope-5pi-i5dkkfhg {
+    width: 900px !important;
+    margin-left: 40px !important;
+    margin-right: 20px !important;
+  }
+
+  /* Override the media query width on the outer container */
+  #O-scope-1 {
+    width: 900px !important;
+    margin-left: 40px !important;
+    margin-right: 20px !important;
+  }
+
+  /* Override the fixed 360px media query */
+  @media only screen and (min-width: 30em) {
+    #O-scope-1 {
+      width: 900 !important;
+      margin-left: 40px !important;
+      margin-right: 20px !important;
+    }
+  }
+</style>
+```
 
 ```{ojs}
 //| echo: false
@@ -198,11 +224,67 @@ html`
     width: width,
     height: 500,
     y: { grid: true, label: "Reservoir Elevation (ft)" },
-    x: { label: "Date" },
+    x: { label: "Date", domain: DateSlider },
     marks: marks
   })
 
   return Elevation_Chart
+}
+```
+```{ojs}
+import { timeRange } from "@jwolondon/time-range-input"
+
+min_date = d3.min(filtered_elv, d => d.Date)
+max_date = d3.max(filtered_elv, d => d.Date)
+
+viewof DateSlider = timeRange(min_date, max_date, {
+  interval: "day",
+  value: [min_date, max_date]
+})
+```
+
+
+
+```{ojs}
+{
+  const This_Year = filtered_elv
+    .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
+    .map(d => ({
+      ...d,
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+  const Previous_Year = filtered_elv
+    .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
+                 d.Date <= new Date("2026-01-01T00:00:00"))
+    .map(d => ({
+      ...d,
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+  const marks = [
+  Plot.lineY(This_Year, { x: "Normalized_Date", y: "Elevation", stroke: "blue" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elevation", stroke: "green" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_10yr", stroke: "#ffc107" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_30yr", stroke: "red" }),
+  Plot.tip(This_Year, Plot.pointerX({ x: "Normalized_Date", y: "Elevation" }))
+  ]
+
+  return Plot.plot({
+    title: "Reservoir Elevation Annual Trends",
+    width: width,
+    height: 500,
+    color: {
+      legend: true,
+      domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
+      range:  ["blue", "green", "#ffc107", "red"]
+    },
+    ticks: d3.utcDay.every(7),
+    tickFormat: "%b %d",
+    y: { grid: true, label: "Reservoir Elevation (ft)" },
+    x: { label: "Date" },
+    marks: marks
+  })
 }
 ```
 
@@ -336,6 +418,51 @@ html`
     ]
   })
   return Storage_Chart
+}
+```
+
+
+
+```{ojs}
+{
+  const This_Year = filtered_stor
+    .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
+    .map(d => ({
+      ...d,
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+  const Previous_Year = filtered_stor
+    .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
+                 d.Date < new Date("2026-01-01T00:00:00"))
+    .map(d => ({
+      ...d,
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+  const marks = [
+  Plot.lineY(This_Year, { x: "Normalized_Date", y: "Storage_MAF", stroke: "blue" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Storage_MAF", stroke: "green" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107" }),
+  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red" }),
+  Plot.tip(This_Year, Plot.pointerX({ x: "Normalized_Date", y: "Storage_MAF" }))
+  ]
+
+  return Plot.plot({
+    title: "Reservoir Storage Annual Trends",
+    width: width,
+    height: 500,
+    color: {
+      legend: true,
+      domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
+      range:  ["blue", "green", "#ffc107", "red"]
+    },
+    ticks: d3.utcDay.every(7),
+    tickFormat: "%b %d",
+    y: { grid: true, label: "Reservoir Storage (MAF)" },
+    x: { label: "Date" },
+    marks: marks
+  })
 }
 ```
 :::
