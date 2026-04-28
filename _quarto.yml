@@ -6,13 +6,13 @@ project:
   output-dir: docs
 
 website:
-  title: "Colorado River Data Mapping Project"
+  title: "Colorado River Atlas"
   navbar:
     right:
       - href: index.qmd
         text: Home
-      - href: about.qmd
-        text: About
+      #- href: about.qmd
+      #  text: About
       - href: Pages/Reservoirs/Reservoir Overview.qmd
         text: Reservoirs
       - href: Pages/States/State Overview.qmd

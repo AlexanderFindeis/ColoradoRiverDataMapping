@@ -1,6 +1,7 @@
 library(dplyr)
 library(zoo)
 library(lubridate)
+library(sf)
 
 # Lake Mead Elevation
 Mead.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/49.csv") %>% mutate(Reservoir = "Lake Mead")
@@ -61,8 +62,8 @@ Res.Elv <- rbind(Mead.Elv, Powell.Elv, Flaming.Gorge.Elv, Mohave.Elv, Navajo.Elv
     Date = as.Date(Date)) %>%
   arrange(Date) %>%
   #mutate(One_Year_Average = zoo::rollmean(Elevation, k = 365, fill = NA, align = 'right')) %>%
-  mutate(Ten_Year_Average = zoo::rollmean(Elevation, k = 3650, fill = NA, align = 'right')) %>% # 10 years * 365 days
-  mutate(Thirty_Year_Average = zoo::rollmean(Elevation, k = 10950, fill = NA, align = 'right')) %>% # 30 years * 365 days
+  mutate(Elv_10yr_Average = zoo::rollmean(Elevation, k = 3650, fill = NA, align = 'right')) %>% # 10 years * 365 days
+  mutate(Elv_30yr_Average = zoo::rollmean(Elevation, k = 10950, fill = NA, align = 'right')) %>% # 30 years * 365 days
   group_by(Reservoir) %>%
   mutate(Elv_1yr_Ago = lag(Elevation, n = 365)) %>%
   ungroup()
@@ -171,3 +172,44 @@ Res.Stor.Output <- Res.Stor.Bind %>%
 
 write.csv(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.csv")
 
+### Spatial Data
+reservoirs <- st_read("GIS_Data/Colorado_River_Basin_Reservoirs.geojson")
+
+latest_storage <- Res.Stor.Output %>%
+  group_by(Reservoir) %>%
+  slice_tail(n=1)
+
+latest_elevation <- Res.Elv.Output %>%
+  group_by(Reservoir) %>%
+  slice_tail(n=1)
+
+latest_res_data <- latest_storage %>%
+  left_join(latest_elevation, by = c("Reservoir", "Date")) %>%
+  mutate(lat = case_when(
+    Reservoir == "Lake Mead" ~ 36.02,
+    Reservoir == "Lake Powell" ~ 36.94,
+    Reservoir == "Flaming Gorge" ~ 40.91,
+    Reservoir == "Lake Mohave" ~ 35.20,
+    Reservoir == "Navajo Reservoir" ~ 36.80,
+    Reservoir == "Strawberry Reservoir" ~ 40.14,
+    Reservoir == "Blue Mesa Reservoir" ~ 38.45,
+    Reservoir == "Lake Havasu" ~ 34.40,
+    Reservoir == "Granby Reservoir" ~ 40.14
+  )) %>%
+  mutate(long = case_when(
+    Reservoir == "Lake Mead" ~ -114.74,
+    Reservoir == "Lake Powell" ~ -111.48,
+    Reservoir == "Flaming Gorge" ~ -109.42,
+    Reservoir == "Lake Mohave" ~ -114.57,
+    Reservoir == "Navajo Reservoir" ~ -107.61,
+    Reservoir == "Strawberry Reservoir" ~ -111.03,
+    Reservoir == "Blue Mesa Reservoir" ~ -107.33,
+    Reservoir == "Lake Havasu" ~ -114.14,
+    Reservoir == "Granby Reservoir" ~ -105.87
+  )) %>%
+  filter(Reservoir != "Total") %>%
+  mutate(across(where(is.numeric), round, 2))
+
+latest_res_sf <- st_as_sf(latest_res_data, coords = c("long", "lat"), crs=4326)
+
+st_write(latest_res_sf, "GIS_Data/Reservoirs.geojson", append=FALSE, delete_dsn = TRUE)

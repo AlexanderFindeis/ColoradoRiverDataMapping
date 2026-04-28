@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Colorado_Data_Website – Colorado River Data Mapping Project</title>
+<title>Major System Conditions – Colorado River Atlas</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -42,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f9958316283a66cd39213c7e42b019fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,6 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -83,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Colorado River Data Mapping Project</span>
+    <span class="navbar-title">Colorado River Atlas</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -95,10 +132,6 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./Pages/Reservoirs/Reservoir Overview.html"> 
@@ -127,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Colorado_Data_Website</h1>
+<h1 class="title">Major System Conditions</h1>
 </div>
 
 
@@ -144,12 +177,215 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="13" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 12;"><span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="pp">require</span>(<span class="st">"leaflet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="22" data-source-offset="-27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 21;"><span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>upper_basin_geo  <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"GIS_Data/UpperBasin_HUC2.geojson"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>lower_basin_geo  <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"GIS_Data/LowerBasin_HUC2.geojson"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>reservoirs_geo   <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"GIS_Data/Reservoirs.geojson"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>rivers           <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"GIS_Data/Colorado_River_Basin_Rivers.geojson"</span>)<span class="op">.</span><span class="fu">json</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="28" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 27;"><span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> div <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="width:100%; height:700px;"&gt;&lt;/div&gt;`</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Allow div to render before initializing map</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">yield</span> div</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> map <span class="op">=</span> L<span class="op">.</span><span class="fu">map</span>(div<span class="op">,</span> { </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">center</span><span class="op">:</span> [<span class="fl">36.5</span><span class="op">,</span> <span class="op">-</span><span class="dv">112</span>]<span class="op">,</span> </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">zoom</span><span class="op">:</span> <span class="dv">6</span> </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Basemap tile layer</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  L<span class="op">.</span><span class="fu">tileLayer</span>(<span class="st">"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"</span><span class="op">,</span> {</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">attribution</span><span class="op">:</span> <span class="st">"© OpenStreetMap contributors"</span><span class="op">,</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxZoom</span><span class="op">:</span> <span class="dv">18</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">addTo</span>(map)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Upper Basin polygon layer</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  L<span class="op">.</span><span class="fu">geoJSON</span>(upper_basin_geo<span class="op">,</span> {</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"#1a6496"</span><span class="op">,</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>      <span class="dt">weight</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillColor</span><span class="op">:</span> <span class="st">"#5bc0de"</span><span class="op">,</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.3</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">addTo</span>(map)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Lower Basin polygon layer</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  L<span class="op">.</span><span class="fu">geoJSON</span>(lower_basin_geo<span class="op">,</span> {</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"#a94442"</span><span class="op">,</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>      <span class="dt">weight</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillColor</span><span class="op">:</span> <span class="st">"#e06666"</span><span class="op">,</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.3</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">addTo</span>(map)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Rivers</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  L<span class="op">.</span><span class="fu">geoJSON</span>(rivers<span class="op">,</span> {</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"#006cfa"</span><span class="op">,</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>      <span class="dt">weight</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">addTo</span>(map)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Reservoir point layer</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  L<span class="op">.</span><span class="fu">geoJSON</span>(reservoirs_geo<span class="op">,</span> {</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Custom marker style</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="dt">pointToLayer</span><span class="op">:</span> (feature<span class="op">,</span> latlng) <span class="kw">=&gt;</span> {</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Color scaling</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> color_scale <span class="op">=</span> pct <span class="kw">=&gt;</span> {</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> (pct <span class="op">&gt;=</span> <span class="dv">70</span>)      <span class="cf">return</span> <span class="st">"#198754"</span>   <span class="co">// green  - above 70%</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span> <span class="cf">if</span> (pct <span class="op">&gt;=</span> <span class="dv">50</span>) <span class="cf">return</span> <span class="st">"#ffc107"</span>   <span class="co">// yellow - 50-70%</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span> <span class="cf">if</span> (pct <span class="op">&gt;=</span> <span class="dv">30</span>) <span class="cf">return</span> <span class="st">"#fd7e14"</span>   <span class="co">// orange - 30-50%</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span>                <span class="cf">return</span> <span class="st">"#dc3545"</span>   <span class="co">// red    - below 30%</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>       }</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> pct_full <span class="op">=</span> feature<span class="op">.</span><span class="at">properties</span><span class="op">.</span><span class="at">Percent_Full_MAF</span> <span class="op">??</span> <span class="dv">0</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> capacity <span class="op">=</span> feature<span class="op">.</span><span class="at">properties</span><span class="op">.</span><span class="at">Max_Capacity_MAF</span> <span class="op">??</span> <span class="dv">0</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> radius <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(capacity) <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> L<span class="op">.</span><span class="fu">circleMarker</span>(latlng<span class="op">,</span> {</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>        <span class="dt">radius</span><span class="op">:</span> radius<span class="op">,</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillColor</span><span class="op">:</span> <span class="fu">color_scale</span>(pct_full)<span class="op">,</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>        <span class="dt">color</span><span class="op">:</span> <span class="st">"white"</span><span class="op">,</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>        <span class="dt">weight</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.9</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>    <span class="dt">onEachFeature</span><span class="op">:</span> (feature<span class="op">,</span> layer) <span class="kw">=&gt;</span> {</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> p <span class="op">=</span> feature<span class="op">.</span><span class="at">properties</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> popup_html <span class="op">=</span> <span class="vs">`</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;div style="width: 380px; font-family: sans-serif;"&gt;</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;b style="font-size: 14px;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Reservoir</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span>p<span class="op">.</span><span class="at">Date</span><span class="sc">}</span><span class="vs">&lt;/b&gt;</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;hr style="margin: 6px 0; border-color: #dee2e6;"&gt;</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;div style="display: flex; gap: 16px;"&gt;</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;!-- Elevation column --&gt;</span></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;div style="flex: 1;"&gt;</span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;div style="font-size: 11px; font-weight: 700; color: steelblue; </span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="vs">                            text-transform: uppercase; margin-bottom: 6px;"&gt;</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="vs">                    Elevation</span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/div&gt;</span></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;table style="width: 100%; font-size: 12px; border-collapse: collapse;"&gt;</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;Current&lt;/td&gt;</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Elevation</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> ft&lt;/td&gt;</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;1yr Ago&lt;/td&gt;</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Elv_1yr_Ago</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> ft&lt;/td&gt;</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;10yr Avg&lt;/td&gt;</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Elv_Day_Avg_10yr</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> ft&lt;/td&gt;</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr&gt;</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;30yr Avg&lt;/td&gt;</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Elv_Day_Avg_30yr</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> ft&lt;/td&gt;</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/table&gt;</span></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/div&gt;</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;!-- Divider --&gt;</span></span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;div style="width: 1px; background: #dee2e6;"&gt;&lt;/div&gt;</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;!-- Storage column --&gt;</span></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;div style="flex: 1;"&gt;</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;div style="font-size: 11px; font-weight: 700; color: steelblue;</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a><span class="vs">                            text-transform: uppercase; margin-bottom: 6px;"&gt;</span></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="vs">                    Storage</span></span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/div&gt;</span></span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;table style="width: 100%; font-size: 12px; border-collapse: collapse;"&gt;</span></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;Current&lt;/td&gt;</span></span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Storage_MAF</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> MAF | </span><span class="sc">${</span>p<span class="op">.</span><span class="at">Percent_Full_MAF</span><span class="sc">}</span><span class="vs">%&lt;/td&gt;</span></span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;1yr Ago&lt;/td&gt;</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">StorMAF_1yr_Ago</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> MAF&lt;/td&gt;</span></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr style="border-bottom: 1px solid #dee2e6;"&gt;</span></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;10yr Avg&lt;/td&gt;</span></span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Stor_Day_Avg_10yr</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> MAF&lt;/td&gt;</span></span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;tr&gt;</span></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; color: #6c757d;"&gt;30yr Avg&lt;/td&gt;</span></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;td style="padding: 4px 0; text-align: right; font-weight: 600;"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">Stor_Day_Avg_30yr</span> <span class="op">??</span> <span class="st">"N/A"</span><span class="sc">}</span><span class="vs"> MAF&lt;/td&gt;</span></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a><span class="vs">                    &lt;/tr&gt;</span></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/table&gt;</span></span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a><span class="vs">                &lt;/div&gt;</span></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;/div&gt;</span></span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;/div&gt;</span></span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="vs">        `</span></span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>        layer<span class="op">.</span><span class="fu">bindPopup</span>(popup_html<span class="op">,</span> { <span class="dt">maxWidth</span><span class="op">:</span> <span class="dv">400</span> })</span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>        })<span class="op">.</span><span class="fu">addTo</span>(map)</span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Force Leaflet to recalculate map size after render</span></span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>  <span class="pp">setTimeout</span>(() <span class="kw">=&gt;</span> map<span class="op">.</span><span class="fu">invalidateSize</span>()<span class="op">,</span> <span class="dv">100</span>)</span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
 
 
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IkwgPSByZXF1aXJlKFwibGVhZmxldFwiKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gTG9hZCBhbGwgdGhyZWUgZGF0YXNldHNcbnVwcGVyX2Jhc2luX2dlbyAgPSBGaWxlQXR0YWNobWVudChcIkdJU19EYXRhL1VwcGVyQmFzaW5fSFVDMi5nZW9qc29uXCIpLmpzb24oKVxubG93ZXJfYmFzaW5fZ2VvICA9IEZpbGVBdHRhY2htZW50KFwiR0lTX0RhdGEvTG93ZXJCYXNpbl9IVUMyLmdlb2pzb25cIikuanNvbigpXG5yZXNlcnZvaXJzX2dlbyAgID0gRmlsZUF0dGFjaG1lbnQoXCJHSVNfRGF0YS9SZXNlcnZvaXJzLmdlb2pzb25cIikuanNvbigpXG5yaXZlcnMgICAgICAgICAgID0gRmlsZUF0dGFjaG1lbnQoXCJHSVNfRGF0YS9Db2xvcmFkb19SaXZlcl9CYXNpbl9SaXZlcnMuZ2VvanNvblwiKS5qc29uKClcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgZGl2ID0gaHRtbGA8ZGl2IHN0eWxlPVwid2lkdGg6MTAwJTsgaGVpZ2h0OjcwMHB4O1wiPjwvZGl2PmBcblxuICAvLyBBbGxvdyBkaXYgdG8gcmVuZGVyIGJlZm9yZSBpbml0aWFsaXppbmcgbWFwXG4gIHlpZWxkIGRpdlxuXG4gIGNvbnN0IG1hcCA9IEwubWFwKGRpdiwgeyBcbiAgICBjZW50ZXI6IFszNi41LCAtMTEyXSwgXG4gICAgem9vbTogNiBcbiAgfSlcblxuICAvLyBCYXNlbWFwIHRpbGUgbGF5ZXJcbiAgTC50aWxlTGF5ZXIoXCJodHRwczovL3tzfS50aWxlLm9wZW5zdHJlZXRtYXAub3JnL3t6fS97eH0ve3l9LnBuZ1wiLCB7XG4gICAgYXR0cmlidXRpb246IFwiwqkgT3BlblN0cmVldE1hcCBjb250cmlidXRvcnNcIixcbiAgICBtYXhab29tOiAxOFxuICB9KS5hZGRUbyhtYXApXG5cbiAgLy8gVXBwZXIgQmFzaW4gcG9seWdvbiBsYXllclxuICBMLmdlb0pTT04odXBwZXJfYmFzaW5fZ2VvLCB7XG4gICAgc3R5bGU6IHtcbiAgICAgIGNvbG9yOiBcIiMxYTY0OTZcIixcbiAgICAgIHdlaWdodDogMixcbiAgICAgIGZpbGxDb2xvcjogXCIjNWJjMGRlXCIsXG4gICAgICBmaWxsT3BhY2l0eTogMC4zXG4gICAgfVxuICB9KS5hZGRUbyhtYXApXG5cbiAgLy8gTG93ZXIgQmFzaW4gcG9seWdvbiBsYXllclxuICBMLmdlb0pTT04obG93ZXJfYmFzaW5fZ2VvLCB7XG4gICAgc3R5bGU6IHtcbiAgICAgIGNvbG9yOiBcIiNhOTQ0NDJcIixcbiAgICAgIHdlaWdodDogMixcbiAgICAgIGZpbGxDb2xvcjogXCIjZTA2NjY2XCIsXG4gICAgICBmaWxsT3BhY2l0eTogMC4zXG4gICAgfVxuICB9KS5hZGRUbyhtYXApXG4gICAgXG4gIC8vIFJpdmVyc1xuICBMLmdlb0pTT04ocml2ZXJzLCB7XG4gICAgc3R5bGU6IHtcbiAgICAgIGNvbG9yOiBcIiMwMDZjZmFcIixcbiAgICAgIHdlaWdodDogMlxuICAgIH1cbiAgfSkuYWRkVG8obWFwKVxuXG4gICAgLy8gUmVzZXJ2b2lyIHBvaW50IGxheWVyXG4gIEwuZ2VvSlNPTihyZXNlcnZvaXJzX2dlbywge1xuICAgIC8vIEN1c3RvbSBtYXJrZXIgc3R5bGVcbiAgICBwb2ludFRvTGF5ZXI6IChmZWF0dXJlLCBsYXRsbmcpID0+IHtcbiAgICAgIC8vIENvbG9yIHNjYWxpbmdcbiAgICAgIGNvbnN0IGNvbG9yX3NjYWxlID0gcGN0ID0+IHtcbiAgICAgICBpZiAocGN0ID49IDcwKSAgICAgIHJldHVybiBcIiMxOTg3NTRcIiAgIC8vIGdyZWVuICAtIGFib3ZlIDcwJVxuICAgICAgIGVsc2UgaWYgKHBjdCA+PSA1MCkgcmV0dXJuIFwiI2ZmYzEwN1wiICAgLy8geWVsbG93IC0gNTAtNzAlXG4gICAgICAgZWxzZSBpZiAocGN0ID49IDMwKSByZXR1cm4gXCIjZmQ3ZTE0XCIgICAvLyBvcmFuZ2UgLSAzMC01MCVcbiAgICAgICBlbHNlICAgICAgICAgICAgICAgIHJldHVybiBcIiNkYzM1NDVcIiAgIC8vIHJlZCAgICAtIGJlbG93IDMwJVxuICAgICAgIH1cbiAgICAgIGNvbnN0IHBjdF9mdWxsID0gZmVhdHVyZS5wcm9wZXJ0aWVzLlBlcmNlbnRfRnVsbF9NQUYgPz8gMFxuICAgICAgY29uc3QgY2FwYWNpdHkgPSBmZWF0dXJlLnByb3BlcnRpZXMuTWF4X0NhcGFjaXR5X01BRiA/PyAwXG4gICAgICBjb25zdCByYWRpdXMgPSBNYXRoLnNxcnQoY2FwYWNpdHkpICogNVxuICAgICAgcmV0dXJuIEwuY2lyY2xlTWFya2VyKGxhdGxuZywge1xuICAgICAgICByYWRpdXM6IHJhZGl1cyxcbiAgICAgICAgZmlsbENvbG9yOiBjb2xvcl9zY2FsZShwY3RfZnVsbCksXG4gICAgICAgIGNvbG9yOiBcIndoaXRlXCIsXG4gICAgICAgIHdlaWdodDogMixcbiAgICAgICAgZmlsbE9wYWNpdHk6IDAuOVxuICAgICAgfSlcbiAgICB9LFxuICAgIG9uRWFjaEZlYXR1cmU6IChmZWF0dXJlLCBsYXllcikgPT4ge1xuICAgICAgICBjb25zdCBwID0gZmVhdHVyZS5wcm9wZXJ0aWVzXG5cbiAgICAgICAgY29uc3QgcG9wdXBfaHRtbCA9IGBcbiAgICAgICAgICAgIDxkaXYgc3R5bGU9XCJ3aWR0aDogMzgwcHg7IGZvbnQtZmFtaWx5OiBzYW5zLXNlcmlmO1wiPlxuXG4gICAgICAgICAgICA8YiBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDtcIj4ke3AuUmVzZXJ2b2lyfTogJHtwLkRhdGV9PC9iPlxuICAgICAgICAgICAgPGhyIHN0eWxlPVwibWFyZ2luOiA2cHggMDsgYm9yZGVyLWNvbG9yOiAjZGVlMmU2O1wiPlxuXG4gICAgICAgICAgICA8ZGl2IHN0eWxlPVwiZGlzcGxheTogZmxleDsgZ2FwOiAxNnB4O1wiPlxuXG4gICAgICAgICAgICAgICAgPCEtLSBFbGV2YXRpb24gY29sdW1uIC0tPlxuICAgICAgICAgICAgICAgIDxkaXYgc3R5bGU9XCJmbGV4OiAxO1wiPlxuICAgICAgICAgICAgICAgIDxkaXYgc3R5bGU9XCJmb250LXNpemU6IDExcHg7IGZvbnQtd2VpZ2h0OiA3MDA7IGNvbG9yOiBzdGVlbGJsdWU7IFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IG1hcmdpbi1ib3R0b206IDZweDtcIj5cbiAgICAgICAgICAgICAgICAgICAgRWxldmF0aW9uXG4gICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgPHRhYmxlIHN0eWxlPVwid2lkdGg6IDEwMCU7IGZvbnQtc2l6ZTogMTJweDsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTtcIj5cbiAgICAgICAgICAgICAgICAgICAgPHRyIHN0eWxlPVwiYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNkZWUyZTY7XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT1cInBhZGRpbmc6IDRweCAwOyBjb2xvcjogIzZjNzU3ZDtcIj5DdXJyZW50PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IHRleHQtYWxpZ246IHJpZ2h0OyBmb250LXdlaWdodDogNjAwO1wiPiR7cC5FbGV2YXRpb24gPz8gXCJOL0FcIn0gZnQ8L3RkPlxuICAgICAgICAgICAgICAgICAgICA8L3RyPlxuICAgICAgICAgICAgICAgICAgICA8dHIgc3R5bGU9XCJib3JkZXItYm90dG9tOiAxcHggc29saWQgI2RlZTJlNjtcIj5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IGNvbG9yOiAjNmM3NTdkO1wiPjF5ciBBZ288L3RkPlxuICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiA0cHggMDsgdGV4dC1hbGlnbjogcmlnaHQ7IGZvbnQtd2VpZ2h0OiA2MDA7XCI+JHtwLkVsdl8xeXJfQWdvID8/IFwiTi9BXCJ9IGZ0PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgICAgICAgPHRyIHN0eWxlPVwiYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNkZWUyZTY7XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT1cInBhZGRpbmc6IDRweCAwOyBjb2xvcjogIzZjNzU3ZDtcIj4xMHlyIEF2ZzwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT1cInBhZGRpbmc6IDRweCAwOyB0ZXh0LWFsaWduOiByaWdodDsgZm9udC13ZWlnaHQ6IDYwMDtcIj4ke3AuRWx2X0RheV9BdmdfMTB5ciA/PyBcIk4vQVwifSBmdDwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IGNvbG9yOiAjNmM3NTdkO1wiPjMweXIgQXZnPC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IHRleHQtYWxpZ246IHJpZ2h0OyBmb250LXdlaWdodDogNjAwO1wiPiR7cC5FbHZfRGF5X0F2Z18zMHlyID8/IFwiTi9BXCJ9IGZ0PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgICA8L3RhYmxlPlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgICAgPCEtLSBEaXZpZGVyIC0tPlxuICAgICAgICAgICAgICAgIDxkaXYgc3R5bGU9XCJ3aWR0aDogMXB4OyBiYWNrZ3JvdW5kOiAjZGVlMmU2O1wiPjwvZGl2PlxuXG4gICAgICAgICAgICAgICAgPCEtLSBTdG9yYWdlIGNvbHVtbiAtLT5cbiAgICAgICAgICAgICAgICA8ZGl2IHN0eWxlPVwiZmxleDogMTtcIj5cbiAgICAgICAgICAgICAgICA8ZGl2IHN0eWxlPVwiZm9udC1zaXplOiAxMXB4OyBmb250LXdlaWdodDogNzAwOyBjb2xvcjogc3RlZWxibHVlO1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IG1hcmdpbi1ib3R0b206IDZweDtcIj5cbiAgICAgICAgICAgICAgICAgICAgU3RvcmFnZVxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgIDx0YWJsZSBzdHlsZT1cIndpZHRoOiAxMDAlOyBmb250LXNpemU6IDEycHg7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0ciBzdHlsZT1cImJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjZGVlMmU2O1wiPlxuICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiA0cHggMDsgY29sb3I6ICM2Yzc1N2Q7XCI+Q3VycmVudDwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT1cInBhZGRpbmc6IDRweCAwOyB0ZXh0LWFsaWduOiByaWdodDsgZm9udC13ZWlnaHQ6IDYwMDtcIj4ke3AuU3RvcmFnZV9NQUYgPz8gXCJOL0FcIn0gTUFGIHwgJHtwLlBlcmNlbnRfRnVsbF9NQUZ9JTwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgICAgIDx0ciBzdHlsZT1cImJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjZGVlMmU2O1wiPlxuICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiA0cHggMDsgY29sb3I6ICM2Yzc1N2Q7XCI+MXlyIEFnbzwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT1cInBhZGRpbmc6IDRweCAwOyB0ZXh0LWFsaWduOiByaWdodDsgZm9udC13ZWlnaHQ6IDYwMDtcIj4ke3AuU3Rvck1BRl8xeXJfQWdvID8/IFwiTi9BXCJ9IE1BRjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgICAgIDx0ciBzdHlsZT1cImJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjZGVlMmU2O1wiPlxuICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiA0cHggMDsgY29sb3I6ICM2Yzc1N2Q7XCI+MTB5ciBBdmc8L3RkPlxuICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiA0cHggMDsgdGV4dC1hbGlnbjogcmlnaHQ7IGZvbnQtd2VpZ2h0OiA2MDA7XCI+JHtwLlN0b3JfRGF5X0F2Z18xMHlyID8/IFwiTi9BXCJ9IE1BRjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IGNvbG9yOiAjNmM3NTdkO1wiPjMweXIgQXZnPC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNHB4IDA7IHRleHQtYWxpZ246IHJpZ2h0OyBmb250LXdlaWdodDogNjAwO1wiPiR7cC5TdG9yX0RheV9BdmdfMzB5ciA/PyBcIk4vQVwifSBNQUY8L3RkPlxuICAgICAgICAgICAgICAgICAgICA8L3RyPlxuICAgICAgICAgICAgICAgIDwvdGFibGU+XG4gICAgICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgIGBcblxuICAgICAgICBsYXllci5iaW5kUG9wdXAocG9wdXBfaHRtbCwgeyBtYXhXaWR0aDogNDAwIH0pXG4gICAgICAgIH1cbiAgICAgICAgfSkuYWRkVG8obWFwKVxuXG4gIC8vIEZvcmNlIExlYWZsZXQgdG8gcmVjYWxjdWxhdGUgbWFwIHNpemUgYWZ0ZXIgcmVuZGVyXG4gIHNldFRpbWVvdXQoKCkgPT4gbWFwLmludmFsaWRhdGVTaXplKCksIDEwMClcbn1cbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

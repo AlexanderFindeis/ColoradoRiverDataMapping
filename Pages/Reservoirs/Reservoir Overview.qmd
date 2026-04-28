@@ -251,7 +251,8 @@ viewof DateSlider = timeRange(min_date, max_date, {
     .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
     .map(d => ({
       ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
     })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 
   const Previous_Year = filtered_elv
@@ -259,15 +260,35 @@ viewof DateSlider = timeRange(min_date, max_date, {
                  d.Date <= new Date("2026-01-01T00:00:00"))
     .map(d => ({
       ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
     })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 
   const marks = [
-  Plot.lineY(This_Year, { x: "Normalized_Date", y: "Elevation", stroke: "blue" }),
+  Plot.lineY(This_Year, { 
+    x: "Normalized_Date", 
+    y: "Elevation", 
+    stroke: "blue",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Elevation (ft)": { value: d => d.Elevation }
+      },
+    tip: {
+      anchor: "top",
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Elevation (ft)": true
+      }
+    }
+   }),
   Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elevation", stroke: "green" }),
   Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_10yr", stroke: "#ffc107" }),
   Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_30yr", stroke: "red" }),
-  Plot.tip(This_Year, Plot.pointerX({ x: "Normalized_Date", y: "Elevation" }))
   ]
 
   return Plot.plot({
@@ -279,10 +300,11 @@ viewof DateSlider = timeRange(min_date, max_date, {
       domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
       range:  ["blue", "green", "#ffc107", "red"]
     },
-    ticks: d3.utcDay.every(7),
-    tickFormat: "%b %d",
     y: { grid: true, label: "Reservoir Elevation (ft)" },
-    x: { label: "Date" },
+    x: { 
+      label: "Date",
+      ticks: d3.utcMonth.every(1),
+      tickFormat: "%b" },
     marks: marks
   })
 }
@@ -429,7 +451,8 @@ html`
     .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
     .map(d => ({
       ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
     })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 
   const Previous_Year = filtered_stor
@@ -437,15 +460,35 @@ html`
                  d.Date < new Date("2026-01-01T00:00:00"))
     .map(d => ({
       ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate())
+      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
     })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 
   const marks = [
-  Plot.lineY(This_Year, { x: "Normalized_Date", y: "Storage_MAF", stroke: "blue" }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Storage_MAF", stroke: "green" }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107" }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red" }),
-  Plot.tip(This_Year, Plot.pointerX({ x: "Normalized_Date", y: "Storage_MAF" }))
+  Plot.lineY(This_Year, { 
+    x: "Normalized_Date", 
+    y: "Storage_MAF",       
+    stroke: "blue",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Storage (MAF)": { value: d => d.Storage_MAF }
+      },
+    tip: {
+      anchor: "top",
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Storage (MAF)": true
+      }
+    } 
+   }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Storage_MAF",       stroke: "green" }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107" }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red" }),
   ]
 
   return Plot.plot({
@@ -457,10 +500,12 @@ html`
       domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
       range:  ["blue", "green", "#ffc107", "red"]
     },
-    ticks: d3.utcDay.every(7),
-    tickFormat: "%b %d",
     y: { grid: true, label: "Reservoir Storage (MAF)" },
-    x: { label: "Date" },
+    x: { 
+      label: "Date",
+      ticks: d3.utcMonth.every(1),
+      tickFormat: "%b %d" 
+      },
     marks: marks
   })
 }

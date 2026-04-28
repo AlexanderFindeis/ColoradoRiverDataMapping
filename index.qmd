@@ -1,7 +1,173 @@
 ---
-title: "Colorado_Data_Website"
+title: "Major System Conditions"
+execute:
+  echo: false
+format: 
+  html: 
+    page-layout: full
+    grid:
+      body-width: 1000px
 ---
 
-This is a Quarto website.
+```{ojs}
+//| echo: false
+L = require("leaflet")
+```
+```{=html}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+```
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+```{ojs}
+// Load all three datasets
+upper_basin_geo  = FileAttachment("GIS_Data/UpperBasin_HUC2.geojson").json()
+lower_basin_geo  = FileAttachment("GIS_Data/LowerBasin_HUC2.geojson").json()
+reservoirs_geo   = FileAttachment("GIS_Data/Reservoirs.geojson").json()
+rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson").json()
+```
+```{ojs}
+//| echo: false
+{
+  const div = html`<div style="width:100%; height:700px;"></div>`
+
+  // Allow div to render before initializing map
+  yield div
+
+  const map = L.map(div, { 
+    center: [36.5, -112], 
+    zoom: 6 
+  })
+
+  // Basemap tile layer
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
+    maxZoom: 18
+  }).addTo(map)
+
+  // Upper Basin polygon layer
+  L.geoJSON(upper_basin_geo, {
+    style: {
+      color: "#1a6496",
+      weight: 2,
+      fillColor: "#5bc0de",
+      fillOpacity: 0.3
+    }
+  }).addTo(map)
+
+  // Lower Basin polygon layer
+  L.geoJSON(lower_basin_geo, {
+    style: {
+      color: "#a94442",
+      weight: 2,
+      fillColor: "#e06666",
+      fillOpacity: 0.3
+    }
+  }).addTo(map)
+    
+  // Rivers
+  L.geoJSON(rivers, {
+    style: {
+      color: "#006cfa",
+      weight: 2
+    }
+  }).addTo(map)
+
+    // Reservoir point layer
+  L.geoJSON(reservoirs_geo, {
+    // Custom marker style
+    pointToLayer: (feature, latlng) => {
+      // Color scaling
+      const color_scale = pct => {
+       if (pct >= 70)      return "#198754"   // green  - above 70%
+       else if (pct >= 50) return "#ffc107"   // yellow - 50-70%
+       else if (pct >= 30) return "#fd7e14"   // orange - 30-50%
+       else                return "#dc3545"   // red    - below 30%
+       }
+      const pct_full = feature.properties.Percent_Full_MAF ?? 0
+      const capacity = feature.properties.Max_Capacity_MAF ?? 0
+      const radius = Math.sqrt(capacity) * 5
+      return L.circleMarker(latlng, {
+        radius: radius,
+        fillColor: color_scale(pct_full),
+        color: "white",
+        weight: 2,
+        fillOpacity: 0.9
+      })
+    },
+    onEachFeature: (feature, layer) => {
+        const p = feature.properties
+
+        const popup_html = `
+            <div style="width: 380px; font-family: sans-serif;">
+
+            <b style="font-size: 14px;">${p.Reservoir}: ${p.Date}</b>
+            <hr style="margin: 6px 0; border-color: #dee2e6;">
+
+            <div style="display: flex; gap: 16px;">
+
+                <!-- Elevation column -->
+                <div style="flex: 1;">
+                <div style="font-size: 11px; font-weight: 700; color: steelblue; 
+                            text-transform: uppercase; margin-bottom: 6px;">
+                    Elevation
+                </div>
+                <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">Current</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elevation ?? "N/A"} ft</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">1yr Ago</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_1yr_Ago ?? "N/A"} ft</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">10yr Avg</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_Day_Avg_10yr ?? "N/A"} ft</td>
+                    </tr>
+                    <tr>
+                    <td style="padding: 4px 0; color: #6c757d;">30yr Avg</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_Day_Avg_30yr ?? "N/A"} ft</td>
+                    </tr>
+                </table>
+                </div>
+
+                <!-- Divider -->
+                <div style="width: 1px; background: #dee2e6;"></div>
+
+                <!-- Storage column -->
+                <div style="flex: 1;">
+                <div style="font-size: 11px; font-weight: 700; color: steelblue;
+                            text-transform: uppercase; margin-bottom: 6px;">
+                    Storage
+                </div>
+                <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">Current</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Storage_MAF ?? "N/A"} MAF | ${p.Percent_Full_MAF}%</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">1yr Ago</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.StorMAF_1yr_Ago ?? "N/A"} MAF</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 4px 0; color: #6c757d;">10yr Avg</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Stor_Day_Avg_10yr ?? "N/A"} MAF</td>
+                    </tr>
+                    <tr>
+                    <td style="padding: 4px 0; color: #6c757d;">30yr Avg</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Stor_Day_Avg_30yr ?? "N/A"} MAF</td>
+                    </tr>
+                </table>
+                </div>
+
+            </div>
+            </div>
+        `
+
+        layer.bindPopup(popup_html, { maxWidth: 400 })
+        }
+        }).addTo(map)
+
+  // Force Leaflet to recalculate map size after render
+  setTimeout(() => map.invalidateSize(), 100)
+}
+```
