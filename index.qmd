@@ -1,5 +1,4 @@
 ---
-title: "Major System Conditions"
 execute:
   echo: false
 format: 
@@ -8,6 +7,16 @@ format:
     grid:
       body-width: 1000px
 ---
+
+::: {style="text-align: center;"}
+# Major Systems Current Condition
+
+Click here to view interactive charts for each reservoir and total system storage  
+[Reservoir Data Dashboard](./Pages/Reservoirs/Reservoir%20Overview.qmd)  
+
+Click here to learn more about basin water use  
+[State Usage](./Pages/States/State%20Overview.qmd)  
+:::
 
 ```{ojs}
 //| echo: false
@@ -230,3 +239,18 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
   setTimeout(() => map.invalidateSize(), 100)
 }
 ```
+
+
+::: {style="text-align: center;"}
+# USBR Projections
+:::
+
+::: {style="text-align: center;"}
+## Lake Powell
+:::
+![](https://www.usbr.gov/lc/region/g4000/riverops/webreports/Powell24MS.png)
+
+::: {style="text-align: center;"}
+## Lake Mead
+:::
+![](https://www.usbr.gov/lc/region/g4000/riverops/webreports/Mead24MS.png)
