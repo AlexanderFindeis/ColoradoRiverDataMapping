@@ -38,13 +38,13 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
   })
 
   // Basemap tile layer
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
     maxZoom: 18
   }).addTo(map)
 
   // Upper Basin polygon layer
-  L.geoJSON(upper_basin_geo, {
+  const upper_basin_layer = L.geoJSON(upper_basin_geo, {
     style: {
       color: "#1a6496",
       weight: 2,
@@ -54,7 +54,7 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
   }).addTo(map)
 
   // Lower Basin polygon layer
-  L.geoJSON(lower_basin_geo, {
+  const lower_basin_layer = L.geoJSON(lower_basin_geo, {
     style: {
       color: "#a94442",
       weight: 2,
@@ -64,15 +64,15 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
   }).addTo(map)
     
   // Rivers
-  L.geoJSON(rivers, {
+  const rivers_layer = L.geoJSON(rivers, {
     style: {
       color: "#006cfa",
       weight: 2
     }
   }).addTo(map)
 
-    // Reservoir point layer
-  L.geoJSON(reservoirs_geo, {
+  // Reservoir point layer
+  const reservoirs_layer = L.geoJSON(reservoirs_geo, {
     // Custom marker style
     pointToLayer: (feature, latlng) => {
       // Color scaling
@@ -166,6 +166,65 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
         layer.bindPopup(popup_html, { maxWidth: 400 })
         }
         }).addTo(map)
+
+  // Layer control
+  L.control.layers(
+    {
+      // Base layers - only one can be active at a time
+      "OpenStreetMap": tiles
+    },
+    {
+      // Overlay layers - each has its own checkbox
+      "Upper Basin":  upper_basin_layer,
+      "Lower Basin":  lower_basin_layer,
+      "Reservoirs":   reservoirs_layer,
+      "Rivers":       rivers_layer
+    },
+    {
+      position:    "topright",   // position on map
+      collapsed:   true          // true = collapses to icon, false = always open
+    }
+  ).addTo(map)
+
+  // Custom legend control
+  const legend = L.control({ position: "bottomleft" })
+
+  legend.onAdd = () => {
+    const legend_div = L.DomUtil.create("div")
+    legend_div.style.cssText = `
+      background: white;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+      font-size: 12px;
+      font-family: sans-serif;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    `
+    legend_div.innerHTML = `
+      <b style="font-size: 13px;">% of Capacity</b>
+      <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:14px; height:14px; background:#198754; border-radius:50%;"></div>
+          <span>Above 70%</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:14px; height:14px; background:#ffc107; border-radius:50%;"></div>
+          <span>50% - 70%</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:14px; height:14px; background:#fd7e14; border-radius:50%;"></div>
+          <span>30% - 50%</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:14px; height:14px; background:#dc3545; border-radius:50%;"></div>
+          <span>Below 30%</span>
+        </div>
+      </div>
+    `
+    return legend_div
+  }
+
+  legend.addTo(map)
 
   // Force Leaflet to recalculate map size after render
   setTimeout(() => map.invalidateSize(), 100)
