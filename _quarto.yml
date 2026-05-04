@@ -17,6 +17,8 @@ website:
         text: Reservoirs
       - href: Pages/States/State Overview.qmd
         text: State Usage
+      - href: Pages/Snow Pack/Snow Pack.qmd
+        text: Snow Pack
       #   menu:
       #     - text: Reservoir Overview
       #       href: Pages/Reservoirs/Reservoir Overview.qmd

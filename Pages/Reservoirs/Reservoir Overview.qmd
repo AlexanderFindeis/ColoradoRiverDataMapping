@@ -8,32 +8,6 @@ format:
     grid:
       body-width: 1000px
 ---
-```{=html}
-<style>
-  /* Override the library's internal scoped width */
-  .scope-5pi-i5dkkfhg {
-    width: 900px !important;
-    margin-left: 40px !important;
-    margin-right: 20px !important;
-  }
-
-  /* Override the media query width on the outer container */
-  #O-scope-1 {
-    width: 900px !important;
-    margin-left: 40px !important;
-    margin-right: 20px !important;
-  }
-
-  /* Override the fixed 360px media query */
-  @media only screen and (min-width: 30em) {
-    #O-scope-1 {
-      width: 900 !important;
-      margin-left: 40px !important;
-      margin-right: 20px !important;
-    }
-  }
-</style>
-```
 
 ```{ojs}
 //| echo: false
@@ -188,19 +162,19 @@ html`
 {
   // Define reservoir-specific horizontal lines
   const refLines = reservoir_choice === "Lake Mead" ? [
-    { y: 1075, label: "Tier 1 Shortage", color: "orange" },
-    { y: 1050, label: "Tier 2 Shortage", color: "red" },
-    { y: 1025, label: "Tier 3 Shortage", color: "darkred" },
-    { y: 895,  label: "Dead Pool", color: "black" }
+    { y: 1075, label: "Tier 1 Shortage - 1075ft", color: "orange" },
+    { y: 1050, label: "Tier 2 Shortage - 1050ft", color: "red" },
+    { y: 1025, label: "Tier 3 Shortage - 1025ft", color: "darkred" },
+    { y: 895,  label: "Dead Pool - 895ft", color: "black" }
   ] : reservoir_choice === "Lake Powell" ? [
-    { y: 3490, label: "Minimum Power Pool", color: "orange" },
-    { y: 3370, label: "Dead Pool", color: "black" }
+    { y: 3490, label: "Minimum Power Pool - 3490ft", color: "orange" },
+    { y: 3370, label: "Dead Pool - 3370ft", color: "black" }
   ] : []  // empty array for "Total" or reservoirs with no reference lines
 
   // Build marks array dynamically
   const marks = [
     Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
-    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }), { anchor: "top-right" }),
+    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" })),
     //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
 
     // Add a ruleY and text annotation for each reference line
@@ -233,7 +207,8 @@ html`
 ```
 ```{ojs}
 import { timeRange } from "@jwolondon/time-range-input"
-
+```
+```{ojs}
 min_date = d3.min(filtered_elv, d => d.Date)
 max_date = d3.max(filtered_elv, d => d.Date)
 
@@ -274,7 +249,6 @@ viewof DateSlider = timeRange(min_date, max_date, {
         "Elevation (ft)": { value: d => d.Elevation }
       },
     tip: {
-      anchor: "top",
       format: {
         x: false,
         y: false,
@@ -433,7 +407,7 @@ html`
     y: { grid: true, label: "Storage (Million Acre-Feet)",
         domain: [0, d3.max(filtered_stor, d => d.Storage_MAF)]
      },
-    x: { label: "Date" },
+    x: { label: "Date", domain: StorDateSlider },
     marks: [
       Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
       Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
@@ -441,6 +415,15 @@ html`
   })
   return Storage_Chart
 }
+```
+```{ojs}
+stor_min_date = d3.min(filtered_stor, d => d.Date)
+stor_max_date = d3.max(filtered_stor, d => d.Date)
+
+viewof StorDateSlider = timeRange(stor_min_date, stor_max_date, {
+  interval: "day",
+  value: [stor_min_date, stor_max_date]
+})
 ```
 
 
@@ -474,7 +457,6 @@ html`
         "Storage (MAF)": { value: d => d.Storage_MAF }
       },
     tip: {
-      anchor: "top",
       format: {
         x: false,
         y: false,

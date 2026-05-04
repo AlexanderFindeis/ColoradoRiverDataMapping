@@ -406,7 +406,6 @@ The chart below shows consumptive use in the Upper Basin as reported by the Bure
         "Supply 10yr Avg": { value: d => d.UB_10yr_Avg }
       },
       tip: {
-        anchor: "top",
         format: {
           x: false,
           y: false,
@@ -430,7 +429,6 @@ The chart below shows consumptive use in the Upper Basin as reported by the Bure
         "Supply 10yr Avg": { value: d => d.UB_10yr_Avg }
       },
       tip: {
-        anchor: "top",
         format: {
           x: false,
           y: false,
@@ -503,7 +501,6 @@ The chart below shows consumptive use in the Upper Basin as reported by the Bure
         "Consumptive Use (MAF)": { value: d => d.Consumptive_Use_MAF }
       },
       tip: {
-        anchor: "top",
         format: {
           x: false,
           y: false,
