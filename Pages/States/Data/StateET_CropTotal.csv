@@ -1,0 +1,793 @@
+"","State","Year","Crop","Crop_Group","Type","ET","Acres","ET_per_Acre","Date"
+"1","Arizona",2010,"Alfalfa","Alfalfa/Grass","Crop",477562.82,92675.1441015266,5.15308419134288,2010-01-01
+"2","Arizona",2010,"All American Canal","Other","Open Water",1930.8,322,5.99627329192547,2010-01-01
+"3","Arizona",2010,"Bermuda","Alfalfa/Grass","Crop",21071.64,6679.72122037411,3.15456877687178,2010-01-01
+"4","Arizona",2010,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",406.23,87.4433517456055,4.64563619635515,2010-01-01
+"5","Arizona",2010,"Citrus - Declining","Citrus","Crop",1070.4,422.205887317657,2.5352559785474,2010-01-01
+"6","Arizona",2010,"Citrus - Mature","Citrus","Crop",32493.02,8986.91544175148,3.61559204719382,2010-01-01
+"7","Arizona",2010,"Citrus - Young","Citrus","Crop",1758.63,834.35568857193,2.10777013219631,2010-01-01
+"8","Arizona",2010,"Cotton","Cotton","Crop",88117.79,28901.2827606201,3.04892314745511,2010-01-01
+"9","Arizona",2010,"Crucifers Fall Early","Vegetables","Crop",2134.07,4331.85368728638,0.492645909593695,2010-01-01
+"10","Arizona",2010,"Crucifers Fall Late","Vegetables","Crop",199.09,1032.87799549103,0.192752678311588,2010-01-01
+"11","Arizona",2010,"Crucifers Spring Early","Vegetables","Crop",408.75,1565.40915489197,0.261113842807575,2010-01-01
+"12","Arizona",2010,"Crucifers Spring Late","Vegetables","Crop",1376.69,2435.49869441986,0.565260003281558,2010-01-01
+"13","Arizona",2010,"Dates","Dates","Crop",21592.88,3767.98319578171,5.73062003678079,2010-01-01
+"14","Arizona",2010,"Deciduous Orchards","Other","Crop",5779.17,1274.22585952282,4.53543612916804,2010-01-01
+"15","Arizona",2010,"Fall Melons","Melons","Crop",1025.68,996.803039550782,1.02896957503484,2010-01-01
+"16","Arizona",2010,"Farm Pond","Other","Open Water",619.14,129.588226318359,4.77774885566348,2010-01-01
+"17","Arizona",2010,"Field Grain","Grains","Crop",3936.11,1779.16796278954,2.21233187777764,2010-01-01
+"18","Arizona",2010,"Gila Gravity Main Canal","Other","Open Water",2311.68,398,5.80824120603015,2010-01-01
+"19","Arizona",2010,"Grapes","Grapes","Crop",15.97,5.43817293643952,2.93664805931234,2010-01-01
+"20","Arizona",2010,"Jojoba Beans","Other","Crop",1085.78,234.174957275391,4.63661875989206,2010-01-01
+"21","Arizona",2010,"Legume/Solanum Vegetables","Vegetables","Crop",3702.94,1484.50684905052,2.49439064721619,2010-01-01
+"22","Arizona",2010,"Legume/Solanum Vegetables Spring","Vegetables","Crop",15.98,31.3501434326172,0.509726535521179,2010-01-01
+"23","Arizona",2010,"Lettuce Fall Early","Vegetables","Crop",9101.9,13205.468919754,0.689252313212785,2010-01-01
+"24","Arizona",2010,"Lettuce Fall Late","Vegetables","Crop",4266.96,34987.6600753665,0.121956140845332,2010-01-01
+"25","Arizona",2010,"Lettuce Spring Early","Vegetables","Crop",4563.4,14589.5875988007,0.312784715064539,2010-01-01
+"26","Arizona",2010,"Lettuce Spring Late","Vegetables","Crop",20385.71,30060.6325130463,0.678153062519647,2010-01-01
+"27","Arizona",2010,"Maintained","Other","Open Water",26489.8,5406.95994508267,4.89920403869294,2010-01-01
+"28","Arizona",2010,"Miscellaneous herbs","Vegetables","Crop",444.96,155.329681396484,2.86461670428734,2010-01-01
+"29","Arizona",2010,"Moist Soil Unit","Other","Crop",1233.36,250.48833656311,4.92382207061069,2010-01-01
+"30","Arizona",2010,"Not Maintained","Other","Open Water",3898.73,751.600004371255,5.18724052331725,2010-01-01
+"31","Arizona",2010,"Nursery or greenhouse","Other","Crop",893.01,412.383936524391,2.16548202029004,2010-01-01
+"32","Arizona",2010,"Oil Crops","Other","Crop",57.64,20.1148509979248,2.86554446791312,2010-01-01
+"33","Arizona",2010,"Perennial Vegetables","Vegetables","Crop",1925.57,436.801692962646,4.4083391411321,2010-01-01
+"34","Arizona",2010,"River","Other","Mainstream Open Water",150585.76,31687.2301871069,4.75225379784918,2010-01-01
+"35","Arizona",2010,"Small Grains Fall","Grains","Crop",69.65,1097.97016525269,0.0634352391387345,2010-01-01
+"36","Arizona",2010,"Small Grains Spring","Grains","Crop",72098.28,45085.453710556,1.59914726516591,2010-01-01
+"37","Arizona",2010,"Small Vegetables Fall","Vegetables","Crop",217.22,519.892405986786,0.417817220445265,2010-01-01
+"38","Arizona",2010,"Small Vegetables Spring","Vegetables","Crop",692.49,536.735790252685,1.29018785886067,2010-01-01
+"39","Arizona",2010,"Small Vegetables Spring Late","Vegetables","Crop",1141.85,743.546163082123,1.53568138293773,2010-01-01
+"40","Arizona",2010,"Spring Melons","Melons","Crop",4311.79,2523.22339200974,1.70884195733683,2010-01-01
+"41","Arizona",2010,"Sudan","Alfalfa/Grass","Crop",94371.44,26993.5737749338,3.49607061246678,2010-01-01
+"42","Arizona",2010,"Sugar Beets Fall","Sugar Beets","Crop",86.97,173.191055297852,0.502162192212698,2010-01-01
+"43","Arizona",2010,"Undetermined Open Water","Other","Open Water",78.13,15.6352260708809,4.99704958826976,2010-01-01
+"44","Arizona",2010,"aw","Other","Riparian",17999.65,6828.48943090439,2.63596366108984,2010-01-01
+"45","Arizona",2010,"barren","Other","Riparian",26447.04,31662.1087273955,0.835289911600764,2010-01-01
+"46","Arizona",2010,"cw","Other","Riparian",3400.35,701.212236762047,4.84924509546728,2010-01-01
+"47","Arizona",2010,"low veg","Vegetables","Riparian",22405.96,8498.82942122221,2.6363583606056,2010-01-01
+"48","Arizona",2010,"marsh","Other","Riparian",32968.28,5850.22331675887,5.63538829458993,2010-01-01
+"49","Arizona",2010,"ms_aw","Other","Riparian",10919.49,4228.01556605101,2.58265132410543,2010-01-01
+"50","Arizona",2010,"ms_high","Other","Riparian",12114.31,3435.19655963778,3.5265260050439,2010-01-01
+"51","Arizona",2010,"ms_low","Other","Riparian",19028.69,7348.9845572412,2.58929514027219,2010-01-01
+"52","Arizona",2010,"sc/ms","Other","Riparian",33559.33,9540.72641271354,3.51748164115474,2010-01-01
+"53","Arizona",2010,"sc_aw","Other","Riparian",10468.81,4035.02224159241,2.59448631833774,2010-01-01
+"54","Arizona",2010,"sc_high","Other","Riparian",39655.26,11312.732991159,3.5053651519037,2010-01-01
+"55","Arizona",2010,"sc_low","Other","Riparian",40363.74,15670.9141217768,2.57571062455822,2010-01-01
+"56","Arizona",2010,"sc_ms_aw","Other","Riparian",7482.28,2898.42440193892,2.58149910516717,2010-01-01
+"57","Arizona",2011,"Alfalfa","Alfalfa/Grass","Crop",446305.29,85390.9263186455,5.22661258333893,2011-01-01
+"58","Arizona",2011,"All American Canal","Other","Open Water",1957.49,322,6.07916149068323,2011-01-01
+"59","Arizona",2011,"Bermuda","Alfalfa/Grass","Crop",20127.76,6318.77046227456,3.18539186067453,2011-01-01
+"60","Arizona",2011,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",411.46,87.4437026977539,4.70542746139418,2011-01-01
+"61","Arizona",2011,"Citrus - Declining","Citrus","Crop",2000.1,768.240951299668,2.60348006262403,2011-01-01
+"62","Arizona",2011,"Citrus - Mature","Citrus","Crop",29705.53,8036.12087702752,3.69650114210176,2011-01-01
+"63","Arizona",2011,"Citrus - Young","Citrus","Crop",665.98,319.687432527542,2.08322233606297,2011-01-01
+"64","Arizona",2011,"Cotton","Cotton","Crop",142819.36,46954.793440342,3.04163535894281,2011-01-01
+"65","Arizona",2011,"Cottonwood / Willow","Other","Riparian",5837.14,1195.01840510965,4.88456075240484,2011-01-01
+"66","Arizona",2011,"Crucifers Fall Early","Vegetables","Crop",2467.52,5167.0242357254,0.477551466265492,2011-01-01
+"67","Arizona",2011,"Crucifers Fall Late","Vegetables","Crop",292.21,1653.66477489471,0.176704495636732,2011-01-01
+"68","Arizona",2011,"Crucifers Spring Early","Vegetables","Crop",678.6,1963.37315368652,0.345629662260497,2011-01-01
+"69","Arizona",2011,"Crucifers Spring Late","Vegetables","Crop",2295.31,3306.8251066208,0.694112910720443,2011-01-01
+"70","Arizona",2011,"Dates","Dates","Crop",21703.84,3712.69300866128,5.84584826953575,2011-01-01
+"71","Arizona",2011,"Deciduous Orchards","Other","Crop",3253.44,716.042400836945,4.54364154440746,2011-01-01
+"72","Arizona",2011,"Fall Melons","Melons","Crop",829.51,833.963733673096,0.994659559530869,2011-01-01
+"73","Arizona",2011,"Farm Pond","Other","Open Water",8.81,1.75297486782074,5.02574233192082,2011-01-01
+"74","Arizona",2011,"Field Grain","Grains","Crop",806.72,342.465105056763,2.35562685975346,2011-01-01
+"75","Arizona",2011,"Gila Gravity Main Canal","Other","Open Water",2343.32,398,5.88773869346734,2011-01-01
+"76","Arizona",2011,"Grapes","Grapes","Crop",16.33,5.43819445371627,3.00283488186794,2011-01-01
+"77","Arizona",2011,"Jojoba Beans","Other","Crop",1125.58,234.175903320313,4.8065577373279,2011-01-01
+"78","Arizona",2011,"Legume/Solanum Vegetables","Vegetables","Crop",3652.07,1456.02680873871,2.50824365188964,2011-01-01
+"79","Arizona",2011,"Lettuce Fall Early","Vegetables","Crop",29859.19,44092.2132606506,0.677198711334533,2011-01-01
+"80","Arizona",2011,"Lettuce Fall Late","Vegetables","Crop",1009.58,7790.27901363373,0.12959484483587,2011-01-01
+"81","Arizona",2011,"Lettuce Spring Early","Vegetables","Crop",3244.77,7568.02691555023,0.428747153810048,2011-01-01
+"82","Arizona",2011,"Lettuce Spring Late","Vegetables","Crop",23976.21,30867.5192302465,0.776745608260807,2011-01-01
+"83","Arizona",2011,"Maintained","Other","Open Water",26727.88,5340.03163091839,5.00519132606772,2011-01-01
+"84","Arizona",2011,"Miscellaneous herbs","Vegetables","Crop",104.7,34.9558143615723,2.99520986457403,2011-01-01
+"85","Arizona",2011,"Mixed Veg Low","Vegetables","Riparian",97181.08,36473.682641156,2.66441644941943,2011-01-01
+"86","Arizona",2011,"Mixed Veg Medium","Vegetables","Riparian",49597.38,18909.4204882775,2.62289264923518,2011-01-01
+"87","Arizona",2011,"Moist Soil Unit","Other","Crop",1233.25,244.121424674987,5.05178929560113,2011-01-01
+"88","Arizona",2011,"Not Maintained","Other","Open Water",3811.16,726.816435288638,5.24363486426457,2011-01-01
+"89","Arizona",2011,"Nursery or greenhouse","Other","Crop",922.55,415.411464571953,2.22081015734752,2011-01-01
+"90","Arizona",2011,"Oil Crops","Other","Crop",162.04,54.0139465332031,2.99996594213666,2011-01-01
+"91","Arizona",2011,"Perennial Vegetables","Vegetables","Crop",1198.68,264.974367141724,4.52375832775883,2011-01-01
+"92","Arizona",2011,"River","Other","Mainstream Open Water",152194.28,31440.1203392744,4.84076645883196,2011-01-01
+"93","Arizona",2011,"Root Vegetables","Vegetables","Crop",27.66,32.2182693481445,0.858519112281026,2011-01-01
+"94","Arizona",2011,"Salt Cedar Dense","Other","Riparian",97860.01,27920.9948399048,3.50488979927527,2011-01-01
+"95","Arizona",2011,"Small Grains Fall","Grains","Crop",20.01,189.078750610352,0.10582892014786,2011-01-01
+"96","Arizona",2011,"Small Grains Spring","Grains","Crop",92534.89,52078.6808080673,1.77682860940797,2011-01-01
+"97","Arizona",2011,"Small Vegetables Fall","Vegetables","Crop",540.46,1258.83361244202,0.429333944262546,2011-01-01
+"98","Arizona",2011,"Small Vegetables Spring","Vegetables","Crop",1150.67,805.309627532958,1.42885414585821,2011-01-01
+"99","Arizona",2011,"Small Vegetables Spring Late","Vegetables","Crop",1126.21,673.277281761169,1.67272835503085,2011-01-01
+"100","Arizona",2011,"Spring Melons","Melons","Crop",5641.64,3079.26790618896,1.83213678441586,2011-01-01
+"101","Arizona",2011,"Sudan","Alfalfa/Grass","Crop",75517.16,21300.5209411383,3.54531986371055,2011-01-01
+"102","Arizona",2011,"Sugar Beets (Summer)","Sugar Beets","Crop",57.48,28.1238193511963,2.04381913004839,2011-01-01
+"103","Arizona",2011,"Sugar Beets Fall","Sugar Beets","Crop",169.27,324.193474292755,0.522126487491061,2011-01-01
+"104","Arizona",2011,"USGS barren","Other","Riparian",5313.23,6154.03839171491,0.863372904392849,2011-01-01
+"105","Arizona",2011,"Undetermined Open Water","Other","Open Water",81.22,15.923744559288,5.10055908631276,2011-01-01
+"106","Arizona",2011,"Wildlife Forage Maintained","Other","Crop",3.34,1.5499963760376,2.15484374778885,2011-01-01
+"107","Arizona",2011,"marsh","Other","Riparian",63371.7,11132.7744167019,5.69235463038997,2011-01-01
+"108","Arizona",2012,"Alfalfa","Alfalfa/Grass","Crop",437706.558063657,83767.8573726416,5.22523282548004,2012-01-01
+"109","Arizona",2012,"All American Canal","Other","Maintained Open Water",1912.38537866549,322.770011901855,5.92491652925611,2012-01-01
+"110","Arizona",2012,"Bermuda/Grass","Alfalfa/Grass","Crop",20080.2907922753,6398.04489088058,3.13850420476053,2012-01-01
+"111","Arizona",2012,"Citrus","Citrus","Crop",31009.5200354651,8861.67480880022,3.49928435702364,2012-01-01
+"112","Arizona",2012,"Cotton","Cotton","Crop",107360.794473013,36591.3897566795,2.93404528187988,2012-01-01
+"113","Arizona",2012,"Cottonwood/Willow","Other","Riparian",3221.14926935456,651.50110412389,4.94419617858702,2012-01-01
+"114","Arizona",2012,"Crucifers","Vegetables","Crop",6193.54877177898,12707.35275805,0.487398822532524,2012-01-01
+"115","Arizona",2012,"Dates","Dates","Crop",22478.7788725503,3889.41892933846,5.77946970509903,2012-01-01
+"116","Arizona",2012,"Deciduous Orchards","Other","Crop",1781.78667472544,461.544803380966,3.86048474963486,2012-01-01
+"117","Arizona",2012,"Field Grain","Grains","Crop",1314.65587191532,534.963676452637,2.45746754365241,2012-01-01
+"118","Arizona",2012,"Gila Gravity Main Canal","Other","Maintained Open Water",2311.78158301486,398.660952131031,5.79886635663035,2012-01-01
+"119","Arizona",2012,"Grapes","Grapes","Crop",15.2985594427049,5.43819284439087,2.81316972024712,2012-01-01
+"120","Arizona",2012,"Jojoba Beans","Other","Crop",1119.29725020988,234.175933837891,4.77972792449594,2012-01-01
+"121","Arizona",2012,"Legume/Solanum Vegetables","Vegetables","Crop",4174.54532437364,1741.40119361877,2.39723352646761,2012-01-01
+"122","Arizona",2012,"Lettuce","Vegetables","Crop",33160.633795872,93438.1019563675,0.354894128857165,2012-01-01
+"123","Arizona",2012,"Melons","Melons","Crop",3678.21211174008,2486.90211057663,1.47903373281035,2012-01-01
+"124","Arizona",2012,"Miscellaneous herbs","Vegetables","Crop",743.006345688817,248.709280014038,2.98744922443939,2012-01-01
+"125","Arizona",2012,"Mixed Veg Low","Vegetables","Riparian",96205.894894652,36442.8148787438,2.63991393680093,2012-01-01
+"126","Arizona",2012,"Mixed Veg Medium","Vegetables","Riparian",49300.1770807737,18888.1058206856,2.61011758133956,2012-01-01
+"127","Arizona",2012,"Moist Soil Unit","Other","Crop",1334.39777061044,271.158390045166,4.92110080159488,2012-01-01
+"128","Arizona",2012,"Nursery/Greenhouse","Other","Crop",864.29790859661,393.077431440353,2.19879809794616,2012-01-01
+"129","Arizona",2012,"Open Water","Other","Maintained Open Water",27449.8478048165,5467.22526109219,5.02080058785302,2012-01-01
+"130","Arizona",2012,"Open Water","Other","Not Maintained Open Water",3805.04600767732,735.686801795382,5.17210040793368,2012-01-01
+"131","Arizona",2012,"Perennial Vegetables","Vegetables","Crop",1210.86569416988,271.444356918335,4.46082470793148,2012-01-01
+"132","Arizona",2012,"Restoration Area","Other","Crop",3815.28197716884,1026.72486114502,3.71597311173899,2012-01-01
+"133","Arizona",2012,"River","Other","Mainstream Open Water",144365.049675964,29288.7688365579,4.92902417583937,2012-01-01
+"134","Arizona",2012,"Root Vegetables","Vegetables","Crop",13.1464950962472,12.9851760864258,1.01242332092747,2012-01-01
+"135","Arizona",2012,"Salt Cedar Dense","Other","Riparian",97496.1909566944,27725.7796993181,3.51644541700994,2012-01-01
+"136","Arizona",2012,"Small Grains","Grains","Crop",81831.2426304637,46213.6583518982,1.77071553191812,2012-01-01
+"137","Arizona",2012,"Small Vegetables","Vegetables","Crop",4374.33210865768,4871.89890146255,0.89787004967293,2012-01-01
+"138","Arizona",2012,"Sudan","Alfalfa/Grass","Crop",103078.117309825,29549.7305960655,3.48829296344075,2012-01-01
+"139","Arizona",2012,"Sugar Beets","Sugar Beets","Crop",493.906818906329,288.539693832397,1.71174652730179,2012-01-01
+"140","Arizona",2012,"USGS Barren","Other","Riparian",5650.21486655096,6495.66819579108,0.869843516670396,2012-01-01
+"141","Arizona",2012,"marsh","Other","Riparian",64169.7488404699,11336.5822119167,5.66041401552368,2012-01-01
+"142","Arizona",2013,"Alfalfa","Alfalfa/Grass","Crop",486157.84,92077.7557122707,5.27986196274343,2013-01-01
+"143","Arizona",2013,"All American Canal","Other","Maintained Open Water",2352.96,405.790010452271,5.79846703810556,2013-01-01
+"144","Arizona",2013,"Bermuda","Alfalfa/Grass","Crop",20619.39,6636.54389429092,3.10694697849249,2013-01-01
+"145","Arizona",2013,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",514.2,111.753431558609,4.60120099068572,2013-01-01
+"146","Arizona",2013,"Citrus - Declining","Citrus","Crop",1432.08,583.120273828506,2.45589128739703,2013-01-01
+"147","Arizona",2013,"Citrus - Mature","Citrus","Crop",26103.72,7214.21203941107,3.61837437788022,2013-01-01
+"148","Arizona",2013,"Citrus - Young","Citrus","Crop",1525.45,806.320472538471,1.89186564393876,2013-01-01
+"149","Arizona",2013,"Cotton","Cotton","Crop",78974.51,27185.5376434326,2.90501924353438,2013-01-01
+"150","Arizona",2013,"Cottonwood/Willow","Other","Riparian",3510.66,713.145723812282,4.92278069232887,2013-01-01
+"151","Arizona",2013,"Crucifers Fall Early","Vegetables","Crop",2403.84,4888.99111557007,0.491684264335119,2013-01-01
+"152","Arizona",2013,"Crucifers Fall Late","Vegetables","Crop",343.34,1721.75710678101,0.199412564436518,2013-01-01
+"153","Arizona",2013,"Crucifers Spring Early","Vegetables","Crop",1026.02,3425.0227560997,0.299565892860927,2013-01-01
+"154","Arizona",2013,"Crucifers Spring Late","Vegetables","Crop",3043.37,4539.38260936737,0.670436987117977,2013-01-01
+"155","Arizona",2013,"Dates","Dates","Crop",23010.13,4019.2068849802,5.72504244207706,2013-01-01
+"156","Arizona",2013,"Deciduous Orchards","Other","Crop",1339.84,375.209538221359,3.57091135356358,2013-01-01
+"157","Arizona",2013,"Fall Melons","Melons","Crop",2169.5,2184.52745556831,0.993120958251173,2013-01-01
+"158","Arizona",2013,"Field Grain","Grains","Crop",1874.77,804.383212089539,2.33069260002323,2013-01-01
+"159","Arizona",2013,"Gila Gravity Main Canal","Other","Maintained Open Water",2262.15,399.170680076291,5.66712464845276,2013-01-01
+"160","Arizona",2013,"Grapes","Grapes","Crop",14.66,4.81506490707397,3.0446110868542,2013-01-01
+"161","Arizona",2013,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",2244.33,452.260885238647,4.96246762267694,2013-01-01
+"162","Arizona",2013,"Irrigated Restoration - Mixed Veg Low","Vegetables","Crop",320.44,119.534499168396,2.68073235952221,2013-01-01
+"163","Arizona",2013,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",1032.13,390.794189453125,2.6411088697208,2013-01-01
+"164","Arizona",2013,"Jojoba Beans","Other","Crop",1079.57,234.175903320312,4.61008150152552,2013-01-01
+"165","Arizona",2013,"Legume/Solanum Veg.","Vegetables","Crop",1650.11,677.608848571777,2.43519547225217,2013-01-01
+"166","Arizona",2013,"Legume/Solanum Vegetables Spring","Vegetables","Crop",169.08,259.371322631836,0.651883941078561,2013-01-01
+"167","Arizona",2013,"Lettuce Fall Early","Vegetables","Crop",325.68,512.589799880981,0.635361843087045,2013-01-01
+"168","Arizona",2013,"Lettuce Fall Late","Vegetables","Crop",7269.18,49589.9371676445,0.146585787665463,2013-01-01
+"169","Arizona",2013,"Lettuce Spring Early","Vegetables","Crop",2726.01,7441.87079524994,0.366307085274845,2013-01-01
+"170","Arizona",2013,"Lettuce Spring Late","Vegetables","Crop",24154.25,31550.9907915592,0.765562329233158,2013-01-01
+"171","Arizona",2013,"Miscellaneous herbs","Vegetables","Crop",962.33,316.919658184052,3.03651091104335,2013-01-01
+"172","Arizona",2013,"Mixed Veg Low","Vegetables","Riparian",96380.47,35976.346567449,2.67899548441653,2013-01-01
+"173","Arizona",2013,"Mixed Veg Medium","Vegetables","Riparian",49084.39,18561.3413053844,2.64444197175348,2013-01-01
+"174","Arizona",2013,"Moist Soil Unit","Other","Crop",1411,280.840391159058,5.02420607725497,2013-01-01
+"175","Arizona",2013,"Not Maintained","Other","Not Maintained Open Water",30924.48,6103.62204668717,5.06657846168321,2013-01-01
+"176","Arizona",2013,"Nursery/Greenhouse","Other","Crop",860.19,393.958659052849,2.1834524517574,2013-01-01
+"177","Arizona",2013,"Oil Crops","Other","Crop",267.08,93.3584427833557,2.86080178757669,2013-01-01
+"178","Arizona",2013,"Perennial Vegetables","Vegetables","Crop",321.47,73.9166889190674,4.34908550019039,2013-01-01
+"179","Arizona",2013,"River","Other","Mainstream Open Water",144084.52,29201.3582768738,4.93417185029056,2013-01-01
+"180","Arizona",2013,"Root Vegetables","Vegetables","Crop",279.64,288.814383506775,0.968234326160007,2013-01-01
+"181","Arizona",2013,"Salt Cedar Dense","Other","Riparian",96228.49,27132.5550515484,3.54660627490401,2013-01-01
+"182","Arizona",2013,"Small Grains Fall","Grains","Crop",79.99,910.257223129272,0.0878762595533285,2013-01-01
+"183","Arizona",2013,"Small Grains Spring","Grains","Crop",93403.78,52155.9210634232,1.79085668694103,2013-01-01
+"184","Arizona",2013,"Small Vegetables Fall","Vegetables","Crop",992.88,1511.291015625,0.656974725406801,2013-01-01
+"185","Arizona",2013,"Small Vegetables Spring","Vegetables","Crop",1799.14,1270.20308542252,1.41641917001134,2013-01-01
+"186","Arizona",2013,"Small Vegetables Spring Late","Vegetables","Crop",1537.47,930.525178909302,1.65226050282929,2013-01-01
+"187","Arizona",2013,"Spring Melons","Melons","Crop",5762.55,3123.27571594715,1.84503403608492,2013-01-01
+"188","Arizona",2013,"Sudan","Alfalfa/Grass","Crop",116269.48,33990.4824934006,3.42064811885428,2013-01-01
+"189","Arizona",2013,"Sugar Beets (Summer)","Sugar Beets","Crop",94.72,44.0739326477051,2.14911613985352,2013-01-01
+"190","Arizona",2013,"Sugar Beets Fall","Sugar Beets","Crop",41.25,85.2997436523438,0.483588792108481,2013-01-01
+"191","Arizona",2013,"USGS barren","Other","Riparian",5495.6,6295.7143142242,0.872911273560101,2013-01-01
+"192","Arizona",2013,"marsh","Other","Riparian",68757.15,11986.7925420915,5.73607574825042,2013-01-01
+"193","Arizona",2014,"Alfalfa","Alfalfa/Grass","Crop",512911.88,96897.7189796766,5.2933328606794,2014-01-01
+"194","Arizona",2014,"All American Canal","Other","Mainstream Open Water",513.68,84.5299987792969,6.07689586440419,2014-01-01
+"195","Arizona",2014,"All American Canal","Other","Open Water",1981.03,325.960010528564,6.07752465336971,2014-01-01
+"196","Arizona",2014,"Bermuda","Alfalfa/Grass","Crop",22145.54,6931.5376098156,3.19489574270508,2014-01-01
+"197","Arizona",2014,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",94.95,111.753431558609,0.849638339295233,2014-01-01
+"198","Arizona",2014,"Citrus - Declining","Citrus","Crop",1150.77,432.99472784996,2.65769979628657,2014-01-01
+"199","Arizona",2014,"Citrus - Mature","Citrus","Crop",25034.28,6731.52827781439,3.71895934575621,2014-01-01
+"200","Arizona",2014,"Citrus - Young","Citrus","Crop",2087.53,960.450891852379,2.17348957422891,2014-01-01
+"201","Arizona",2014,"Cotton","Cotton","Crop",87763.23,29021.0920619965,3.02411879651239,2014-01-01
+"202","Arizona",2014,"Cottonwood/Willow","Other","Riparian",3555.88,718.347057230771,4.95008640211867,2014-01-01
+"203","Arizona",2014,"Crucifers Fall Early","Vegetables","Crop",3579.79,7334.88606643677,0.488049843934254,2014-01-01
+"204","Arizona",2014,"Crucifers Fall Late","Vegetables","Crop",305.21,1556.67105770111,0.196065828095201,2014-01-01
+"205","Arizona",2014,"Crucifers Spring Early","Vegetables","Crop",728.56,2182.23949098587,0.333858865174719,2014-01-01
+"206","Arizona",2014,"Crucifers Spring Late","Vegetables","Crop",2805.57,4025.94897651672,0.696871723006136,2014-01-01
+"207","Arizona",2014,"Dates","Dates","Crop",24067.64,4099.5870860219,5.87074734479038,2014-01-01
+"208","Arizona",2014,"Deciduous Orchards","Other","Crop",1635.81,351.054211229086,4.65970766814851,2014-01-01
+"209","Arizona",2014,"Fall Melons","Melons","Crop",1121.31,1067.32303333282,1.05058165614453,2014-01-01
+"210","Arizona",2014,"Field Grain","Grains","Crop",4548.92,1918.76775932312,2.3707506955426,2014-01-01
+"211","Arizona",2014,"Gila Gravity Main Canal","Other","Open Water",2364.81,398.660403285845,5.93189085374099,2014-01-01
+"212","Arizona",2014,"Grapes","Grapes","Crop",15.07,4.81506490707397,3.1297605101564,2014-01-01
+"213","Arizona",2014,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",2748.35,548.15927696228,5.01377996415651,2014-01-01
+"214","Arizona",2014,"Irrigated Restoration - Mixed Veg Low","Vegetables","Crop",323.43,119.534499168396,2.70574605867017,2014-01-01
+"215","Arizona",2014,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",1117.08,419.161514282227,2.66503474660094,2014-01-01
+"216","Arizona",2014,"Jojoba Beans","Other","Crop",1074.07,219.572830200195,4.89163435667663,2014-01-01
+"217","Arizona",2014,"Klein Grass","Alfalfa/Grass","Crop",925.21,298.598419189453,3.0985093709186,2014-01-01
+"218","Arizona",2014,"Legume/Solanum Veg.","Vegetables","Crop",4129.66,1659.88065814972,2.48792585161114,2014-01-01
+"219","Arizona",2014,"Legume/Solanum Vegetables Spring","Vegetables","Crop",66.97,102.047367095947,0.656263869473803,2014-01-01
+"220","Arizona",2014,"Lettuce Fall Early","Vegetables","Crop",30179.47,42071.7761870623,0.717332918529849,2014-01-01
+"221","Arizona",2014,"Lettuce Fall Late","Vegetables","Crop",1597.66,12374.7753105164,0.129106182529413,2014-01-01
+"222","Arizona",2014,"Lettuce Spring Early","Vegetables","Crop",6711.06,16298.5250444412,0.411758731646019,2014-01-01
+"223","Arizona",2014,"Lettuce Spring Late","Vegetables","Crop",26712.46,33176.3727560043,0.805165175724809,2014-01-01
+"224","Arizona",2014,"Maintained","Other","Open Water",31593.16,6208.35515919328,5.08881325083619,2014-01-01
+"225","Arizona",2014,"Miscellaneous herbs","Vegetables","Crop",2257.21,771.54877948761,2.92555708726417,2014-01-01
+"226","Arizona",2014,"Mixed Veg Low","Vegetables","Riparian",97199.81,36000.7164085571,2.6999409927547,2014-01-01
+"227","Arizona",2014,"Mixed Veg Medium","Vegetables","Riparian",51238.85,19242.1839086432,2.66283963625275,2014-01-01
+"228","Arizona",2014,"Moist Soil Unit","Other","Crop",1925.32,377.977493286133,5.09374244286686,2014-01-01
+"229","Arizona",2014,"Nursery/Greenhouse","Other","Crop",864.25,387.797438889742,2.22861193326685,2014-01-01
+"230","Arizona",2014,"Oil Crops","Other","Crop",86.36,27.4659733772278,3.14425412177825,2014-01-01
+"231","Arizona",2014,"Perennial Vegetables","Vegetables","Crop",329.87,71.3727807998657,4.6217899359278,2014-01-01
+"232","Arizona",2014,"River","Other","Mainstream Open Water",143219.29,29199.6738328636,4.90482499290146,2014-01-01
+"233","Arizona",2014,"Root Vegetables","Vegetables","Crop",245.59,256.826511383057,0.9562486313327,2014-01-01
+"234","Arizona",2014,"Salt Cedar Dense","Other","Riparian",93725.03,26325.7669144049,3.56020131549199,2014-01-01
+"235","Arizona",2014,"Small Grains Fall","Grains","Crop",21.67,306.577871322632,0.0706835098910164,2014-01-01
+"236","Arizona",2014,"Small Grains Spring","Grains","Crop",77239.66,42473.8673639297,1.81852194758216,2014-01-01
+"237","Arizona",2014,"Small Vegetables Fall","Vegetables","Crop",772.7,1742.14694404602,0.443533194855226,2014-01-01
+"238","Arizona",2014,"Small Vegetables Spring","Vegetables","Crop",1310.97,910.978818893433,1.43907846462604,2014-01-01
+"239","Arizona",2014,"Small Vegetables Spring Late","Vegetables","Crop",1648.18,989.015789747238,1.66648502186322,2014-01-01
+"240","Arizona",2014,"Spring Melons","Melons","Crop",6720.97,3651.18380171061,1.8407646300499,2014-01-01
+"241","Arizona",2014,"Sudan","Alfalfa/Grass","Crop",114198.87,32340.7141075134,3.5311177613567,2014-01-01
+"242","Arizona",2014,"Sugar Beets (Summer)","Sugar Beets","Crop",370.1,175.547675132751,2.10825919352179,2014-01-01
+"243","Arizona",2014,"Tomatoes","Vegetables","Crop",234.77,99.9828414916992,2.34810289943091,2014-01-01
+"244","Arizona",2014,"USGS barren","Other","Riparian",5536.85,6353.97548378212,0.871399333241409,2014-01-01
+"245","Arizona",2014,"marsh","Other","Riparian",69486.13,12010.9813979319,5.78521668612064,2014-01-01
+"246","Arizona",2015,"Alfalfa","Alfalfa/Grass","Crop",510273.93,94721.7241270542,5.38708448038328,2015-01-01
+"247","Arizona",2015,"All American Canal","Other","Maintained Open Water",1942.26,323.010009765625,6.01300251162277,2015-01-01
+"248","Arizona",2015,"Bermuda","Alfalfa/Grass","Crop",23027.65,7184.94455754757,3.204986456828,2015-01-01
+"249","Arizona",2015,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",52.08,63.3851358890533,0.821643738228449,2015-01-01
+"250","Arizona",2015,"Citrus - Declining","Citrus","Crop",924.92,358.679496526718,2.57868099224094,2015-01-01
+"251","Arizona",2015,"Citrus - Mature","Citrus","Crop",24177.76,6566.13897842169,3.68218828134089,2015-01-01
+"252","Arizona",2015,"Citrus - Young","Citrus","Crop",2005.71,1024.11417722702,1.95848279869617,2015-01-01
+"253","Arizona",2015,"Cotton","Cotton","Crop",43922.97,14094.8811758757,3.11623556466564,2015-01-01
+"254","Arizona",2015,"Cottonwood/Willow","Other","Riparian",3587.82,716.582121737301,5.00685112168525,2015-01-01
+"255","Arizona",2015,"Crucifers Fall Early","Vegetables","Crop",4045,7499.27812862396,0.539385248902912,2015-01-01
+"256","Arizona",2015,"Crucifers Fall Late","Vegetables","Crop",477.25,2379.00378990173,0.200609180206356,2015-01-01
+"257","Arizona",2015,"Crucifers Spring Early","Vegetables","Crop",289.57,937.510120391846,0.308871332374492,2015-01-01
+"258","Arizona",2015,"Crucifers Spring Late","Vegetables","Crop",3336.69,4738.0247797966,0.704236502567055,2015-01-01
+"259","Arizona",2015,"Dates","Dates","Crop",25289.02,4346.77213454247,5.817884907984,2015-01-01
+"260","Arizona",2015,"Deciduous Orchards","Other","Crop",2676.21,587.442618727684,4.55569601980238,2015-01-01
+"261","Arizona",2015,"Fall Melons","Melons","Crop",973.09,898.491698741913,1.08302614410633,2015-01-01
+"262","Arizona",2015,"Field Grain","Grains","Crop",4494.18,2014.80111694336,2.23058244419583,2015-01-01
+"263","Arizona",2015,"Gila Gravity Main Canal","Other","Maintained Open Water",2343.68,398.660782282415,5.87888275987908,2015-01-01
+"264","Arizona",2015,"Grapes","Grapes","Crop",0.75,4.81506490707397,0.155761140186947,2015-01-01
+"265","Arizona",2015,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",2760.51,548.15927696228,5.0359632975617,2015-01-01
+"266","Arizona",2015,"Irrigated Restoration - Mixed Veg Low","Vegetables","Crop",322.29,119.534499168396,2.69620906300841,2015-01-01
+"267","Arizona",2015,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",1108.29,419.161514282227,2.6440643099065,2015-01-01
+"268","Arizona",2015,"Jojoba Beans","Other","Crop",729.41,147.977005004883,4.92921180541485,2015-01-01
+"269","Arizona",2015,"Klein Grass","Alfalfa/Grass","Crop",632.7,316.226543426514,2.00078081094742,2015-01-01
+"270","Arizona",2015,"Legume/Solanum Vegetables Fall","Vegetables","Crop",1026.42,1995.38227033615,0.51439767470074,2015-01-01
+"271","Arizona",2015,"Legume/Solanum Vegetables Spring","Vegetables","Crop",284.57,430.529956817627,0.660976072614023,2015-01-01
+"272","Arizona",2015,"Lettuce Fall Early","Vegetables","Crop",13318.63,19057.219408989,0.698875828323509,2015-01-01
+"273","Arizona",2015,"Lettuce Fall Late","Vegetables","Crop",3757.9,24803.4727993011,0.151507009942006,2015-01-01
+"274","Arizona",2015,"Lettuce Spring Early","Vegetables","Crop",7172.32,20101.6899559498,0.35680184182112,2015-01-01
+"275","Arizona",2015,"Lettuce Spring Late","Vegetables","Crop",12492.37,15327.409784317,0.815034645500388,2015-01-01
+"276","Arizona",2015,"Maintained","Other","Maintained Open Water",29052.68,5657.44997356618,5.13529596120965,2015-01-01
+"277","Arizona",2015,"Miscellaneous herbs","Vegetables","Crop",461.67,164.304584980011,2.80984246456766,2015-01-01
+"278","Arizona",2015,"Mixed Veg Low","Vegetables","Riparian",97536.29,35952.3920819093,2.71292908070723,2015-01-01
+"279","Arizona",2015,"Mixed Veg Medium","Vegetables","Riparian",50544.61,18944.2877263445,2.66806600122057,2015-01-01
+"280","Arizona",2015,"Moist Soil Unit","Other","Crop",1493.22,290.265619277954,5.14432265079976,2015-01-01
+"281","Arizona",2015,"Nursery/Greenhouse","Other","Crop",806.55,371.403460294008,2.17162758624145,2015-01-01
+"282","Arizona",2015,"Oil Crops","Other","Crop",399.1,138.095561981201,2.89002770454223,2015-01-01
+"283","Arizona",2015,"Perennial Vegetables","Vegetables","Crop",316.99,70.8488969802856,4.47416986729102,2015-01-01
+"284","Arizona",2015,"River","Other","Mainstream Open Water",143377.78,28844.3493071198,4.97074066304588,2015-01-01
+"285","Arizona",2015,"Root Vegetables","Vegetables","Crop",168.53,161.963485717773,1.04054317708171,2015-01-01
+"286","Arizona",2015,"Salt Cedar Dense","Other","Riparian",97186.84,26903.9171221964,3.6123676548133,2015-01-01
+"287","Arizona",2015,"Small Grains Fall","Grains","Crop",31.29,344.619558334351,0.0907957753507489,2015-01-01
+"288","Arizona",2015,"Small Grains Spring","Grains","Crop",102956.01,59839.5525865555,1.72053442162821,2015-01-01
+"289","Arizona",2015,"Small Vegetables Fall","Vegetables","Crop",1381.44,2655.27390289307,0.520262711313829,2015-01-01
+"290","Arizona",2015,"Small Vegetables Spring","Vegetables","Crop",1361.66,1016.40075445175,1.33968810435848,2015-01-01
+"291","Arizona",2015,"Small Vegetables Spring Late","Vegetables","Crop",184.27,114.138612270355,1.61444051521783,2015-01-01
+"292","Arizona",2015,"Spring Melons","Melons","Crop",6320.54,3606.99987649918,1.75229836884122,2015-01-01
+"293","Arizona",2015,"Sudan","Alfalfa/Grass","Crop",85771.92,24685.6815160513,3.47456155683726,2015-01-01
+"294","Arizona",2015,"Sugar Beets (Summer)","Sugar Beets","Crop",411.7,216.5029296875,1.90159089576408,2015-01-01
+"295","Arizona",2015,"Sugar Beets Fall","Sugar Beets","Crop",210.56,360.137091636658,0.584666242077708,2015-01-01
+"296","Arizona",2015,"USGS barren","Other","Riparian",5453.58,6197.25937893195,0.879998668208056,2015-01-01
+"297","Arizona",2015,"marsh","Other","Riparian",69225.9,11931.2881109661,5.80204747016159,2015-01-01
+"298","Arizona",2016,"Alfalfa","Alfalfa/Grass","Crop",478804,87460,5.47454836496684,2016-01-01
+"299","Arizona",2016,"All American Canal","Other","Mainstream Open Water",553,90,6.14444444444444,2016-01-01
+"300","Arizona",2016,"All American Canal","Other","Maintained Open Water",1992,325,6.12923076923077,2016-01-01
+"301","Arizona",2016,"Bermuda","Alfalfa/Grass","Crop",21214,6430,3.29922239502333,2016-01-01
+"302","Arizona",2016,"Citrus - Declining","Citrus","Crop",999,378,2.64285714285714,2016-01-01
+"303","Arizona",2016,"Citrus - Mature","Citrus","Crop",22076,5911,3.73473185586195,2016-01-01
+"304","Arizona",2016,"Citrus - Young","Citrus","Crop",2172,967,2.24612202688728,2016-01-01
+"305","Arizona",2016,"Cotton","Cotton","Crop",48033,14950,3.21290969899666,2016-01-01
+"306","Arizona",2016,"Cottonwood/Willow","Other","Riparian",2406,481,5.002079002079,2016-01-01
+"307","Arizona",2016,"Crucifers Fall Early","Vegetables","Crop",4143,8299,0.499216773105193,2016-01-01
+"308","Arizona",2016,"Crucifers Fall Late","Vegetables","Crop",822,4312,0.190630797773655,2016-01-01
+"309","Arizona",2016,"Crucifers Spring Early","Vegetables","Crop",1143,4182,0.273314203730273,2016-01-01
+"310","Arizona",2016,"Crucifers Spring Late","Vegetables","Crop",4236,5892,0.718940936863544,2016-01-01
+"311","Arizona",2016,"Dates","Dates","Crop",6958,1174,5.9267461669506,2016-01-01
+"312","Arizona",2016,"Deciduous Orchards","Other","Crop",2126,448,4.74553571428571,2016-01-01
+"313","Arizona",2016,"Fall Melons","Melons","Crop",1037,946,1.09619450317125,2016-01-01
+"314","Arizona",2016,"Field Grain","Grains","Crop",2702,1148,2.35365853658537,2016-01-01
+"315","Arizona",2016,"Gila Gravity Main Canal","Other","Maintained Open Water",2429,399,6.08771929824561,2016-01-01
+"316","Arizona",2016,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",1758,344,5.11046511627907,2016-01-01
+"317","Arizona",2016,"Irrigated Restoration - Mixed Veg Low","Vegetables","Crop",249,91,2.73626373626374,2016-01-01
+"318","Arizona",2016,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",1059,394,2.68781725888325,2016-01-01
+"319","Arizona",2016,"Klein Grass","Alfalfa/Grass","Crop",1945,725,2.68275862068965,2016-01-01
+"320","Arizona",2016,"Legume/Solanum Veg.","Vegetables","Crop",2560,976,2.62295081967213,2016-01-01
+"321","Arizona",2016,"Legume/Solanum Vegetables Fall","Vegetables","Crop",70,140,0.5,2016-01-01
+"322","Arizona",2016,"Lettuce Fall Early","Vegetables","Crop",27828,38828,0.716699289172762,2016-01-01
+"323","Arizona",2016,"Lettuce Fall Late","Vegetables","Crop",2372,19683,0.12051008484479,2016-01-01
+"324","Arizona",2016,"Lettuce Spring Early","Vegetables","Crop",1923,4995,0.384984984984985,2016-01-01
+"325","Arizona",2016,"Lettuce Spring Late","Vegetables","Crop",33154,38946,0.851281261233503,2016-01-01
+"326","Arizona",2016,"Maintained","Other","Maintained Open Water",28225,5531,5.10305550533357,2016-01-01
+"327","Arizona",2016,"Miscellaneous herbs","Vegetables","Crop",700,235,2.97872340425532,2016-01-01
+"328","Arizona",2016,"Mixed Veg Low","Vegetables","Riparian",87278,31877,2.7379615396681,2016-01-01
+"329","Arizona",2016,"Mixed Veg Medium","Vegetables","Riparian",46693,17369,2.68829523864356,2016-01-01
+"330","Arizona",2016,"Moist Soil Unit","Other","Crop",1517,291,5.21305841924399,2016-01-01
+"331","Arizona",2016,"Nursery/Greenhouse","Other","Crop",777,347,2.23919308357349,2016-01-01
+"332","Arizona",2016,"Perennial Vegetables","Vegetables","Crop",512,110,4.65454545454545,2016-01-01
+"333","Arizona",2016,"River","Other","Mainstream Open Water",141046,28886,4.88284982344388,2016-01-01
+"334","Arizona",2016,"Root Vegetables","Vegetables","Crop",17,18,0.944444444444444,2016-01-01
+"335","Arizona",2016,"Salt Cedar Dense","Other","Riparian",89936,24829,3.62221595714688,2016-01-01
+"336","Arizona",2016,"Small Grains Fall","Grains","Crop",4,60,0.0666666666666667,2016-01-01
+"337","Arizona",2016,"Small Grains Spring","Grains","Crop",80687,45532,1.77209435122551,2016-01-01
+"338","Arizona",2016,"Small Vegetables Fall","Vegetables","Crop",2463,4681,0.526169621875668,2016-01-01
+"339","Arizona",2016,"Small Vegetables Spring","Vegetables","Crop",1420,973,1.45940390544707,2016-01-01
+"340","Arizona",2016,"Small Vegetables Spring Late","Vegetables","Crop",1334,801,1.66541822721598,2016-01-01
+"341","Arizona",2016,"Spring Melons","Melons","Crop",5931,3269,1.81431630468033,2016-01-01
+"342","Arizona",2016,"Sudan","Alfalfa/Grass","Crop",115278,31430,3.66776964683423,2016-01-01
+"343","Arizona",2016,"Sugar Beets (Summer)","Sugar Beets","Crop",576,285,2.02105263157895,2016-01-01
+"344","Arizona",2016,"USGS barren","Other","Riparian",3581,4071,0.879636452959961,2016-01-01
+"345","Arizona",2016,"marsh","Other","Riparian",68217,11717,5.82205342664505,2016-01-01
+"346","Arizona",2016,"ms_aw","Other","Riparian",67,26,2.57692307692308,2016-01-01
+"347","Arizona",2016,"sc_ms_aw","Other","Riparian",26,10,2.6,2016-01-01
+"348","California",2010,"Alfalfa","Alfalfa/Grass","Crop",821529.55,161882.703695782,5.07484450929274,2010-01-01
+"349","California",2010,"All American Canal","Other","Open Water",3394.05,566,5.99655477031802,2010-01-01
+"350","California",2010,"Aloe","Other","Crop",154.23,72.7035446166992,2.12135461638242,2010-01-01
+"351","California",2010,"Bermuda","Alfalfa/Grass","Crop",292509.34,67310.7403151393,4.34565625976646,2010-01-01
+"352","California",2010,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",1419.23,292.013824462891,4.86014661329966,2010-01-01
+"353","California",2010,"Cane/Bamboo","Other","Crop",2250.67,390.902976989746,5.75761795761161,2010-01-01
+"354","California",2010,"Citrus - Declining","Citrus","Crop",558.35,226.035625457764,2.47018583406593,2010-01-01
+"355","California",2010,"Citrus - Mature","Citrus","Crop",47028.49,13300.3566150665,3.53588188355239,2010-01-01
+"356","California",2010,"Citrus - Young","Citrus","Crop",6031.29,2852.28997516632,2.11454306978319,2010-01-01
+"357","California",2010,"Cotton","Cotton","Crop",30582.35,10506.0210949033,2.91093552199662,2010-01-01
+"358","California",2010,"Crucifers Fall Early","Vegetables","Crop",18309.67,14009.2713928223,1.30696804184842,2010-01-01
+"359","California",2010,"Crucifers Fall Late","Vegetables","Crop",2938.33,3891.16774749756,0.755128072257914,2010-01-01
+"360","California",2010,"Crucifers Spring Early","Vegetables","Crop",564.87,8361.89667510986,0.0675528557631428,2010-01-01
+"361","California",2010,"Crucifers Spring Late","Vegetables","Crop",2100.5,6806.05506134033,0.308622246083672,2010-01-01
+"362","California",2010,"Dates","Dates","Crop",58764.65,10381.3181148767,5.66061547770013,2010-01-01
+"363","California",2010,"Deciduous Orchards","Other","Crop",5610.18,1236.82543063164,4.53595136472487,2010-01-01
+"364","California",2010,"Fall Melons","Melons","Crop",2127.15,1477.70319789648,1.43949745999603,2010-01-01
+"365","California",2010,"Farm Pond","Other","Open Water",3737.29,598.94716668129,6.2397657220886,2010-01-01
+"366","California",2010,"Field Grain","Grains","Crop",34693.3,12062.3469848633,2.87616498211631,2010-01-01
+"367","California",2010,"Grapes","Grapes","Crop",25049.66,8217.64246749878,3.04827815265421,2010-01-01
+"368","California",2010,"Lake or Reservoir","Other","Open Water",6651.96,1064.77113342285,6.24731436756401,2010-01-01
+"369","California",2010,"Legume/Solanum Vegetables","Vegetables","Crop",8829.09,3523.16965675354,2.50600761818994,2010-01-01
+"370","California",2010,"Legume/Solanum Vegetables Fall","Vegetables","Crop",944.21,2418.55615234375,0.390402347733376,2010-01-01
+"371","California",2010,"Legume/Solanum Vegetables Spring","Vegetables","Crop",3744.31,3578.36865234375,1.04637346337906,2010-01-01
+"372","California",2010,"Lettuce Fall Early","Vegetables","Crop",3947.18,5040.94486331939,0.783023839185742,2010-01-01
+"373","California",2010,"Lettuce Fall Late","Vegetables","Crop",10153.1,27442.1773529053,0.369981575056219,2010-01-01
+"374","California",2010,"Lettuce Spring Early","Vegetables","Crop",2279.39,7797.28417778015,0.29233127176454,2010-01-01
+"375","California",2010,"Lettuce Spring Late","Vegetables","Crop",23540.41,24843.3713073731,0.947552959248072,2010-01-01
+"376","California",2010,"Maintained","Other","Open Water",6472.18,1281.70002258755,5.04968392442849,2010-01-01
+"377","California",2010,"Miscellaneous herbs","Vegetables","Crop",3130.87,1400.95581817627,2.2348099485933,2010-01-01
+"378","California",2010,"Moist Soil Unit","Other","Crop",9033,1812.6329498291,4.98335860045556,2010-01-01
+"379","California",2010,"Not Maintained","Other","Open Water",4596.92,881.160004213452,5.21689588499122,2010-01-01
+"380","California",2010,"Nursery or greenhouse","Other","Crop",4518.14,2128.85499382019,2.12233337315863,2010-01-01
+"381","California",2010,"Oil Crops","Other","Crop",52.12,22.357141494751,2.33124614845045,2010-01-01
+"382","California",2010,"Perennial Vegetables","Vegetables","Crop",846.27,607.871803283691,1.3921849893818,2010-01-01
+"383","California",2010,"River","Other","Mainstream Open Water",62247.33,12877.8299695104,4.8336816177397,2010-01-01
+"384","California",2010,"Root Vegetables","Vegetables","Crop",249.21,354.104955673218,0.703774392330111,2010-01-01
+"385","California",2010,"Small Grains Fall","Grains","Crop",259.54,3321.1210975647,0.0781483096748007,2010-01-01
+"386","California",2010,"Small Grains Spring","Grains","Crop",127604.81,66591.6827392578,1.91622744389328,2010-01-01
+"387","California",2010,"Small Vegetables Fall","Vegetables","Crop",5629.76,11542.5567512512,0.487739425616403,2010-01-01
+"388","California",2010,"Small Vegetables Spring","Vegetables","Crop",22776.67,16524.8020000458,1.378332399985,2010-01-01
+"389","California",2010,"Small Vegetables Spring Late","Vegetables","Crop",14694.22,8765.41754150391,1.67638562914128,2010-01-01
+"390","California",2010,"Spring Melons","Melons","Crop",15108.14,8506.76288986207,1.77601517705461,2010-01-01
+"391","California",2010,"Sudan","Alfalfa/Grass","Crop",204016.27,65509.6749076843,3.11429220626568,2010-01-01
+"392","California",2010,"Sugar Beets (Summer)","Sugar Beets","Crop",58836.65,25809.712890625,2.27963210010645,2010-01-01
+"393","California",2010,"Sugar Beets Fall","Sugar Beets","Crop",10597.44,22053.9609375,0.480523205334076,2010-01-01
+"394","California",2010,"Tomatoes","Vegetables","Crop",395.16,180.675980091095,2.18711972560362,2010-01-01
+"395","California",2010,"Undetermined Open Water","Other","Open Water",2783.15,455.174228668213,6.11447183234247,2010-01-01
+"396","California",2010,"Wildlife Forage Maintained","Other","Crop",1016.59,502,2.0250796812749,2010-01-01
+"397","California",2010,"aw","Other","Riparian",5584.35,2107.55032253265,2.6496876208817,2010-01-01
+"398","California",2010,"barren","Other","Riparian",10269.8,12233.8267940879,0.839459326411501,2010-01-01
+"399","California",2010,"low veg","Vegetables","Riparian",9587.77,3607.83021107316,2.65748924951435,2010-01-01
+"400","California",2010,"marsh","Other","Riparian",11874.36,2102.99896812439,5.64639364069229,2010-01-01
+"401","California",2010,"ms_aw","Other","Riparian",2778.06,1073.69137239456,2.58739156467685,2010-01-01
+"402","California",2010,"ms_high","Other","Riparian",3756.51,1059.70185709,3.5448744143146,2010-01-01
+"403","California",2010,"ms_low","Other","Riparian",5862.58,2258.58984857798,2.59568155045553,2010-01-01
+"404","California",2010,"sc/ms","Other","Riparian",14752.66,4178.14006853104,3.53091561269433,2010-01-01
+"405","California",2010,"sc_aw","Other","Riparian",4235.48,1631.55787491798,2.5959728827964,2010-01-01
+"406","California",2010,"sc_high","Other","Riparian",20629.25,5812.9520226717,3.54884229553963,2010-01-01
+"407","California",2010,"sc_low","Other","Riparian",19309.79,7461.06911927462,2.58807279376569,2010-01-01
+"408","California",2010,"sc_ms_aw","Other","Riparian",2679.94,1034.28695106506,2.59109911155731,2010-01-01
+"409","California",2011,"Alfalfa","Alfalfa/Grass","Crop",845261.68,163105.226538658,5.18230897891958,2011-01-01
+"410","California",2011,"All American Canal","Other","Open Water",3422.16,573,5.97235602094241,2011-01-01
+"411","California",2011,"Aloe","Other","Crop",157.14,72.7035446166992,2.16138017518209,2011-01-01
+"412","California",2011,"Bermuda","Alfalfa/Grass","Crop",246159.76,55931.8468104005,4.40106619104568,2011-01-01
+"413","California",2011,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",1845.5,380.158653259277,4.85455213021635,2011-01-01
+"414","California",2011,"Cane/Bamboo","Other","Crop",364.43,62.512020111084,5.82975881042409,2011-01-01
+"415","California",2011,"Citrus - Declining","Citrus","Crop",533.86,212.299809455871,2.51465133844582,2011-01-01
+"416","California",2011,"Citrus - Mature","Citrus","Crop",47333.69,13091.2477054596,3.61567446166799,2011-01-01
+"417","California",2011,"Citrus - Young","Citrus","Crop",6222.37,2884.6134815216,2.15708968978324,2011-01-01
+"418","California",2011,"Cotton","Cotton","Crop",56084.48,19268.2023620605,2.91072716313336,2011-01-01
+"419","California",2011,"Cottonwood / Willow","Other","Riparian",1431.46,286.31047642231,4.99967733590226,2011-01-01
+"420","California",2011,"Crucifers Fall Early","Vegetables","Crop",15257.26,12338.5234222412,1.23655477060549,2011-01-01
+"421","California",2011,"Crucifers Fall Late","Vegetables","Crop",6012.95,8109.28408813477,0.74148962283834,2011-01-01
+"422","California",2011,"Crucifers Spring Early","Vegetables","Crop",919.21,10473.5615234375,0.0877647969072424,2011-01-01
+"423","California",2011,"Crucifers Spring Late","Vegetables","Crop",860.02,2051.82555389405,0.419148693400282,2011-01-01
+"424","California",2011,"Dates","Dates","Crop",60769.72,10550.7098249197,5.75977550405832,2011-01-01
+"425","California",2011,"Deciduous Orchards","Other","Crop",4683.61,1029.59523153305,4.54898182951584,2011-01-01
+"426","California",2011,"Fall Melons","Melons","Crop",1287.79,892.880452156068,1.44228714705348,2011-01-01
+"427","California",2011,"Farm Pond","Other","Open Water",6453.5,1016.0880625248,6.3513195735852,2011-01-01
+"428","California",2011,"Field Grain","Grains","Crop",40962.32,13856.0774459839,2.95627100524562,2011-01-01
+"429","California",2011,"Grapes","Grapes","Crop",25110.27,8095.04944849014,3.10192916791675,2011-01-01
+"430","California",2011,"Lake or Reservoir","Other","Open Water",6766.92,1064.77113342285,6.35528123141995,2011-01-01
+"431","California",2011,"Legume/Solanum Vegetables","Vegetables","Crop",12205.09,4718.22944068909,2.58679450701267,2011-01-01
+"432","California",2011,"Legume/Solanum Vegetables Fall","Vegetables","Crop",705.23,1879.85048675537,0.37515217564841,2011-01-01
+"433","California",2011,"Legume/Solanum Vegetables Spring","Vegetables","Crop",1665.95,1460.23706054687,1.14087639946358,2011-01-01
+"434","California",2011,"Lettuce Fall Early","Vegetables","Crop",4603.45,6456.07540893556,0.713041547443603,2011-01-01
+"435","California",2011,"Lettuce Fall Late","Vegetables","Crop",14023.35,34969.2944488525,0.401018957374479,2011-01-01
+"436","California",2011,"Lettuce Spring Early","Vegetables","Crop",3331.08,8806.82887649536,0.378238301971593,2011-01-01
+"437","California",2011,"Lettuce Spring Late","Vegetables","Crop",25037.58,24164.1913146973,1.03614392362353,2011-01-01
+"438","California",2011,"Maintained","Other","Open Water",6158.41,1193.28073078394,5.16090626549727,2011-01-01
+"439","California",2011,"Marsh Maintained","Other","Crop",689.86,118.311569213867,5.83087524393298,2011-01-01
+"440","California",2011,"Miscellaneous herbs","Vegetables","Crop",4026.42,1762.82429027558,2.28407336012516,2011-01-01
+"441","California",2011,"Mixed Veg Low","Vegetables","Riparian",28330.8,10579.7885270119,2.67782290049248,2011-01-01
+"442","California",2011,"Mixed Veg Medium","Vegetables","Riparian",18678.65,7066.93106913566,2.64310629568438,2011-01-01
+"443","California",2011,"Moist Soil Unit","Other","Crop",6507.68,1276.71123504639,5.09722153401708,2011-01-01
+"444","California",2011,"Not Maintained","Other","Open Water",4533.05,852.558251388371,5.31699739298521,2011-01-01
+"445","California",2011,"Nursery or greenhouse","Other","Crop",4910.8,2274.07591438294,2.15947056513833,2011-01-01
+"446","California",2011,"Perennial Vegetables","Vegetables","Crop",6442.48,1394.66397094727,4.6193779535469,2011-01-01
+"447","California",2011,"River","Other","Mainstream Open Water",63162.24,12835.6962526441,4.92082694672593,2011-01-01
+"448","California",2011,"Root Vegetables","Vegetables","Crop",1052.42,1587.86862564087,0.662787829550596,2011-01-01
+"449","California",2011,"Salt Cedar Dense","Other","Riparian",45282.47,12681.9274671078,3.57062994702075,2011-01-01
+"450","California",2011,"Small Grains Fall","Grains","Crop",147.99,1488.20586395264,0.0994418874327926,2011-01-01
+"451","California",2011,"Small Grains Spring","Grains","Crop",188967.05,91345.7969970703,2.0686999972868,2011-01-01
+"452","California",2011,"Small Vegetables Fall","Vegetables","Crop",10785.29,23219.0885486603,0.464501006462732,2011-01-01
+"453","California",2011,"Small Vegetables Spring","Vegetables","Crop",33953.43,22424.2156066895,1.51414125673458,2011-01-01
+"454","California",2011,"Small Vegetables Spring Late","Vegetables","Crop",14047.09,7857.33277511597,1.7877682417228,2011-01-01
+"455","California",2011,"Spring Melons","Melons","Crop",19101.44,10249.4378395081,1.86365733409988,2011-01-01
+"456","California",2011,"Sudan","Alfalfa/Grass","Crop",228265.75,72217.9598445892,3.16078923430156,2011-01-01
+"457","California",2011,"Sugar Beets (Summer)","Sugar Beets","Crop",64246.92,26565.7109375,2.41841523274686,2011-01-01
+"458","California",2011,"Sugar Beets Fall","Sugar Beets","Crop",9874.88,20973.4812731743,0.47082693957108,2011-01-01
+"459","California",2011,"Tomatoes","Vegetables","Crop",833.94,366.206745147705,2.27723822963348,2011-01-01
+"460","California",2011,"USGS barren","Other","Riparian",2009.17,2282.7777838707,0.880142611425468,2011-01-01
+"461","California",2011,"Undetermined Open Water","Other","Open Water",2840.44,456.667095184327,6.21993576930149,2011-01-01
+"462","California",2011,"Wildlife Forage Maintained","Other","Crop",2281.98,1042.75205230713,2.18842053098916,2011-01-01
+"463","California",2011,"marsh","Other","Riparian",32176.42,5602.31045264006,5.7434196608717,2011-01-01
+"464","California",2012,"Alfalfa","Alfalfa/Grass","Crop",901225.048172045,173910.962648869,5.18210602969087,2012-01-01
+"465","California",2012,"All American Canal","Other","Maintained Open Water",3423.19855621187,578.539991378784,5.91696098320473,2012-01-01
+"466","California",2012,"Aloe","Other","Crop",91.1510228191931,44.8333436250687,2.03310784895878,2012-01-01
+"467","California",2012,"Bermuda/Grass","Alfalfa/Grass","Crop",272187.800980479,65126.222017169,4.17938877075846,2012-01-01
+"468","California",2012,"Cane/Bamboo","Other","Crop",174.527675459899,37.6262578964233,4.63845423959869,2012-01-01
+"469","California",2012,"Citrus","Citrus","Crop",54573.4485145417,16197.212703228,3.36931109780793,2012-01-01
+"470","California",2012,"Cotton","Cotton","Crop",51699.0392790024,18986.3842697144,2.72295338304454,2012-01-01
+"471","California",2012,"Cottonwood/Willow","Other","Riparian",235.695558459953,46.5568654201925,5.0625306564932,2012-01-01
+"472","California",2012,"Crucifers","Vegetables","Crop",26894.8439362284,36022.7233228683,0.746607736876871,2012-01-01
+"473","California",2012,"Dates","Dates","Crop",60837.4790595594,10555.5363348722,5.76356114265564,2012-01-01
+"474","California",2012,"Deciduous Orchards","Other","Crop",3925.11757622318,896.949633598328,4.37607355997977,2012-01-01
+"475","California",2012,"Field Grain","Grains","Crop",45696.2962783411,15767.519993782,2.89812832305661,2012-01-01
+"476","California",2012,"Grapes","Grapes","Crop",24081.2005747354,7891.93822860718,3.05136708843518,2012-01-01
+"477","California",2012,"Jojoba Beans","Other","Crop",16.125119426377,16.6353244781494,0.969330021037907,2012-01-01
+"478","California",2012,"Legume/Solanum Vegetables","Vegetables","Crop",12318.6489932693,8589.57601261139,1.43413935393118,2012-01-01
+"479","California",2012,"Lettuce","Vegetables","Crop",56764.3048269278,92363.4060201645,0.614575699108965,2012-01-01
+"480","California",2012,"Marsh Maintained","Other","Crop",1752.55203952817,303.4951171875,5.77456420310525,2012-01-01
+"481","California",2012,"Melons","Melons","Crop",10648.463481112,5938.18666124344,1.79321804594169,2012-01-01
+"482","California",2012,"Miscellaneous herbs","Vegetables","Crop",2022.69701673601,889.057444572449,2.27510272714575,2012-01-01
+"483","California",2012,"Mixed Veg Low","Vegetables","Riparian",27877.6116903361,10528.4510324162,2.64783600213395,2012-01-01
+"484","California",2012,"Mixed Veg Medium","Vegetables","Riparian",17770.3105897495,6813.28612793074,2.60818498681583,2012-01-01
+"485","California",2012,"Moist Soil Unit","Other","Crop",6567.52340228376,1296.18513870239,5.06680967570612,2012-01-01
+"486","California",2012,"Nursery/Greenhouse","Other","Crop",4762.47634645545,2193.54512310028,2.17113215328998,2012-01-01
+"487","California",2012,"Oil Crops","Other","Crop",518.183371218998,212.932836532593,2.43355313185659,2012-01-01
+"488","California",2012,"Open Water","Other","Maintained Open Water",18910.333583229,3228.46317136288,5.85737937200816,2012-01-01
+"489","California",2012,"Open Water","Other","Not Maintained Open Water",7249.0256772238,1316.15111939609,5.5077457067012,2012-01-01
+"490","California",2012,"Perennial Vegetables","Vegetables","Crop",4363.16658832323,940.825622558594,4.63759328371342,2012-01-01
+"491","California",2012,"Restoration Area","Other","Crop",1729.35389838287,464.289993286133,3.72472791442891,2012-01-01
+"492","California",2012,"River","Other","Mainstream Open Water",68289.812151562,13758.4859646559,4.96346853331038,2012-01-01
+"493","California",2012,"Root Vegetables","Vegetables","Crop",373.126247313909,523.730674743652,0.712439170183304,2012-01-01
+"494","California",2012,"Salt Cedar Dense","Other","Riparian",43995.0640285257,12534.340624772,3.50996237820256,2012-01-01
+"495","California",2012,"Small Grains","Grains","Crop",209696.167673886,106335.625185013,1.97202176889483,2012-01-01
+"496","California",2012,"Small Vegetables","Vegetables","Crop",59928.4551202295,52336.2207007408,1.14506653934569,2012-01-01
+"497","California",2012,"Sudan","Alfalfa/Grass","Crop",236399.886278762,75607.9095811844,3.1266554992494,2012-01-01
+"498","California",2012,"Sugar Beets","Sugar Beets","Crop",76885.2547218672,49886.087890625,1.54121635856549,2012-01-01
+"499","California",2012,"Tomatoes","Vegetables","Crop",745.229229020875,335.739502906799,2.21966501578978,2012-01-01
+"500","California",2012,"USGS Barren","Other","Riparian",2066.0099553515,2387.07554720901,0.865498353316506,2012-01-01
+"501","California",2012,"Wildlife Forage Maintained","Other","Crop",2216.51001335115,1034.7462310791,2.1420807795933,2012-01-01
+"502","California",2012,"marsh","Other","Riparian",30579.9444097087,5416.84960545041,5.64533753695862,2012-01-01
+"503","California",2013,"Alfalfa","Alfalfa/Grass","Crop",969432.94,189414.711340904,5.11804459715506,2013-01-01
+"504","California",2013,"All American Canal","Other","Maintained Open Water",3277.98,576.709989547729,5.683931368296,2013-01-01
+"505","California",2013,"Aloe","Other","Crop",51.83,24.8022366762161,2.08973088502546,2013-01-01
+"506","California",2013,"Bermuda","Alfalfa/Grass","Crop",236300,57209.6886191964,4.1304192646962,2013-01-01
+"507","California",2013,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",324.29,109.835253596306,2.95251287161326,2013-01-01
+"508","California",2013,"Cane/Bamboo","Other","Crop",354.99,65.3098592758179,5.43547335633965,2013-01-01
+"509","California",2013,"Citrus - Declining","Citrus","Crop",2060.11,863.19288444519,2.3866160589636,2013-01-01
+"510","California",2013,"Citrus - Mature","Citrus","Crop",44165.63,12551.6499958038,3.51871108696985,2013-01-01
+"511","California",2013,"Citrus - Young","Citrus","Crop",5408.86,2570.93167304993,2.10385210027126,2013-01-01
+"512","California",2013,"Cotton","Cotton","Crop",46641.11,16648.1579437256,2.80157781765749,2013-01-01
+"513","California",2013,"Cottonwood/Willow","Other","Riparian",279.31,55.7273275470361,5.01208316089177,2013-01-01
+"514","California",2013,"Crucifers Fall Early","Vegetables","Crop",14870.14,11904.7670402527,1.2490912211655,2013-01-01
+"515","California",2013,"Crucifers Fall Late","Vegetables","Crop",8768.55,11285.8387246132,0.776951559734479,2013-01-01
+"516","California",2013,"Crucifers Spring Early","Vegetables","Crop",960.11,8983.66321516037,0.106872884368569,2013-01-01
+"517","California",2013,"Crucifers Spring Late","Vegetables","Crop",3083.3,8115.80308675766,0.379913111128945,2013-01-01
+"518","California",2013,"Dates","Dates","Crop",60898.82,10916.1622518301,5.57877563516338,2013-01-01
+"519","California",2013,"Deciduous Orchards","Other","Crop",6524.42,1469.12054872513,4.44103787511634,2013-01-01
+"520","California",2013,"Fall Melons","Melons","Crop",2881.78,1957.87060451508,1.47189502378466,2013-01-01
+"521","California",2013,"Field Grain","Grains","Crop",34371.04,12345.7953491211,2.78402800532789,2013-01-01
+"522","California",2013,"Grapes","Grapes","Crop",22967.68,7993.88829421997,2.8731549847409,2013-01-01
+"523","California",2013,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",1227.42,247.486938476562,4.95953446091152,2013-01-01
+"524","California",2013,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",590.57,223.637405395508,2.64074786127823,2013-01-01
+"525","California",2013,"Klein Grass","Alfalfa/Grass","Crop",48958.61,11951.2615280151,4.09652235332943,2013-01-01
+"526","California",2013,"Legume/Solanum Veg.","Vegetables","Crop",1534.4,632.381021499634,2.4263852769669,2013-01-01
+"527","California",2013,"Legume/Solanum Vegetables Fall","Vegetables","Crop",1789.18,4330.00531005859,0.413205035994699,2013-01-01
+"528","California",2013,"Legume/Solanum Vegetables Spring","Vegetables","Crop",4252.03,3635.23987197876,1.16966971912242,2013-01-01
+"529","California",2013,"Lettuce Fall Early","Vegetables","Crop",1585.66,2245.73948860168,0.706074773164057,2013-01-01
+"530","California",2013,"Lettuce Fall Late","Vegetables","Crop",10174.83,28629.924446106,0.355391437345686,2013-01-01
+"531","California",2013,"Lettuce Spring Early","Vegetables","Crop",1168.71,3299.49743652344,0.354208488560436,2013-01-01
+"532","California",2013,"Lettuce Spring Late","Vegetables","Crop",26508.61,25373.9639043808,1.04471694292208,2013-01-01
+"533","California",2013,"Marsh Maintained","Other","Crop",1678.63,303.4951171875,5.53099508010515,2013-01-01
+"534","California",2013,"Miscellaneous herbs","Vegetables","Crop",1546.1,674.095793247223,2.2935909339416,2013-01-01
+"535","California",2013,"Mixed Veg Low","Vegetables","Riparian",28248.84,10530.5316982418,2.68256540215499,2013-01-01
+"536","California",2013,"Mixed Veg Medium","Vegetables","Riparian",17973.43,6783.46497356426,2.64959428110029,2013-01-01
+"537","California",2013,"Moist Soil Unit","Other","Crop",6538.87,1343.01023769379,4.86881619847406,2013-01-01
+"538","California",2013,"Not Maintained","Other","Not Maintained Open Water",25893.16,4554.5155467391,5.68516228219678,2013-01-01
+"539","California",2013,"Nursery/Greenhouse","Other","Crop",4507.19,2153.57313728333,2.09288921837393,2013-01-01
+"540","California",2013,"Oil Crops","Other","Crop",664.43,280.048110961914,2.37255662149552,2013-01-01
+"541","California",2013,"Perennial Vegetables","Vegetables","Crop",2949.2,672.06379699707,4.38827387098915,2013-01-01
+"542","California",2013,"River","Other","Mainstream Open Water",68623.38,13741.459859252,4.99389298538005,2013-01-01
+"543","California",2013,"Root Vegetables","Vegetables","Crop",177.33,174.593486785889,1.01567362714663,2013-01-01
+"544","California",2013,"Salt Cedar Dense","Other","Riparian",44114.66,12361.9976325631,3.56857049412437,2013-01-01
+"545","California",2013,"Small Grains Fall","Grains","Crop",391.63,3843.23052978516,0.101901251294934,2013-01-01
+"546","California",2013,"Small Grains Spring","Grains","Crop",136397.47,65872.684668541,2.07062260611248,2013-01-01
+"547","California",2013,"Small Vegetables Fall","Vegetables","Crop",6051.1,11863.6337890625,0.510054516819182,2013-01-01
+"548","California",2013,"Small Vegetables Spring","Vegetables","Crop",32175.77,20876.7044410706,1.54122841039512,2013-01-01
+"549","California",2013,"Small Vegetables Spring Late","Vegetables","Crop",15633.46,8714.8482131958,1.79388781279383,2013-01-01
+"550","California",2013,"Spring Melons","Melons","Crop",15237.85,7946.48682022095,1.91755807877579,2013-01-01
+"551","California",2013,"Sudan","Alfalfa/Grass","Crop",187682.45,63606.726960063,2.95066982644526,2013-01-01
+"552","California",2013,"Sugar Beets (Summer)","Sugar Beets","Crop",60244.06,25008.900390625,2.40890479225482,2013-01-01
+"553","California",2013,"Sugar Beets Fall","Sugar Beets","Crop",11329.56,22445.193359375,0.504765533475247,2013-01-01
+"554","California",2013,"Tomatoes","Vegetables","Crop",2604.06,1160.67743682861,2.24356907214051,2013-01-01
+"555","California",2013,"USGS barren","Other","Riparian",2016.41,2309.07067096233,0.873256078888065,2013-01-01
+"556","California",2013,"Wildlife Forage Maintained","Other","Crop",2388.41,1078.6943359375,2.21416755463374,2013-01-01
+"557","California",2013,"marsh","Other","Riparian",32013.25,5555.12449303642,5.76283214536955,2013-01-01
+"558","California",2014,"Alfalfa","Alfalfa/Grass","Crop",1041143.75,199930.154416561,5.20753736742854,2014-01-01
+"559","California",2014,"All American Canal","Other","Open Water",3429.91,572.010000228882,5.99624132205306,2014-01-01
+"560","California",2014,"Aloe","Other","Crop",53.59,24.8022366762161,2.16069222705989,2014-01-01
+"561","California",2014,"Bermuda","Alfalfa/Grass","Crop",248132.81,56372.8098092675,4.4016399189527,2014-01-01
+"562","California",2014,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",2.8,1.13141143321991,2.47478496132165,2014-01-01
+"563","California",2014,"Cane/Bamboo","Other","Crop",3129.8,560.684432983398,5.58210611153649,2014-01-01
+"564","California",2014,"Citrus - Declining","Citrus","Crop",1972.69,817.87287902832,2.41197629923084,2014-01-01
+"565","California",2014,"Citrus - Mature","Citrus","Crop",43581.86,11919.1080570221,3.65646991297507,2014-01-01
+"566","California",2014,"Citrus - Young","Citrus","Crop",6021.15,2777.05307126045,2.16817966581644,2014-01-01
+"567","California",2014,"Cotton","Cotton","Crop",31212.22,10920.9808959961,2.85800518261534,2014-01-01
+"568","California",2014,"Cottonwood/Willow","Other","Riparian",285.18,55.3821616880596,5.14931146252973,2014-01-01
+"569","California",2014,"Crucifers Fall Early","Vegetables","Crop",18496.86,14494.4469184875,1.27613423982445,2014-01-01
+"570","California",2014,"Crucifers Fall Late","Vegetables","Crop",2359.55,3755.70914649963,0.628256850560201,2014-01-01
+"571","California",2014,"Crucifers Spring Early","Vegetables","Crop",675.79,6811.67031288147,0.0992106148652,2014-01-01
+"572","California",2014,"Crucifers Spring Late","Vegetables","Crop",1770.92,3934.81806945801,0.450064010264122,2014-01-01
+"573","California",2014,"Dates","Dates","Crop",63700.43,11030.6839803457,5.77483953973301,2014-01-01
+"574","California",2014,"Deciduous Orchards","Other","Crop",5025.19,1108.71647930145,4.53243917071218,2014-01-01
+"575","California",2014,"Fall Melons","Melons","Crop",3282.53,2189.37585830688,1.49929944077235,2014-01-01
+"576","California",2014,"Field Grain","Grains","Crop",25116.47,8796.98864746094,2.85512133828311,2014-01-01
+"577","California",2014,"Grapes","Grapes","Crop",24853.85,8049.55053710938,3.08760717575731,2014-01-01
+"578","California",2014,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",3386.44,676.168884277344,5.00827541571846,2014-01-01
+"579","California",2014,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",688.56,258.382965087891,2.66488156355734,2014-01-01
+"580","California",2014,"Klein Grass","Alfalfa/Grass","Crop",61050.37,14092.181476593,4.33221571134349,2014-01-01
+"581","California",2014,"Legume/Solanum Veg.","Vegetables","Crop",18070.04,7095.17092132568,2.54680827288988,2014-01-01
+"582","California",2014,"Legume/Solanum Vegetables Fall","Vegetables","Crop",295.49,643.720642089844,0.459034526282534,2014-01-01
+"583","California",2014,"Legume/Solanum Vegetables Spring","Vegetables","Crop",1333.41,1168.28076171875,1.14134379653596,2014-01-01
+"584","California",2014,"Lettuce Fall Early","Vegetables","Crop",14447.04,19861.2655248642,0.727397757303725,2014-01-01
+"585","California",2014,"Lettuce Fall Late","Vegetables","Crop",7689.46,20632.2616518736,0.372691085918917,2014-01-01
+"586","California",2014,"Lettuce Spring Early","Vegetables","Crop",6478.59,17920.64960289,0.361515354831513,2014-01-01
+"587","California",2014,"Lettuce Spring Late","Vegetables","Crop",32438.96,31004.5981578827,1.0462628747779,2014-01-01
+"588","California",2014,"Maintained","Other","Open Water",26597.83,4546.86844789982,5.84970299993734,2014-01-01
+"589","California",2014,"Marsh Maintained","Other","Crop",1773.39,303.4951171875,5.84322415607232,2014-01-01
+"590","California",2014,"Miscellaneous herbs","Vegetables","Crop",2767.85,1231.48682785034,2.24756768599101,2014-01-01
+"591","California",2014,"Mixed Veg Low","Vegetables","Riparian",29035.04,10714.5052223019,2.7098815481992,2014-01-01
+"592","California",2014,"Mixed Veg Medium","Vegetables","Riparian",18224.42,6807.28696727799,2.67719285048553,2014-01-01
+"593","California",2014,"Moist Soil Unit","Other","Crop",6873.62,1349.82554531097,5.0922284171296,2014-01-01
+"594","California",2014,"Nursery/Greenhouse","Other","Crop",4756.69,2188.54032325745,2.17345321420448,2014-01-01
+"595","California",2014,"Perennial Vegetables","Vegetables","Crop",11954.77,2572.40435791016,4.64731369438052,2014-01-01
+"596","California",2014,"River","Other","Mainstream Open Water",68414.4,13747.1623378992,4.97661977929729,2014-01-01
+"597","California",2014,"Root Vegetables","Vegetables","Crop",152.73,152.405316352844,1.00213039580853,2014-01-01
+"598","California",2014,"Salt Cedar Dense","Other","Riparian",43630.57,12100.7073468864,3.60562145247042,2014-01-01
+"599","California",2014,"Small Grains Fall","Grains","Crop",156.91,2078.27856445312,0.0754999847873084,2014-01-01
+"600","California",2014,"Small Grains Spring","Grains","Crop",85764.74,42320.777586937,2.02653979652947,2014-01-01
+"601","California",2014,"Small Vegetables Fall","Vegetables","Crop",7896.46,16747.3125734329,0.471506097791865,2014-01-01
+"602","California",2014,"Small Vegetables Spring","Vegetables","Crop",21622.25,14503.003616333,1.49088082524157,2014-01-01
+"603","California",2014,"Small Vegetables Spring Late","Vegetables","Crop",26053.21,14806.5463409424,1.75957373178638,2014-01-01
+"604","California",2014,"Spring Melons","Melons","Crop",21591.86,11847.4837989807,1.82248487242984,2014-01-01
+"605","California",2014,"Sudan","Alfalfa/Grass","Crop",186636.72,58774.2054166794,3.17548691091339,2014-01-01
+"606","California",2014,"Sugar Beets (Summer)","Sugar Beets","Crop",66083.14,27726.078125,2.38342904835193,2014-01-01
+"607","California",2014,"Sugar Beets Fall","Sugar Beets","Crop",11295.69,24545.4375,0.460195097357706,2014-01-01
+"608","California",2014,"Tomatoes","Vegetables","Crop",1189.79,529.023452758789,2.24903072594494,2014-01-01
+"609","California",2014,"USGS barren","Other","Riparian",2153.75,2439.55856890976,0.882844145431814,2014-01-01
+"610","California",2014,"Wildlife Forage Maintained","Other","Crop",2335.77,1095.44482421875,2.13225709625843,2014-01-01
+"611","California",2014,"marsh","Other","Riparian",32021.41,5496.3595145978,5.82593076652905,2014-01-01
+"612","California",2014,"sc_high","Other","Riparian",20.86,5.7456169128418,3.63059360142453,2014-01-01
+"613","California",2015,"Alfalfa","Alfalfa/Grass","Crop",1008010.05,193742.174715996,5.20284265146517,2015-01-01
+"614","California",2015,"All American Canal","Other","Maintained Open Water",3344.98,572.489990234375,5.84286198371884,2015-01-01
+"615","California",2015,"Aloe","Other","Crop",52.74,24.8022366762161,2.12642112437281,2015-01-01
+"616","California",2015,"Bermuda","Alfalfa/Grass","Crop",215770.8,51501.3649602532,4.1896132299896,2015-01-01
+"617","California",2015,"Cane/Bamboo","Other","Crop",1040.2,171.172626495361,6.07690622792534,2015-01-01
+"618","California",2015,"Citrus - Declining","Citrus","Crop",1894.46,736.829372406006,2.57109728649107,2015-01-01
+"619","California",2015,"Citrus - Mature","Citrus","Crop",38772.83,10875.7137813568,3.56508370664043,2015-01-01
+"620","California",2015,"Citrus - Young","Citrus","Crop",6749.81,3189.36736965179,2.11634760680985,2015-01-01
+"621","California",2015,"Cotton","Cotton","Crop",14094.55,4682.70787239075,3.0099144307296,2015-01-01
+"622","California",2015,"Cottonwood/Willow","Other","Riparian",317.61,62.3986199609935,5.0900164170064,2015-01-01
+"623","California",2015,"Crucifers Fall Early","Vegetables","Crop",19894.12,15009.5718917847,1.32542887588212,2015-01-01
+"624","California",2015,"Crucifers Fall Late","Vegetables","Crop",2683.4,3708.28113174438,0.723623669475599,2015-01-01
+"625","California",2015,"Crucifers Spring Early","Vegetables","Crop",767.91,9242.82119750977,0.0830817759632625,2015-01-01
+"626","California",2015,"Crucifers Spring Late","Vegetables","Crop",1720.54,3884.48581695557,0.442926060507143,2015-01-01
+"627","California",2015,"Dates","Dates","Crop",65628.49,11604.5374823809,5.65541626278889,2015-01-01
+"628","California",2015,"Deciduous Orchards","Other","Crop",6007.24,1334.52688264847,4.50140051737151,2015-01-01
+"629","California",2015,"Fall Melons","Melons","Crop",2469.78,1669.45330047607,1.47939448159209,2015-01-01
+"630","California",2015,"Field Grain","Grains","Crop",42280.69,15362.1817169189,2.75225816092481,2015-01-01
+"631","California",2015,"Grapes","Grapes","Crop",24312.91,8214.794921875,2.95964905164676,2015-01-01
+"632","California",2015,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",3404.38,676.168884277344,5.03480724884055,2015-01-01
+"633","California",2015,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",497.07,187.975280761719,2.64433705317933,2015-01-01
+"634","California",2015,"Klein Grass","Alfalfa/Grass","Crop",53580.71,12767.4784317017,4.19665561110008,2015-01-01
+"635","California",2015,"Legume/Solanum Veg.","Vegetables","Crop",16136.05,6671.544921875,2.4186376902136,2015-01-01
+"636","California",2015,"Legume/Solanum Vegetables Fall","Vegetables","Crop",335.57,638.684535980225,0.5254080553007,2015-01-01
+"637","California",2015,"Legume/Solanum Vegetables Spring","Vegetables","Crop",1455.96,1303.27338600159,1.11715624337795,2015-01-01
+"638","California",2015,"Lettuce Fall Early","Vegetables","Crop",19028.06,22879.6460704803,0.831658843908004,2015-01-01
+"639","California",2015,"Lettuce Fall Late","Vegetables","Crop",6513.79,17770.3063230515,0.366554739214055,2015-01-01
+"640","California",2015,"Lettuce Spring Early","Vegetables","Crop",2183.94,6525.64499855042,0.334670365992194,2015-01-01
+"641","California",2015,"Lettuce Spring Late","Vegetables","Crop",16347.21,16200.6066970825,1.00904924770156,2015-01-01
+"642","California",2015,"Maintained","Other","Maintained Open Water",24899.43,4265.82522773743,5.83695502527809,2015-01-01
+"643","California",2015,"Marsh Maintained","Other","Crop",1707.76,303.4951171875,5.6269768549355,2015-01-01
+"644","California",2015,"Miscellaneous herbs","Vegetables","Crop",1750.84,796.76881313324,2.19742536497499,2015-01-01
+"645","California",2015,"Mixed Veg Low","Vegetables","Riparian",28456.03,10476.3608131222,2.71621324499985,2015-01-01
+"646","California",2015,"Mixed Veg Medium","Vegetables","Riparian",18284.83,6838.93319582986,2.67363775554197,2015-01-01
+"647","California",2015,"Moist Soil Unit","Other","Crop",11393.52,2243.05464458466,5.07946608768853,2015-01-01
+"648","California",2015,"Nursery/Greenhouse","Other","Crop",4660.85,2183.18353843689,2.13488692908388,2015-01-01
+"649","California",2015,"Oil Crops","Other","Crop",7.32,3.14069104194641,2.33069725809881,2015-01-01
+"650","California",2015,"Perennial Vegetables","Vegetables","Crop",5457.89,1207.36510944366,4.5204967058514,2015-01-01
+"651","California",2015,"River","Other","Mainstream Open Water",68156.66,13509.1668726206,5.04521564080573,2015-01-01
+"652","California",2015,"Root Vegetables","Vegetables","Crop",378.33,504.956466674805,0.74923290415775,2015-01-01
+"653","California",2015,"Salt Cedar Dense","Other","Riparian",44746.37,12301.7995422781,3.63738409540966,2015-01-01
+"654","California",2015,"Small Grains Fall","Grains","Crop",213.64,2094.96537494659,0.10197781908708,2015-01-01
+"655","California",2015,"Small Grains Spring","Grains","Crop",149861.32,74958.3439664841,1.99926135063772,2015-01-01
+"656","California",2015,"Small Vegetables Fall","Vegetables","Crop",10173.34,18418.5092773438,0.55234328939498,2015-01-01
+"657","California",2015,"Small Vegetables Spring","Vegetables","Crop",35042.29,23416.4990692139,1.49647861093253,2015-01-01
+"658","California",2015,"Small Vegetables Spring Late","Vegetables","Crop",21606.51,12347.2373180389,1.74990643197839,2015-01-01
+"659","California",2015,"Spring Melons","Melons","Crop",12094.14,6579.63243484497,1.83811787660825,2015-01-01
+"660","California",2015,"Sudan","Alfalfa/Grass","Crop",121883.35,40541.065164566,3.00641706144735,2015-01-01
+"661","California",2015,"Sugar Beets (Summer)","Sugar Beets","Crop",60745.92,25828.06640625,2.35193448260999,2015-01-01
+"662","California",2015,"Sugar Beets Fall","Sugar Beets","Crop",12154.88,22489.2416667938,0.540475316157375,2015-01-01
+"663","California",2015,"Tomatoes","Vegetables","Crop",597.78,273.329107284546,2.18703381406682,2015-01-01
+"664","California",2015,"USGS barren","Other","Riparian",2029.56,2294.1571521312,0.884664765931402,2015-01-01
+"665","California",2015,"Wildlife Forage Maintained","Other","Crop",2522.78,1162.82080078125,2.16953463362975,2015-01-01
+"666","California",2015,"marsh","Other","Riparian",32133.86,5514.46817052737,5.82719112819304,2015-01-01
+"667","California",2016,"Alfalfa","Alfalfa/Grass","Crop",1007533,189951,5.3041731815047,2016-01-01
+"668","California",2016,"All American Canal","Other","Maintained Open Water",3465,567,6.11111111111111,2016-01-01
+"669","California",2016,"Aloe","Other","Crop",79,36,2.19444444444444,2016-01-01
+"670","California",2016,"Bermuda","Alfalfa/Grass","Crop",255778,58038,4.40707812123092,2016-01-01
+"671","California",2016,"Bermuda Overseeded with Rye in Winter","Alfalfa/Grass","Crop",90,18,5,2016-01-01
+"672","California",2016,"Cane/Bamboo","Other","Crop",1597,287,5.56445993031359,2016-01-01
+"673","California",2016,"Citrus - Declining","Citrus","Crop",1405,549,2.5591985428051,2016-01-01
+"674","California",2016,"Citrus - Mature","Citrus","Crop",37834,10257,3.68860290533294,2016-01-01
+"675","California",2016,"Citrus - Young","Citrus","Crop",8764,3985,2.19924717691343,2016-01-01
+"676","California",2016,"Cotton","Cotton","Crop",17082,5567,3.06843901562781,2016-01-01
+"677","California",2016,"Cottonwood/Willow","Other","Riparian",324,62,5.2258064516129,2016-01-01
+"678","California",2016,"Crucifers Fall Early","Vegetables","Crop",8168,6923,1.17983533150368,2016-01-01
+"679","California",2016,"Crucifers Fall Late","Vegetables","Crop",12907,16677,0.773940157102596,2016-01-01
+"680","California",2016,"Crucifers Spring Early","Vegetables","Crop",764,13787,0.0554145209255095,2016-01-01
+"681","California",2016,"Crucifers Spring Late","Vegetables","Crop",2742,5760,0.476041666666667,2016-01-01
+"682","California",2016,"Dates","Dates","Crop",71196,12135,5.86699629171817,2016-01-01
+"683","California",2016,"Deciduous Orchards","Other","Crop",5895,1296,4.54861111111111,2016-01-01
+"684","California",2016,"Fall Melons","Melons","Crop",2437,1656,1.47161835748792,2016-01-01
+"685","California",2016,"Field Grain","Grains","Crop",41905,14664,2.85767866884888,2016-01-01
+"686","California",2016,"Grapes","Grapes","Crop",25226,8093,3.11701470406524,2016-01-01
+"687","California",2016,"Irrigated Restoration - Cottonwood/Willow","Other","Crop",3458,676,5.11538461538461,2016-01-01
+"688","California",2016,"Irrigated Restoration - Mixed Veg Medium","Vegetables","Crop",507,188,2.6968085106383,2016-01-01
+"689","California",2016,"Klein Grass","Alfalfa/Grass","Crop",52585,12080,4.35306291390728,2016-01-01
+"690","California",2016,"Legume/Solanum Veg.","Vegetables","Crop",12328,4856,2.53871499176277,2016-01-01
+"691","California",2016,"Legume/Solanum Vegetables Fall","Vegetables","Crop",1161,2692,0.431277860326895,2016-01-01
+"692","California",2016,"Legume/Solanum Vegetables Spring","Vegetables","Crop",132,113,1.16814159292035,2016-01-01
+"693","California",2016,"Lettuce Fall Early","Vegetables","Crop",13288,16889,0.786784297471727,2016-01-01
+"694","California",2016,"Lettuce Fall Late","Vegetables","Crop",13019,32381,0.402056761681233,2016-01-01
+"695","California",2016,"Lettuce Spring Early","Vegetables","Crop",4821,15114,0.318975784041286,2016-01-01
+"696","California",2016,"Lettuce Spring Late","Vegetables","Crop",37875,34204,1.10732662846451,2016-01-01
+"697","California",2016,"Maintained","Other","Maintained Open Water",26647,4414,6.03692795650204,2016-01-01
+"698","California",2016,"Marsh Maintained","Other","Crop",1782,303,5.88118811881188,2016-01-01
+"699","California",2016,"Miscellaneous herbs","Vegetables","Crop",3981,1750,2.27485714285714,2016-01-01
+"700","California",2016,"Mixed Veg Low","Vegetables","Riparian",28590,10427,2.74192001534478,2016-01-01
+"701","California",2016,"Mixed Veg Medium","Vegetables","Riparian",19354,7161,2.70269515430806,2016-01-01
+"702","California",2016,"Moist Soil Unit","Other","Crop",7456,1428,5.22128851540616,2016-01-01
+"703","California",2016,"Nursery/Greenhouse","Other","Crop",4812,2171,2.21649009672962,2016-01-01
+"704","California",2016,"Perennial Vegetables","Vegetables","Crop",9845,2097,4.69480209823557,2016-01-01
+"705","California",2016,"River","Other","Mainstream Open Water",67442,13510,4.9920059215396,2016-01-01
+"706","California",2016,"Root Vegetables","Vegetables","Crop",1308,1830,0.714754098360656,2016-01-01
+"707","California",2016,"Salt Cedar Dense","Other","Riparian",44188,12021,3.6759005074453,2016-01-01
+"708","California",2016,"Small Grains Fall","Grains","Crop",41,488,0.0840163934426229,2016-01-01
+"709","California",2016,"Small Grains Spring","Grains","Crop",71982,34892,2.06299438266651,2016-01-01
+"710","California",2016,"Small Vegetables Fall","Vegetables","Crop",19998,38332,0.521705102786184,2016-01-01
+"711","California",2016,"Small Vegetables Spring","Vegetables","Crop",19723,12877,1.53164556962025,2016-01-01
+"712","California",2016,"Small Vegetables Spring Late","Vegetables","Crop",36197,20219,1.79024679756665,2016-01-01
+"713","California",2016,"Spring Melons","Melons","Crop",24724,13302,1.85866786949331,2016-01-01
+"714","California",2016,"Sudan","Alfalfa/Grass","Crop",150774,47705,3.16054920867834,2016-01-01
+"715","California",2016,"Sugar Beets (Summer)","Sugar Beets","Crop",122979,50551,2.43277086506696,2016-01-01
+"716","California",2016,"Tomatoes","Vegetables","Crop",822,363,2.26446280991736,2016-01-01
+"717","California",2016,"USGS barren","Other","Riparian",2136,2399,0.89037098791163,2016-01-01
+"718","California",2016,"Wildlife Forage Maintained","Other","Crop",2580,1163,2.21840068787618,2016-01-01
+"719","California",2016,"marsh","Other","Riparian",31812,5415,5.87479224376731,2016-01-01
+"720","Nevada",2010,"Cotton","Cotton","Crop",1100.96,406.383636474609,2.70916420146949,2010-01-01
+"721","Nevada",2010,"Maintained","Other","Open Water",275.4,59.4500007629394,4.63246419622726,2010-01-01
+"722","Nevada",2010,"Not Maintained","Other","Open Water",226.13,48.7999994754791,4.6338115252158,2010-01-01
+"723","Nevada",2010,"River","Other","Mainstream Open Water",61676.3,13306.6900405884,4.63498434335462,2010-01-01
+"724","Nevada",2010,"aw","Other","Riparian",29.47,11.2829103469849,2.61191475370318,2010-01-01
+"725","Nevada",2010,"barren","Other","Riparian",2834.92,3429.56011962891,0.826613297657179,2010-01-01
+"726","Nevada",2010,"low veg","Vegetables","Riparian",1689.76,655.917287111282,2.57617848043288,2010-01-01
+"727","Nevada",2010,"marsh","Other","Riparian",109.69,19.7687702178955,5.54865066420289,2010-01-01
+"728","Nevada",2010,"ms_aw","Other","Riparian",71.57,27.9542827606201,2.56025170142524,2010-01-01
+"729","Nevada",2010,"ms_high","Other","Riparian",70.77,20.6026630401611,3.43499283864648,2010-01-01
+"730","Nevada",2010,"ms_low","Other","Riparian",33.86,13.3035831451416,2.54517896649261,2010-01-01
+"731","Nevada",2010,"sc/ms","Other","Riparian",684.91,198.580612182617,3.44902753834875,2010-01-01
+"732","Nevada",2010,"sc_aw","Other","Riparian",32.52,12.8188209533691,2.53689478293656,2010-01-01
+"733","Nevada",2010,"sc_high","Other","Riparian",1881.68,545.585217475891,3.4489204247605,2010-01-01
+"734","Nevada",2010,"sc_low","Other","Riparian",4128.23,1616.47890377044,2.55384093808517,2010-01-01
+"735","Nevada",2010,"sc_ms_aw","Other","Riparian",8.19,3.08887100219727,2.65145420257888,2010-01-01
+"736","Nevada",2011,"Cotton","Cotton","Crop",1049.16,406.38525390625,2.58168816391658,2011-01-01
+"737","Nevada",2011,"Maintained","Other","Open Water",340.82,71.931232213974,4.73813654388906,2011-01-01
+"738","Nevada",2011,"Mixed Veg Low","Vegetables","Riparian",6094.47,2381.67224121094,2.55890373769538,2011-01-01
+"739","Nevada",2011,"Mixed Veg Medium","Vegetables","Riparian",4686.44,1846.22579956055,2.53838940021069,2011-01-01
+"740","Nevada",2011,"Not Maintained","Other","Open Water",21.25,4.482386469841,4.74077818657029,2011-01-01
+"741","Nevada",2011,"River","Other","Mainstream Open Water",63260.61,13355.7778015137,4.73657251117418,2011-01-01
+"742","Nevada",2011,"Salt Cedar Dense","Other","Riparian",4112.08,1217.90129089355,3.37636558130506,2011-01-01
+"743","Nevada",2011,"USGS barren","Other","Riparian",565.79,661.996765136719,0.85467185007037,2011-01-01
+"744","Nevada",2011,"marsh","Other","Riparian",588.96,108.020028591156,5.4523222006277,2011-01-01
+"745","Nevada",2012,"Alfalfa","Alfalfa/Grass","Crop",1757.28916096913,324.691864013672,5.41217491330529,2012-01-01
+"746","Nevada",2012,"Cotton","Cotton","Crop",15.1032725571646,5.65977430343628,2.66852912279467,2012-01-01
+"747","Nevada",2012,"Crucifers","Vegetables","Crop",27.5338547400131,56.5631446838379,0.486780833949645,2012-01-01
+"748","Nevada",2012,"Mixed Veg Low","Vegetables","Riparian",6361.68676880631,2393.77735900879,2.6575933408613,2012-01-01
+"749","Nevada",2012,"Mixed Veg Medium","Vegetables","Riparian",4868.34252095967,1847.83364868164,2.6346216416359,2012-01-01
+"750","Nevada",2012,"Open Water","Other","Maintained Open Water",351.687791008854,71.9311935901642,4.88922501429121,2012-01-01
+"751","Nevada",2012,"Open Water","Other","Not Maintained Open Water",14.8753403820672,3.04421746730804,4.88642501457731,2012-01-01
+"752","Nevada",2012,"River","Other","Mainstream Open Water",71128.1753680804,14547.9447479248,4.88922501429121,2012-01-01
+"753","Nevada",2012,"Salt Cedar Dense","Other","Riparian",4290.23881332295,1218.37966918945,3.52126592540493,2012-01-01
+"754","Nevada",2012,"Sudan","Alfalfa/Grass","Crop",87.5226309913894,25.130256652832,3.48275913773949,2012-01-01
+"755","Nevada",2012,"USGS Barren","Other","Riparian",583.086348211376,664.395614624023,0.87761920063446,2012-01-01
+"756","Nevada",2012,"marsh","Other","Riparian",615.822039743923,108.810762405396,5.65956920189162,2012-01-01
+"757","Nevada",2013,"Alfalfa","Alfalfa/Grass","Crop",2222.88,412.045043945312,5.39474999800028,2013-01-01
+"758","Nevada",2013,"Mixed Veg Low","Vegetables","Riparian",6335.22,2393.8968963623,2.6464047008987,2013-01-01
+"759","Nevada",2013,"Mixed Veg Medium","Vegetables","Riparian",4848.08,1847.66720581055,2.62389243298455,2013-01-01
+"760","Nevada",2013,"Not Maintained","Other","Not Maintained Open Water",351.52,72.2292041778564,4.86672951752896,2013-01-01
+"761","Nevada",2013,"River","Other","Mainstream Open Water",70781.56,14544.1120185852,4.86668143847845,2013-01-01
+"762","Nevada",2013,"Salt Cedar Dense","Other","Riparian",4274.53,1218.35103607178,3.50845517707441,2013-01-01
+"763","Nevada",2013,"USGS barren","Other","Riparian",581.65,664.476470947266,0.875350784311159,2013-01-01
+"764","Nevada",2013,"marsh","Other","Riparian",614.44,108.810858726501,5.64686288842191,2013-01-01
+"765","Nevada",2014,"Alfalfa","Alfalfa/Grass","Crop",1579.67,277.889316558838,5.68452943625681,2014-01-01
+"766","Nevada",2014,"Bermuda","Alfalfa/Grass","Crop",252.6,81.6933975219727,3.09204914549012,2014-01-01
+"767","Nevada",2014,"Maintained","Other","Open Water",348.71,72.2291431427002,4.82782966580495,2014-01-01
+"768","Nevada",2014,"Mixed Veg Low","Vegetables","Riparian",6286.79,2393.77174377441,2.62631139178175,2014-01-01
+"769","Nevada",2014,"Mixed Veg Medium","Vegetables","Riparian",4807.3,1847.8391418457,2.60157926690429,2014-01-01
+"770","Nevada",2014,"River","Other","Mainstream Open Water",70168.11,14544.0997886658,4.8245069148028,2014-01-01
+"771","Nevada",2014,"Salt Cedar Dense","Other","Riparian",4245.32,1218.37966918945,3.48439826053915,2014-01-01
+"772","Nevada",2014,"USGS barren","Other","Riparian",574.57,664.395614624023,0.864801012157711,2014-01-01
+"773","Nevada",2014,"marsh","Other","Riparian",611.53,108.810762405396,5.62012420905229,2014-01-01
+"774","Nevada",2015,"Alfalfa","Alfalfa/Grass","Crop",881.59,174.629703521729,5.04833932728006,2015-01-01
+"775","Nevada",2015,"Bermuda","Alfalfa/Grass","Crop",336.1,113.411502838135,2.96354418722142,2015-01-01
+"776","Nevada",2015,"Maintained","Other","Maintained Open Water",328.3,67.1075097322464,4.89214994431906,2015-01-01
+"777","Nevada",2015,"Mixed Veg Low","Vegetables","Riparian",6497.18,2423.26429748535,2.68116854060954,2015-01-01
+"778","Nevada",2015,"Mixed Veg Medium","Vegetables","Riparian",4895.09,1849.43643188477,2.64680089329234,2015-01-01
+"779","Nevada",2015,"River","Other","Mainstream Open Water",71034.81,14522.9647483826,4.89120584059196,2015-01-01
+"780","Nevada",2015,"Salt Cedar Dense","Other","Riparian",4239.03,1187.28988647461,3.57034120166461,2015-01-01
+"781","Nevada",2015,"Small Grains Spring","Grains","Crop",228.9,123.515937805176,1.85320213785729,2015-01-01
+"782","Nevada",2015,"USGS barren","Other","Riparian",584.03,664.395614624023,0.879039516735068,2015-01-01
+"783","Nevada",2015,"marsh","Other","Riparian",623.05,108.810762405396,5.72599608923524,2015-01-01
+"784","Nevada",2016,"Alfalfa","Alfalfa/Grass","Crop",1728,325,5.31692307692308,2016-01-01
+"785","Nevada",2016,"Bermuda","Alfalfa/Grass","Crop",260,82,3.17073170731707,2016-01-01
+"786","Nevada",2016,"Maintained","Other","Maintained Open Water",319,66,4.83333333333333,2016-01-01
+"787","Nevada",2016,"Mixed Veg Low","Vegetables","Riparian",6470,2443,2.64838313548915,2016-01-01
+"788","Nevada",2016,"Mixed Veg Medium","Vegetables","Riparian",4705,1798,2.61679644048943,2016-01-01
+"789","Nevada",2016,"River","Other","Mainstream Open Water",69057,14479,4.76945921679674,2016-01-01
+"790","Nevada",2016,"Salt Cedar Dense","Other","Riparian",4183,1187,3.5240101095198,2016-01-01
+"791","Nevada",2016,"USGS barren","Other","Riparian",601,693,0.867243867243867,2016-01-01
+"792","Nevada",2016,"marsh","Other","Riparian",613,109,5.62385321100917,2016-01-01

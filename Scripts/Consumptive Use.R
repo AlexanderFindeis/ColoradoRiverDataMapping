@@ -247,6 +247,61 @@ write.csv(WY_Region_Sum, "Pages/States/Data/WaterYear_Region_Sum.csv")
 write.csv(WY_Basin_Sum, "Pages/States/Data/WaterYear_Basin_Sum.csv")
 
 
+### Lower Basin ET reports
+# ET in acre-feet
+ET_2016 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2016%20ET%20and%20Acreage%20Summaries.xlsx") %>%
+  rename(Reach = Reach.ID)
+ET_2015 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2015%20ET%20and%20Acreage%20Summaries.xlsx") %>%
+  rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Acres = AvgOfAcres)
+ET_2014 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2014%20ET%20and%20Acreage%20Summaries.xlsx") %>%
+  rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Diverter = Diverter.Group)
+ET_2013 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2013_ET_%20and_Acreage_Summaries_revised%20(1).xlsx") %>%
+  rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Diverter = Diverter.Group)
+ET_2012 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2012/2012%20ET%20and%20Acreage%20Summaries%20revised.xlsx") %>%
+  rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`)
+ET_2011 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2011/2011ETandAcreageSummaries.xlsx") %>%
+  rename(ET = `Total.ET.(ac-ft)`)
+ET_2010 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2010/2010%20ET%20and%20Acreage%20Summaries.xlsx", startRow = 2) %>%
+  rename(ET = `Total.ET.(ac-ft)`)
+
+LB_ET <- bind_rows(ET_2016, ET_2015, ET_2014, ET_2013, ET_2012, ET_2011, ET_2010) %>%
+  mutate(ET_per_Acre = ET / Acres)
+
+
+LB_ET_StateTypeTotal <- LB_ET %>%
+  group_by(State, Year, Type) %>%
+  summarize(ET = sum(ET, na.rm = T),
+            Acres = sum(Acres, na.rm = T)) %>%
+  mutate(ET_per_Acre = ET / Acres) %>%
+  filter(!is.na(Year)) %>%
+  mutate(Date = as.Date(paste(Year, "01", "01", sep = "-")))
+
+LB_ET_StateCropTotal <- LB_ET %>%
+  mutate(Crop_Group = case_when(
+    str_detect(Crop, regex("alfalfa|grass|bermuda|sudan", ignore_case = TRUE)) ~ "Alfalfa/Grass",
+    str_detect(Crop, regex("citrus", ignore_case = TRUE)) ~ "Citrus",
+    str_detect(Crop, regex("crucifers|veg|vegetables|lettuce|herb|tomatoes", ignore_case = TRUE)) ~ "Vegetables",
+    str_detect(Crop, regex("grain", ignore_case = TRUE)) ~ "Grains",
+    Crop == "Cotton" ~ "Cotton",
+    Crop == "Grapes" ~ "Grapes",
+    Crop == "Dates" ~ "Dates",
+    str_detect(Crop, regex("legume", ignore_case = TRUE)) ~ "Legumes",
+    str_detect(Crop, regex("melon|melons", ignore_case = TRUE)) ~ "Melons",
+    str_detect(Crop, regex("beets", ignore_case = TRUE)) ~ "Sugar Beets",
+    .default = "Other"
+  )) %>%
+  group_by(State, Year, Crop, Crop_Group, Type) %>%
+  summarize(ET = sum(ET, na.rm = T),
+            Acres = sum(Acres, na.rm = T)) %>%
+  mutate(ET_per_Acre = ET / Acres) %>%
+  filter(!is.na(Year)) %>%
+  mutate(Date = as.Date(paste(Year, "01", "01", sep = "-")))
+
+
+write.csv(LB_ET_StateTypeTotal, "Pages/States/Data/StateET_TypeTotal.csv")
+write.csv(LB_ET_StateCropTotal, "Pages/States/Data/StateET_CropTotal.csv")
+
+
 #######################################
 #######################################
 # Old script

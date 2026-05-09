@@ -49,18 +49,20 @@ Supply = (await FileAttachment("Data/Supply.csv").csv()).map(d =>({
   Supply_Acre_Feet: +d.Acre_Feet,
   Supply_MAF: parseFloat((+d.Million_Acre_Feet).toFixed(2)),
   Upper_Basin_Supply: +d.Upper_Basin_Supply, // Made by subtracting 8.25 maf (7.5 to LB and half of 1.5 to Mexico) to reflect legal supply available to Upper Basin
+  Lower_Basin_Supply: +d.Lower_Basin_Supply, // Natural flow minus Upper Basin use
   Ten_Year_Avg: parseFloat((+d.Ten_Year_Average).toFixed(2)),
-  UB_10yr_Avg: parseFloat((+d.UB_10yr_Avg).toFixed(2))
+  UB_10yr_Avg: parseFloat((+d.UB_10yr_Avg).toFixed(2)),
+  LB_10yr_Avg: parseFloat((+d.LB_10yr_Avg).toFixed(2))
 })).sort((a, b) => a.Date - b.Date)
 ```
 
-# Basinwide Use
+# Basinwide Use and Supply
 
 ## Total Basin Demand
 
 Consumptive water use* in the Colorado River basin has been around 13 to 14 million acre-feet annually over the past 20 years, declining from a high in the 1990s of 16-17maf. This use is split between three main regions: the Upper Basin (Colorado, Wyoming, New Mexico, Utah), the Lower Basin (California, Arizona, Nevada) and Mexico. 
 
-The Upper and Lower Basins are allocated 7.5maf each but the Lower Basin is also apportioned an additional 1maf in years of surplus supply. Mexico is apportioned 1.5maf a year through a 1944 treaty with the US for a total system allocation of 16.5maf. 
+The Upper and Lower Basins are allocated 7.5maf each but the Lower Basin is also apportioned additional water in years of surplus supply. Mexico is apportioned 1.5maf a year through a 1944 treaty with the US for a total system allocation of 16.5maf. 
 
 Data for consumptive use is provided by the US Bureau of Reclamation. For data on Mexico the USBR tracks total deliveries and not exact consumptive use. Therefore, excess flood waters during the unusually wet 1980s and 1990s are reflected in the data as deliveries but true consumptive use was likely closer to the 1.5maf the region was accustomed to using. 
 
@@ -518,6 +520,302 @@ The chart below shows consumptive use in the Upper Basin as reported by the Bure
 }
 ```
 
-# Lower Basin
+## Lower Basin
 
-Lower basin section coming soon
+Lower Basin allocations are:  
+
+California: 4.4maf  
+Arizona:    2.8maf  
+Nevada:     0.3maf  
+
+Lower Basin states do not take evaporation from reservoirs into account as a contributor to their consumptive use, and while the Upper Basin is responsible for evaporation from Lake Powell it is really the Lower Basin that benefits from the water stored there. However, the Lower Basin makes somewhat of a trade for this. It does not "pay" for evaporation from Lake Mead but it does pay for the declining storage in the form of cuts to deliveries from the reservoir. Only the Lower Basin is subject to these cuts under the 2007 operating guidelines and 2019 Drought Contingency Plan as part of the USBR's efforts to control reservoir levels. 
+
+### Lower Basin State Consumption
+```{ojs}
+Lower_Basin_States = WY_State_Use.filter(d => d.Region === "Lower Basin")
+```
+```{ojs}
+viewof lower_basin_options = Inputs.checkbox(
+  ["Show Apportionment Lines"],
+  { value: ["Show Apportionment Lines"] }
+)
+```
+```{ojs}
+//| echo: false
+{
+  const show_apportionment_lines = lower_basin_options.includes("Show Apportionment Lines")
+
+  const apportionment_marks = show_apportionment_lines ? [
+    Plot.ruleY([4.4],  { strokeDasharray: "4,4", stroke: "red" }),
+    Plot.ruleY([2.8], { strokeDasharray: "4,4", stroke: "green" }),
+    Plot.ruleY([0.3],  { strokeDasharray: "4,4", stroke: "orange" })
+    // Plot.text(["Colorado"],   { frameAnchor: "bottom", textAnchor: "right", y: 3.9, x: new Date(d3.max(Upper_Basin_States, d => d.Date)) }),
+    // Plot.text(["Utah"],       { frameAnchor: "bottom", textAnchor: "right", y: 1.8, x: new Date(d3.max(Upper_Basin_States, d => d.Date)) }),
+    // Plot.text(["Wyoming"],    { frameAnchor: "bottom", textAnchor: "right", y: 1.1, x: new Date(d3.max(Upper_Basin_States, d => d.Date)) }),
+    // Plot.text(["New Mexico"], { frameAnchor: "bottom", textAnchor: "right", y: 0.9, x: new Date(d3.max(Upper_Basin_States, d => d.Date)) })
+  ] : []
+
+  // Adjust y domain based on checkbox - expand to fit reference lines when shown
+  const y_max = show_apportionment_lines
+    ? Math.max(d3.max(Lower_Basin_States, d => d.Consumptive_Use_MAF), 4.2)  // 4.2 gives headroom above 3.88
+    : d3.max(Lower_Basin_States, d => d.Consumptive_Use_MAF)
+
+  return Plot.plot({
+    width: width,
+    height: 500,
+    //marginRight: 100,
+    y: {
+      grid: true,
+      label: "Consumptive Use (MAF)",
+      domain: [0, y_max]
+    },
+    x: { label: "Date" },
+    color: {
+      domain: ["California", "Arizona", "Nevada", "Lower Basin Reservoirs"],
+      range: ["red", "green", "orange", "blue"],
+      legend: true
+    },
+    marks: [
+      Plot.lineY(Lower_Basin_States, { x: "Date", y: "Consumptive_Use_MAF", stroke: "State" }),
+      Plot.tip(Lower_Basin_States, Plot.pointerX({ x: "Date", y: "Consumptive_Use_MAF" })),
+      ...apportionment_marks
+    ]
+  })
+}
+```
+
+Most noticable about Lower Basin use is that California regularly used more than its allocation until the onset of drought. This was because the Lower Basin is allowed to use "surplus" water, of which California is entitled to half. Prior to the completion of the Central Arizona Project in 1993, California was able to claim a portion of Arizona's allocation as surplus. With unused Arizonan water and the wet years of the 1980s and 1990s, California was able ot use nearly one million acre-feet above its base allocation. The rapid growth of Arizonan cities and agricultural demand with the completion of the CAP ended the viability of this system and the onset of drought in the early 2000s brought California's years of surplus crashing down. 
+
+Perhaps more striking, however, is how much water is lost to reservoir evaporation, at times losing more water than the entire state of Arizona was consuming. As Lake Mead has strunk so has evaporation but the Lower Basin's lakes continue to lose roughly 700,000af of water and at their peak lost nearly 1.2maf a year. The failure of Lower Basin water managers to account for this, the product of intense political tensions between Arizona and California over water that prevented a Lower Basin Compact, has become a significant challenge to sustainable supply management.
+
+### Lower Basin Use vs. Supply
+```{ojs}
+{
+  // Type = Evap used to include reservoir evaporation in consumptive use figures
+  const LB_Total = WY_Region_Use.filter(d => d.Region === "Lower Basin" & d.Type === "Evap").sort((a, b) => a.Date - b.Date)
+
+  const LB_Supply_Plot = Plot.plot({
+    width: width,
+    height: 500,
+    color: {
+      legend: true,
+      domain: ["Consumptive Use", "Lower Basin Supply", "Supply 10yr Average"],
+      range:  ["black", "blue", "#427FFF"]
+    },
+    y: {
+      grid: true,
+      label: "Millions of Acre-Feet",
+      domain: [d3.min(Supply, d => d.Lower_Basin_Supply), d3.max(Supply, d => d.Lower_Basin_Supply)]
+    },
+    x: { label: "Water Year", domain: [d3.min(LB_Total, d => d.Date), d3.max(LB_Total, d => d.Date)] },
+    marks: [
+      Plot.lineY(LB_Total, { 
+      x: "Date", 
+      y: "Consumptive_Use_MAF", 
+      stroke: "black",
+      channels: {
+        "Water Year":      { value: d => d.Water_Year },
+        "Total Use (MAF)": { value: d => d.Consumptive_Use_MAF },
+        "Lower Basin Supply": { value: d => d.Lower_Basin_Supply },
+        "Supply 10yr Avg": { value: d => d.LB_10yr_Avg }
+      },
+      tip: {
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Water Year": true,
+          "Total Use (MAF)": true,
+          "Lower Basin Supply": true,
+          "Supply 10yr Avg": true
+        }
+      } 
+    }),
+      Plot.lineY(Supply, { 
+        x: "Date", 
+        y: "Lower_Basin_Supply", 
+        stroke: "blue",
+        channels: {
+        "Water Year":      { value: d => d.Water_Year },
+        "Lower Basin Supply": { value: d => d.Lower_Basin_Supply },
+        "Supply 10yr Avg": { value: d => d.LB_10yr_Avg }
+      },
+      tip: {
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Water Year": true,
+          "Lower Basin Supply": true,
+          "Supply 10yr Avg": true
+        }
+      } 
+      }),
+      Plot.lineY(Supply, { 
+        x: "Date", 
+        y: "LB_10yr_Avg", 
+        stroke: "#427FFF",
+        strokeDasharray: "4,4",
+        strokeOpacity: 0.5
+      })
+    ]
+  })
+  return LB_Supply_Plot
+}
+```
+::: {style="text-align: center;"}
+<font size="1">Total consumptive use includes evaporation from Lower Basin reservoirs. Supply is measured as natural flow at Lee Ferry minus Upper Basin use and half of obligation to Mexico (0.75maf)</font>
+:::
+
+The chart above explores how the Lower Basin's consumptive use compares to long term trends in available water supply, independent of storage in Lake Mead. Similar to the Upper Basin, wide swings in annual supply complicate long-term responses to drought. Positive supply water years are regularly followed by increases in use the following year and vice versa. 
+
+This see-sawing of use is not sustainable and while the Lower Basin has cut consumptive use by nearly a third since 2002 (including reservoir evaporation) much of that reduction was a correction to overuse and the result of mandatory cuts in recent years. Lakes Mead and Powell continue to decline while Lower Basin use struggles to catch up. 
+
+
+### Lower Basin Use by Category
+The chart below is derived from data from the US Bureau of Reclamation on consumptive use. Unfortunately, the USBR categorizes broadly by the initial form of transfer for its consumptive use reporting on the Lower Basin. This is most clear for California, which does in fact export most of its water outside of the drainage basin of the Colorado, but uses the vast majority of that water for agriculture and the rest to supply cities like LA and San Diego.
+```{ojs}
+{
+  const LB_Use_Categories = Consumptive_Use_Dataset.filter(d => 
+    d.Region === "Lower Basin" &&
+    d.Water_Year !== "2025" &&
+    d.State !== "Lower Basin Reservoirs"
+  ).sort((a, b) => a.Date - b.Date)
+
+  return Plot.plot({
+    width: width,
+    height: 800,
+    marginRight: 100,
+    color: {
+      legend: true,
+    },
+    y: {
+      grid: true,
+      label: "Millions of Acre-Feet",
+      domain: [0, 6]
+    },
+    x: { label: "Water Year", domain: [d3.min(LB_Use_Categories, d => d.Date), d3.max(LB_Use_Categories, d => d.Date)] },
+    marks: [
+      Plot.frame(),
+      Plot.areaY(LB_Use_Categories, Plot.stackY({
+      x: "Date",
+      y: "Consumptive_Use_MAF",
+      fy: "State",
+      fill: "Category",
+      order: "-sum", // Orders largest at the bottom
+      fillOpacity: 0.7,
+      channels: {
+        "Category":              { value: d => d.Category },
+        "Water Year":            { value: d => d.Water_Year },
+        "Consumptive Use (MAF)": { value: d => d.Consumptive_Use_MAF }
+      },
+      tip: {
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Category": true,
+          "Water Year": true,
+          "Consumptive Use (MAF)": true
+        }
+      }
+    }))
+    ]
+  })
+}
+```
+
+Additionally, the use of the term "export" is not entirely correct for much of this water. In Arizona, water moved through the Central Arizona Project is largely brought to the Phoenix metropolitan area, which itself is within the Gila River watershed that flows into the Colorado at Yuma. For this reason "export with system" is only informative insofar as the audience is primarily interested in how much water is being moved from the Colorado main stem to another part of the basin. 
+
+In California the hundreds of thousands of acre-feet piped to the Metropolitan Water District of Southern California are without a doubt an "export" that is fully consumed as a transbasin diversion, similar to the water moved to the Colorado Front Range. But the vast majority of the water marked as "export" is used as agricultural water in the Imperial and Coachella Valleys. The Imperial Irrigation District alone is the largest holder of Colorado River Water rights with claims approaching three million and current annual usage close to 2.5 million. 
+
+This water is only technically "exported" outside the basin. The Imperial Valley, also known as the Mexicali Valley, is naturally part of the Colorado River Delta. What is now the Salton Sea was once Lake Cahuilla, fed by flood waters from the Colorado into the Salton Trough, the region from the Gulf of California towards what is now Palm Springs formed by tectonic spreading. The region has flooded many times over millions of years as sediment from the Colorado River slowly built up to cut the Trough off from the Gulf of California. 
+
+Regardless of hydrologic continuity, though, the USBR figures do not effectively show the dominance of agriculture in Lower Colorado River water demand. 
+
+For this we must use more limited data provided by the USBR in specific evapotranspiration and evaporation reports. 
+
+```{ojs}
+StateET_TypeTotal = (await FileAttachment("Data/StateET_TypeTotal.csv").csv()).map(d =>({
+  ...d,
+  State: String(d.State),
+  Year: String(d.Year),
+  Date: new Date(d.Date),
+  Type: String(d.Type),
+  ET: parseFloat((+d.ET).toFixed(2)),
+  Acres: parseFloat((+d.Acres).toFixed(2)),
+  ET_per_Acre: parseFloat((+d.ET).toFixed(2))
+}))
+
+StateET_CropTotal = (await FileAttachment("Data/StateET_CropTotal.csv").csv()).map(d =>({
+  ...d,
+  State: String(d.State),
+  Year: String(d.Year),
+  Date: new Date(d.Date),
+  Crop: String(d.Crop),
+  Crop_Group : String(d.Crop_Group),
+  Type: String(d.Type),
+  ET: parseFloat((+d.ET).toFixed(2)),
+  Acres: parseFloat((+d.Acres).toFixed(2)),
+  ET_per_Acre: parseFloat((+d.ET).toFixed(2))
+}))
+```
+#### Evapotranspiration by State and Type
+```{ojs}
+{
+  return Plot.plot({
+  marginRight: 100,
+  marginLeft: 50,
+  width: width,
+  height: 500,
+  x: {label: "Year"},
+  y: {label: "ET (Acre-Feet)"},
+  color: {legend: true},
+  marks: [
+    Plot.frame(),
+    Plot.barY(StateET_TypeTotal, Plot.stackY({
+        x: "Date",
+        y: "ET",
+        fy: "State",
+        fill: "Type",
+        order: "-sum", // Orders largest at the bottom
+        fillOpacity: 1
+      })
+    )
+  ]
+ })
+}
+```
+
+#### Evapotranspiration by Crop Type
+```{ojs}
+{
+  return Plot.plot({
+  marginRight: 100,
+  marginLeft: 50,
+  width: width,
+  height: 500,
+  x: {label: "Year"},
+  y: {label: "ET (Acre-Feet)"},
+  color: {legend: true},
+  marks: [
+    Plot.frame(),
+    Plot.barY(StateET_CropTotal, Plot.stackY({
+        x: "Date",
+        y: "ET",
+        fy: "State",
+        fill: "Crop_Group",
+        order: "-sum", // Orders largest at the bottom
+        fillOpacity: 1
+      })
+    )
+  ]
+ })
+}
+```
