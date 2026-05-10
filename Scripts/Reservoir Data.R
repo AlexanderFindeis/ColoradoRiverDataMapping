@@ -3,52 +3,85 @@ library(zoo)
 library(lubridate)
 library(sf)
 
+options(timeout = 300)
+
 # Lake Mead Elevation
 Mead.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/49.csv") %>% mutate(Reservoir = "Lake Mead")
+Sys.sleep(2)
 # Lake Mead Storage
 Mead.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/17.csv") %>% mutate(Reservoir = "Lake Mead")
+Sys.sleep(2)
 # Lake Mead Releases
 Mead.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/43.csv") %>% mutate(Reservoir = "Lake Mead")
+Sys.sleep(2)
 
 # Lake Powell Elevation
 Powell.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/919/csv/49.csv") %>% mutate(Reservoir = "Lake Powell")
+Sys.sleep(2)
 # Lake Powell Storage
 Powell.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/919/csv/17.csv") %>% mutate(Reservoir = "Lake Powell")
+Sys.sleep(2)
 # Lake Powell Releases
 Powell.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/919/csv/43.csv") %>% mutate(Reservoir = "Lake Powell")
+Sys.sleep(2)
 # Lake Powell Inflows
 Powell.In <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/919/csv/30.csv") %>% mutate(Reservoir = "Lake Powell")
+Sys.sleep(2)
 
 Flaming.Gorge.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/917/csv/49.csv") %>% mutate(Reservoir = "Flaming Gorge")
+Sys.sleep(2)
 Flaming.Gorge.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/917/csv/17.csv") %>% mutate(Reservoir = "Flaming Gorge")
+Sys.sleep(2)
 Flaming.Gorge.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/917/csv/43.csv") %>% mutate(Reservoir = "Flaming Gorge")
+Sys.sleep(2)
 Flaming.Gorge.In <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/917/csv/30.csv") %>% mutate(Reservoir = "Flaming Gorge")
+Sys.sleep(2)
 
 Mohave.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/922/csv/49.csv") %>% mutate(Reservoir = "Lake Mohave") 
+Sys.sleep(2)
 Mohave.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/922/csv/17.csv") %>% mutate(Reservoir = "Lake Mohave") 
+Sys.sleep(2)
 Mohave.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/922/csv/43.csv") %>% mutate(Reservoir = "Lake Mohave") 
+Sys.sleep(2)
 
 Navajo.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/920/csv/49.csv") %>% mutate(Reservoir = "Navajo Reservoir") 
+Sys.sleep(2)
 Navajo.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/920/csv/17.csv") %>% mutate(Reservoir = "Navajo Reservoir") 
+Sys.sleep(2)
 Navajo.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/920/csv/43.csv") %>% mutate(Reservoir = "Navajo Reservoir") 
+Sys.sleep(2)
 Navajo.In <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/920/csv/30.csv") %>% mutate(Reservoir = "Navajo Reservoir") 
+Sys.sleep(10)
 
 Straw.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/962/csv/49.csv") %>% mutate(Reservoir = "Strawberry Reservoir") 
+Sys.sleep(2)
 Straw.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/962/csv/17.csv") %>% mutate(Reservoir = "Strawberry Reservoir") 
+Sys.sleep(2)
 Straw.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/962/csv/43.csv") %>% mutate(Reservoir = "Strawberry Reservoir") 
+Sys.sleep(2)
 Straw.In <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/962/csv/30.csv") %>% mutate(Reservoir = "Strawberry Reservoir") 
+Sys.sleep(10)
 
 Blue.Mesa.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/913/csv/49.csv") %>% mutate(Reservoir = "Blue Mesa Reservoir") 
+Sys.sleep(2)
 Blue.Mesa.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/913/csv/17.csv") %>% mutate(Reservoir = "Blue Mesa Reservoir") 
+Sys.sleep(2)
 Blue.Mesa.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/913/csv/43.csv") %>% mutate(Reservoir = "Blue Mesa Reservoir") 
+Sys.sleep(2)
 Blue.Mesa.In <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/913/csv/30.csv") %>% mutate(Reservoir = "Blue Mesa Reservoir") 
+Sys.sleep(10)
 
 Havasu.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/923/csv/49.csv") %>% mutate(Reservoir = "Lake Havasu") 
+Sys.sleep(2)
 Havasu.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/923/csv/17.csv") %>% mutate(Reservoir = "Lake Havasu") 
+Sys.sleep(2)
 Havasu.Rel <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/923/csv/43.csv") %>% mutate(Reservoir = "Lake Havasu") 
+Sys.sleep(10)
 
 Granby.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/100010/csv/49.csv") %>% mutate(Reservoir = "Granby Reservoir") 
+Sys.sleep(2)
 Granby.Stor <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/100010/csv/17.csv") %>% mutate(Reservoir = "Granby Reservoir") 
+Sys.sleep(2)
 
 ## Elevation Data
 # Elevation Plot

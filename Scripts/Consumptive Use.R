@@ -4,18 +4,25 @@ pacman::p_load(tidyverse, openxlsx)
 ### Lower Basin Consumptive Use Report
 # Area reference sheet with key for location/tributary names and codes
 area.reference <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Area_Reference")
+Sys.sleep(2)
 # Reservoir evaporation rates
 res.evap <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mainstream_Reservoirs")
+Sys.sleep(2)
 # Mainstream consumptive use data
 main.cu <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mainstream")
+Sys.sleep(2)
 # Tributary consumptive use data
 trib.cu <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Tributary")
+Sys.sleep(2)
 # Mexico deliveries
 mex.del <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Mexico")
+Sys.sleep(2)
 # Tributary Irrigated Acreage
 trib.irr.acre <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Tributary_Irrigated_Acreage")
+Sys.sleep(2)
 # Population data 
 lb.pop <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/CULReport/1971-2024%20Lower%20Colorado%20River%20System%20CUL%20Data.xlsx", sheet = "Population")
+Sys.sleep(2)
 
 
 ## Mainstream Consumptive Use Pivot Table
@@ -246,23 +253,31 @@ write.csv(WY_State_Sum, "Pages/States/Data/WaterYear_State_Sum.csv")
 write.csv(WY_Region_Sum, "Pages/States/Data/WaterYear_Region_Sum.csv")
 write.csv(WY_Basin_Sum, "Pages/States/Data/WaterYear_Basin_Sum.csv")
 
+###########################################################################################################
 
 ### Lower Basin ET reports
 # ET in acre-feet
 ET_2016 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2016%20ET%20and%20Acreage%20Summaries.xlsx") %>%
   rename(Reach = Reach.ID)
+Sys.sleep(2)
 ET_2015 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2015%20ET%20and%20Acreage%20Summaries.xlsx") %>%
   rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Acres = AvgOfAcres)
+Sys.sleep(2)
 ET_2014 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2014%20ET%20and%20Acreage%20Summaries.xlsx") %>%
   rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Diverter = Diverter.Group)
+Sys.sleep(2)
 ET_2013 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/2013_ET_%20and_Acreage_Summaries_revised%20(1).xlsx") %>%
   rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`, Diverter = Diverter.Group)
+Sys.sleep(2)
 ET_2012 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2012/2012%20ET%20and%20Acreage%20Summaries%20revised.xlsx") %>%
   rename(Reach = Reach.ID, ET = `Total.ET.(ac-ft)`)
+Sys.sleep(2)
 ET_2011 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2011/2011ETandAcreageSummaries.xlsx") %>%
   rename(ET = `Total.ET.(ac-ft)`)
+Sys.sleep(2)
 ET_2010 <- read.xlsx("https://www.usbr.gov/lc/region/g4000/4200Rpts/LCRASRpt/2010/2010%20ET%20and%20Acreage%20Summaries.xlsx", startRow = 2) %>%
   rename(ET = `Total.ET.(ac-ft)`)
+Sys.sleep(2)
 
 LB_ET <- bind_rows(ET_2016, ET_2015, ET_2014, ET_2013, ET_2012, ET_2011, ET_2010) %>%
   mutate(ET_per_Acre = ET / Acres)

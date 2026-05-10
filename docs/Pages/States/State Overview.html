@@ -1060,60 +1060,65 @@ Nevada: 0.3maf</p>
 </div>
 </div>
 </div>
+<section id="evapotranspiration-by-state-and-type" class="level4">
+<h4 class="anchored" data-anchor-id="evapotranspiration-by-state-and-type">Evapotranspiration by State and Type</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb20" data-startfrom="769" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 768;"><span id="cb20-769"><a href="#cb20-769" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb20-770"><a href="#cb20-770" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb20-771"><a href="#cb20-771" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb20-772"><a href="#cb20-772" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
-<span id="cb20-773"><a href="#cb20-773" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
-<span id="cb20-774"><a href="#cb20-774" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
-<span id="cb20-775"><a href="#cb20-775" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span>}<span class="op">,</span></span>
-<span id="cb20-776"><a href="#cb20-776" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"ET (Acre-Feet)"</span>}<span class="op">,</span></span>
-<span id="cb20-777"><a href="#cb20-777" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb20-778"><a href="#cb20-778" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb20-779"><a href="#cb20-779" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()<span class="op">,</span></span>
-<span id="cb20-780"><a href="#cb20-780" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(StateET_TypeTotal<span class="op">,</span> Plot<span class="op">.</span><span class="fu">stackY</span>({</span>
-<span id="cb20-781"><a href="#cb20-781" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span></span>
-<span id="cb20-782"><a href="#cb20-782" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"ET"</span><span class="op">,</span></span>
-<span id="cb20-783"><a href="#cb20-783" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fy</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
-<span id="cb20-784"><a href="#cb20-784" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"Type"</span><span class="op">,</span></span>
-<span id="cb20-785"><a href="#cb20-785" aria-hidden="true" tabindex="-1"></a>        <span class="dt">order</span><span class="op">:</span> <span class="st">"-sum"</span><span class="op">,</span> <span class="co">// Orders largest at the bottom</span></span>
-<span id="cb20-786"><a href="#cb20-786" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="dv">1</span></span>
-<span id="cb20-787"><a href="#cb20-787" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb20-788"><a href="#cb20-788" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-789"><a href="#cb20-789" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb20-790"><a href="#cb20-790" aria-hidden="true" tabindex="-1"></a> })</span>
-<span id="cb20-791"><a href="#cb20-791" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb20" data-startfrom="770" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 769;"><span id="cb20-770"><a href="#cb20-770" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb20-771"><a href="#cb20-771" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb20-772"><a href="#cb20-772" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb20-773"><a href="#cb20-773" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb20-774"><a href="#cb20-774" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
+<span id="cb20-775"><a href="#cb20-775" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb20-776"><a href="#cb20-776" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span>}<span class="op">,</span></span>
+<span id="cb20-777"><a href="#cb20-777" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"ET (Acre-Feet)"</span>}<span class="op">,</span></span>
+<span id="cb20-778"><a href="#cb20-778" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb20-779"><a href="#cb20-779" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb20-780"><a href="#cb20-780" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()<span class="op">,</span></span>
+<span id="cb20-781"><a href="#cb20-781" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(StateET_TypeTotal<span class="op">,</span> Plot<span class="op">.</span><span class="fu">stackY</span>({</span>
+<span id="cb20-782"><a href="#cb20-782" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span></span>
+<span id="cb20-783"><a href="#cb20-783" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"ET"</span><span class="op">,</span></span>
+<span id="cb20-784"><a href="#cb20-784" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fy</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
+<span id="cb20-785"><a href="#cb20-785" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"Type"</span><span class="op">,</span></span>
+<span id="cb20-786"><a href="#cb20-786" aria-hidden="true" tabindex="-1"></a>        <span class="dt">order</span><span class="op">:</span> <span class="st">"-sum"</span><span class="op">,</span> <span class="co">// Orders largest at the bottom</span></span>
+<span id="cb20-787"><a href="#cb20-787" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="dv">1</span></span>
+<span id="cb20-788"><a href="#cb20-788" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb20-789"><a href="#cb20-789" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-790"><a href="#cb20-790" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb20-791"><a href="#cb20-791" aria-hidden="true" tabindex="-1"></a> })</span>
+<span id="cb20-792"><a href="#cb20-792" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-20" data-nodetype="expression">
 
 </div>
 </div>
 </div>
+</section>
+<section id="evapotranspiration-by-crop-type" class="level4">
+<h4 class="anchored" data-anchor-id="evapotranspiration-by-crop-type">Evapotranspiration by Crop Type</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb21" data-startfrom="795" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 794;"><span id="cb21-795"><a href="#cb21-795" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb21-796"><a href="#cb21-796" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb21-797"><a href="#cb21-797" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb21-798"><a href="#cb21-798" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
-<span id="cb21-799"><a href="#cb21-799" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
-<span id="cb21-800"><a href="#cb21-800" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
-<span id="cb21-801"><a href="#cb21-801" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span>}<span class="op">,</span></span>
-<span id="cb21-802"><a href="#cb21-802" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"ET (Acre-Feet)"</span>}<span class="op">,</span></span>
-<span id="cb21-803"><a href="#cb21-803" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb21-804"><a href="#cb21-804" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb21-805"><a href="#cb21-805" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()<span class="op">,</span></span>
-<span id="cb21-806"><a href="#cb21-806" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(StateET_CropTotal<span class="op">,</span> Plot<span class="op">.</span><span class="fu">stackY</span>({</span>
-<span id="cb21-807"><a href="#cb21-807" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span></span>
-<span id="cb21-808"><a href="#cb21-808" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"ET"</span><span class="op">,</span></span>
-<span id="cb21-809"><a href="#cb21-809" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fy</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
-<span id="cb21-810"><a href="#cb21-810" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"Crop_Group"</span><span class="op">,</span></span>
-<span id="cb21-811"><a href="#cb21-811" aria-hidden="true" tabindex="-1"></a>        <span class="dt">order</span><span class="op">:</span> <span class="st">"-sum"</span><span class="op">,</span> <span class="co">// Orders largest at the bottom</span></span>
-<span id="cb21-812"><a href="#cb21-812" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="dv">1</span></span>
-<span id="cb21-813"><a href="#cb21-813" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb21-814"><a href="#cb21-814" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb21-815"><a href="#cb21-815" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb21-816"><a href="#cb21-816" aria-hidden="true" tabindex="-1"></a> })</span>
-<span id="cb21-817"><a href="#cb21-817" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb21" data-startfrom="797" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 796;"><span id="cb21-797"><a href="#cb21-797" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb21-798"><a href="#cb21-798" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb21-799"><a href="#cb21-799" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb21-800"><a href="#cb21-800" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb21-801"><a href="#cb21-801" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
+<span id="cb21-802"><a href="#cb21-802" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb21-803"><a href="#cb21-803" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span>}<span class="op">,</span></span>
+<span id="cb21-804"><a href="#cb21-804" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"ET (Acre-Feet)"</span>}<span class="op">,</span></span>
+<span id="cb21-805"><a href="#cb21-805" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb21-806"><a href="#cb21-806" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb21-807"><a href="#cb21-807" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()<span class="op">,</span></span>
+<span id="cb21-808"><a href="#cb21-808" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(StateET_CropTotal<span class="op">,</span> Plot<span class="op">.</span><span class="fu">stackY</span>({</span>
+<span id="cb21-809"><a href="#cb21-809" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"Date"</span><span class="op">,</span></span>
+<span id="cb21-810"><a href="#cb21-810" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"ET"</span><span class="op">,</span></span>
+<span id="cb21-811"><a href="#cb21-811" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fy</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
+<span id="cb21-812"><a href="#cb21-812" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"Crop_Group"</span><span class="op">,</span></span>
+<span id="cb21-813"><a href="#cb21-813" aria-hidden="true" tabindex="-1"></a>        <span class="dt">order</span><span class="op">:</span> <span class="st">"-sum"</span><span class="op">,</span> <span class="co">// Orders largest at the bottom</span></span>
+<span id="cb21-814"><a href="#cb21-814" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="dv">1</span></span>
+<span id="cb21-815"><a href="#cb21-815" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb21-816"><a href="#cb21-816" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-817"><a href="#cb21-817" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb21-818"><a href="#cb21-818" aria-hidden="true" tabindex="-1"></a> })</span>
+<span id="cb21-819"><a href="#cb21-819" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-21" data-nodetype="expression">
 
@@ -1122,6 +1127,7 @@ Nevada: 0.3maf</p>
 </div>
 
 
+</section>
 </section>
 </section>
 </section>
