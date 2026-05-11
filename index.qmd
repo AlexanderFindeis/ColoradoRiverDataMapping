@@ -10,13 +10,18 @@ format:
 
 ```{r}
 #| output: false
-render_date <- format(Sys.Date(), "%B %d, %Y")
+library(dplyr)
+render_date <- read.csv("Pages/Reservoirs/Data/Reservoir_Elevation.csv") %>%
+  summarise(max_date = max(as.Date(Date), na.rm = TRUE)) %>%
+  pull(max_date) %>%
+  format("%B %d, %Y")
+ojs_define(render_date = render_date)
 ```
 ```{ojs}
 //| echo: false
 html`
 <div style="
-  background: #3b98f542;
+  background: #5cabfa2f;
   border-radius: 6px;
   padding: 6px 12px;
   font-size: 12px;
