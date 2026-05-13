@@ -8,14 +8,16 @@ format:
       body-width: 1000px
 ---
 
-```{r}
-#| output: false
-library(dplyr)
-render_date <- read.csv("Pages/Reservoirs/Data/Reservoir_Elevation.csv") %>%
-  summarise(max_date = max(as.Date(Date), na.rm = TRUE)) %>%
-  pull(max_date) %>%
-  format("%B %d, %Y")
-ojs_define(render_date = render_date)
+```{ojs}
+Res_Elv = (await FileAttachment("Pages/Reservoirs/Data/Reservoir_Elevation.csv").csv()).map(d => ({
+  ...d,
+  Date: new Date(d.Date + "T00:00:00")
+}))
+render_date = d3.max(Res_Elv, d => d.Date).toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric"
+})
 ```
 ```{ojs}
 //| echo: false
