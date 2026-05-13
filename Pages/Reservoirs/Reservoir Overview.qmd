@@ -74,8 +74,9 @@ viewof reservoir_choice = Inputs.select(
 ## Elevation
 
 ```{ojs}
-//| echo: false
-filtered_elv = Res_Elv.filter(d => d.Reservoir === reservoir_choice)
+filtered_elv = reservoir_choice === "Total"
+  ? []
+  : Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
 
 ```{ojs}
@@ -186,6 +187,47 @@ html`
 ```{ojs}
 //| echo: false
 {
+  // Show message if Total is selected
+  if (reservoir_choice === "Total") {
+    return html`
+      <div style="
+        width: 100%;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-family: sans-serif;
+        color: #6c757d;
+      ">
+        <div style="text-align: center;">
+          <div style="font-size: 32px; margin-bottom: 12px;">⚠</div>
+          <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">
+            Elevation Total Not Available
+          </div>
+          <div style="font-size: 13px;">
+            Select an individual reservoir to view elevation records.
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+
+  // Using date slider to dynamically adjust y axis range
+  const elv_slider_filtered = filtered_elv.filter(d => 
+  d.Date >= DateSlider[0] && d.Date <= DateSlider[1]
+  )
+  const elv_min = d3.min(elv_slider_filtered, d => d.Elevation)
+  const elv_max = d3.max(elv_slider_filtered, d => d.Elevation)
+  const padding = (elv_max - elv_min) * 0.05
+
+  // Y axis domain
+  const elv_y_domain = reservoir_choice === "Lake Powell" ? [3360, elv_max + padding] 
+  : reservoir_choice === "Lake Mead" ? [890, elv_max + padding]
+  : [elv_min - padding, elv_max + padding]
+
   // Define reservoir-specific horizontal lines
   const refLines = reservoir_choice === "Lake Mead" ? [
     { y: 1075, label: "Tier 1 Shortage - 1075ft", color: "orange" },
@@ -223,7 +265,8 @@ html`
     title: "Reservoir Elevation",
     width: width,
     height: 500,
-    y: { grid: true, label: "Reservoir Elevation (ft)" },
+    y: { grid: true, label: "Reservoir Elevation (ft)", 
+         domain: elv_y_domain },
     x: { label: "Date", domain: DateSlider },
     marks: marks
   })
@@ -235,19 +278,188 @@ html`
 import { timeRange } from "@jwolondon/time-range-input"
 ```
 ```{ojs}
-min_date = d3.min(filtered_elv, d => d.Date)
-max_date = d3.max(filtered_elv, d => d.Date)
+//| echo: false
+min_date = filtered_elv.length > 0
+  ? d3.min(filtered_elv, d => d.Date)
+  : d3.min(Res_Elv, d => d.Date)   // fall back to full dataset
 
-viewof DateSlider = timeRange(min_date, max_date, {
-  interval: "day",
-  value: [min_date, max_date]
-})
+max_date = filtered_elv.length > 0
+  ? d3.max(filtered_elv, d => d.Date)
+  : d3.max(Res_Elv, d => d.Date)
+```
+
+```{ojs}
+//| echo: false
+viewof DateSlider = {
+  // Convert dates to timestamps for numeric slider math
+  const min_ts = min_date.getTime()
+  const max_ts = max_date.getTime()
+
+  // Initial values
+  let start_ts = min_ts
+  let end_ts   = max_ts
+
+  // Helper to format timestamp as display date
+  const fmt = ts => new Date(ts).toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
+  })
+
+  // Helper to convert timestamp to percentage position
+  const to_pct = ts => ((ts - min_ts) / (max_ts - min_ts)) * 100
+
+  const container = html`
+    <div style="
+      font-family: sans-serif;
+      font-size: 12px;
+      padding: 8px 0 4px 0;
+      width: 100%;
+      user-select: none;
+    ">
+      <!-- Date labels -->
+      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #6c757d;">
+        <span id="start-label">${fmt(start_ts)}</span>
+        <span id="end-label">${fmt(end_ts)}</span>
+      </div>
+
+      <!-- Slider track -->
+      <div id="track" style="
+        position: relative;
+        height: 6px;
+        background: #dee2e6;
+        border-radius: 3px;
+        margin: 10px 20px 10px 40px;
+        cursor: pointer;
+      ">
+        <!-- Selected range highlight -->
+        <div id="range-fill" style="
+          position: absolute;
+          height: 100%;
+          background: steelblue;
+          border-radius: 3px;
+          left: 0%;
+          right: 0%;
+        "></div>
+
+        <!-- Start handle -->
+        <div id="handle-start" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 0%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+
+        <!-- End handle -->
+        <div id="handle-end" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 100%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+      </div>
+
+      <!-- Min/Max labels -->
+      <div style="display: flex; justify-content: space-between; color: #aaaaaa; font-size: 11px;">
+        <span>${fmt(min_ts)}</span>
+        <span>${fmt(max_ts)}</span>
+      </div>
+    </div>
+  `
+
+  const track        = container.querySelector("#track")
+  const handle_start = container.querySelector("#handle-start")
+  const handle_end   = container.querySelector("#handle-end")
+  const range_fill   = container.querySelector("#range-fill")
+  const start_label  = container.querySelector("#start-label")
+  const end_label    = container.querySelector("#end-label")
+
+  // Update visual positions and fill
+  const update_visuals = () => {
+    const s_pct = to_pct(start_ts)
+    const e_pct = to_pct(end_ts)
+    handle_start.style.left = s_pct + "%"
+    handle_end.style.left   = e_pct + "%"
+    range_fill.style.left   = s_pct + "%"
+    range_fill.style.right  = (100 - e_pct) + "%"
+    start_label.textContent = fmt(start_ts)
+    end_label.textContent   = fmt(end_ts)
+  }
+
+  // Convert mouse x position to timestamp
+  const mouse_to_ts = (e) => {
+    const rect = track.getBoundingClientRect()
+    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    return min_ts + pct * (max_ts - min_ts)
+  }
+
+  // Snap timestamp to nearest day
+  const snap_to_day = ts => {
+    const d = new Date(ts)
+    d.setUTCHours(0, 0, 0, 0)
+    return d.getTime()
+  }
+
+  // Drag logic
+  const make_draggable = (handle, is_start) => {
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault()
+
+      const on_move = e => {
+        const ts = snap_to_day(mouse_to_ts(e))
+        if (is_start) {
+          start_ts = Math.min(ts, end_ts - 86400000)   // keep at least 1 day gap
+        } else {
+          end_ts = Math.max(ts, start_ts + 86400000)
+        }
+        update_visuals()
+        // Dispatch input event to notify OJS of value change
+        container.value = [new Date(start_ts), new Date(end_ts)]
+        container.dispatchEvent(new Event("input"))
+      }
+
+      const on_up = () => {
+        window.removeEventListener("mousemove", on_move)
+        window.removeEventListener("mouseup", on_up)
+      }
+
+      window.addEventListener("mousemove", on_move)
+      window.addEventListener("mouseup", on_up)
+    })
+  }
+
+  make_draggable(handle_start, true)
+  make_draggable(handle_end,   false)
+
+  // Set initial value
+  update_visuals()
+  container.value = [new Date(start_ts), new Date(end_ts)]
+
+  return container
+}
 ```
 
 
 
 ```{ojs}
 {
+  // Return nothing if Total is selected
+  if (reservoir_choice === "Total") return html`<div></div>`
+
   const This_Year = filtered_elv
     .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
     .map(d => ({
@@ -426,17 +638,53 @@ html`
 ```{ojs}
 //| echo: false
 {
+  // Using date slider to dynamically adjust y axis range
+  const stor_slider_filtered = filtered_stor.filter(d => 
+  d.Date >= StorDateSlider[0] && d.Date <= StorDateSlider[1]
+  )
+  const stor_min = d3.min(stor_slider_filtered, d => d.Storage_MAF)
+  const stor_max = d3.max(stor_slider_filtered, d => d.Storage_MAF)
+  const stor_padding = (stor_max - stor_min) * 0.05
+
+  // Y axis domain
+  const stor_y_domain = [0, stor_max + stor_padding]
+
+  // Define reservoir-specific horizontal lines
+  const Stor_refLines = reservoir_choice === "Lake Mead" ? [
+    { y: 9.601, label: "Tier 1 Shortage - 9.6maf", color: "orange" },
+    { y: 7.683, label: "Tier 2 Shortage - 7.68maf", color: "red" },
+    { y: 5.981, label: "Tier 3 Shortage - 5.98maf", color: "darkred" },
+    { y: 0,  label: "Dead Pool - 0maf active storage", color: "black" }
+  ] : reservoir_choice === "Lake Powell" ? [
+    { y: 4, label: "Minimum Power Pool - ~4maf", color: "orange" },
+    { y: 0, label: "Dead Pool - 0maf active storage", color: "black" }
+  ] : []  // empty array for "Total" or reservoirs with no reference lines
+
   const Storage_Chart = Plot.plot({
     title: "Reservoir Storage",
     width: width,
     height: 500,
     y: { grid: true, label: "Storage (Million Acre-Feet)",
-        domain: [0, d3.max(filtered_stor, d => d.Storage_MAF)]
+        domain: stor_y_domain
      },
     x: { label: "Date", domain: StorDateSlider },
     marks: [
       Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
-      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
+      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" })),
+         // Add a ruleY and text annotation for each reference line
+      ...Stor_refLines.map(ref => Plot.ruleY([ref.y], {
+        stroke: ref.color,
+        strokeWidth: 1.5,
+        strokeDasharray: "4,4"
+      })),
+      ...Stor_refLines.map(ref => Plot.text([ref.y], {
+        y: ref.y,
+        text: [ref.label],
+        frameAnchor: "middle",
+        dy: -8,
+        fill: ref.color,
+        fontSize: 11
+      }))
     ]
   })
   return Storage_Chart
@@ -445,11 +693,169 @@ html`
 ```{ojs}
 stor_min_date = d3.min(filtered_stor, d => d.Date)
 stor_max_date = d3.max(filtered_stor, d => d.Date)
+```
+```{ojs}
+viewof StorDateSlider = {
+  // Convert dates to timestamps for numeric slider math
+  const min_ts = stor_min_date.getTime()
+  const max_ts = stor_max_date.getTime()
 
-viewof StorDateSlider = timeRange(stor_min_date, stor_max_date, {
-  interval: "day",
-  value: [stor_min_date, stor_max_date]
-})
+  // Initial values
+  let start_ts = min_ts
+  let end_ts   = max_ts
+
+  // Helper to format timestamp as display date
+  const fmt = ts => new Date(ts).toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
+  })
+
+  // Helper to convert timestamp to percentage position
+  const to_pct = ts => ((ts - min_ts) / (max_ts - min_ts)) * 100
+
+  const container = html`
+    <div style="
+      font-family: sans-serif;
+      font-size: 12px;
+      padding: 8px 0 4px 0;
+      width: 100%;
+      user-select: none;
+    ">
+      <!-- Date labels -->
+      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #6c757d;">
+        <span id="start-label">${fmt(start_ts)}</span>
+        <span id="end-label">${fmt(end_ts)}</span>
+      </div>
+
+      <!-- Slider track -->
+      <div id="track" style="
+        position: relative;
+        height: 6px;
+        background: #dee2e6;
+        border-radius: 3px;
+        margin: 10px 20px 10px 40px;
+        cursor: pointer;
+      ">
+        <!-- Selected range highlight -->
+        <div id="range-fill" style="
+          position: absolute;
+          height: 100%;
+          background: steelblue;
+          border-radius: 3px;
+          left: 0%;
+          right: 0%;
+        "></div>
+
+        <!-- Start handle -->
+        <div id="handle-start" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 0%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+
+        <!-- End handle -->
+        <div id="handle-end" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 100%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+      </div>
+
+      <!-- Min/Max labels -->
+      <div style="display: flex; justify-content: space-between; color: #aaaaaa; font-size: 11px;">
+        <span>${fmt(min_ts)}</span>
+        <span>${fmt(max_ts)}</span>
+      </div>
+    </div>
+  `
+
+  const track        = container.querySelector("#track")
+  const handle_start = container.querySelector("#handle-start")
+  const handle_end   = container.querySelector("#handle-end")
+  const range_fill   = container.querySelector("#range-fill")
+  const start_label  = container.querySelector("#start-label")
+  const end_label    = container.querySelector("#end-label")
+
+  // Update visual positions and fill
+  const update_visuals = () => {
+    const s_pct = to_pct(start_ts)
+    const e_pct = to_pct(end_ts)
+    handle_start.style.left = s_pct + "%"
+    handle_end.style.left   = e_pct + "%"
+    range_fill.style.left   = s_pct + "%"
+    range_fill.style.right  = (100 - e_pct) + "%"
+    start_label.textContent = fmt(start_ts)
+    end_label.textContent   = fmt(end_ts)
+  }
+
+  // Convert mouse x position to timestamp
+  const mouse_to_ts = (e) => {
+    const rect = track.getBoundingClientRect()
+    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    return min_ts + pct * (max_ts - min_ts)
+  }
+
+  // Snap timestamp to nearest day
+  const snap_to_day = ts => {
+    const d = new Date(ts)
+    d.setUTCHours(0, 0, 0, 0)
+    return d.getTime()
+  }
+
+  // Drag logic
+  const make_draggable = (handle, is_start) => {
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault()
+
+      const on_move = e => {
+        const ts = snap_to_day(mouse_to_ts(e))
+        if (is_start) {
+          start_ts = Math.min(ts, end_ts - 86400000)   // keep at least 1 day gap
+        } else {
+          end_ts = Math.max(ts, start_ts + 86400000)
+        }
+        update_visuals()
+        // Dispatch input event to notify OJS of value change
+        container.value = [new Date(start_ts), new Date(end_ts)]
+        container.dispatchEvent(new Event("input"))
+      }
+
+      const on_up = () => {
+        window.removeEventListener("mousemove", on_move)
+        window.removeEventListener("mouseup", on_up)
+      }
+
+      window.addEventListener("mousemove", on_move)
+      window.addEventListener("mouseup", on_up)
+    })
+  }
+
+  make_draggable(handle_start, true)
+  make_draggable(handle_end,   false)
+
+  // Set initial value
+  update_visuals()
+  container.value = [new Date(start_ts), new Date(end_ts)]
+
+  return container
+}
 ```
 
 
