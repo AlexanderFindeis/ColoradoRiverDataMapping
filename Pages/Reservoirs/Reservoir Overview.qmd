@@ -273,6 +273,26 @@ html`
 }
 ```
 ```{ojs}
+{
+  const Elevation_Chart_Reference = Plot.plot({
+    width: width,
+    height: 100,
+    marks: [
+      Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
+      Plot.rectX([{}], {
+        x1: new Date(DateSlider[0]),   // left edge
+        x2: new Date(DateSlider[1]),   // right edge
+        fill: "#9c9c9c",
+        fillOpacity: 0.15
+      })
+    ]
+  })
+
+  return Elevation_Chart_Reference
+}
+```
+
+```{ojs}
 import { timeRange } from "@jwolondon/time-range-input"
 ```
 ```{ojs}
@@ -688,6 +708,26 @@ html`
   return Storage_Chart
 }
 ```
+```{ojs}
+{
+  const Storage_Chart_Reference = Plot.plot({
+    width: width,
+    height: 100,
+    marks: [
+      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
+      Plot.rectX([{}], {
+        x1: new Date(StorDateSlider[0]),   // left edge
+        x2: new Date(StorDateSlider[1]),   // right edge
+        fill: "#9c9c9c",
+        fillOpacity: 0.15
+      })
+    ]
+  })
+
+  return Storage_Chart_Reference
+}
+```
+
 ```{ojs}
 stor_min_date = d3.min(filtered_stor, d => d.Date)
 stor_max_date = d3.max(filtered_stor, d => d.Date)
