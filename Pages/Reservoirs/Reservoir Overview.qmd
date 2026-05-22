@@ -7,9 +7,24 @@ format:
     page-layout: full
     grid:
       body-width: 1000px
+project:
+  type: website
+  resources:
+    - "Pages/Reservoirs/Data/*.csv"
 ---
 
 ```{ojs}
+Res_Elv = {
+  const rows = await d3.csv(
+    "/Pages/Reservoirs/Data/Reservoir_Elevation.csv?v=" + Date.now()
+  );
+
+  return rows.map(d => ({
+    ...d,
+    Date: new Date(d.Date + "T00:00:00")
+  }));
+}
+
 render_date = d3.max(Res_Elv, d => d.Date).toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
