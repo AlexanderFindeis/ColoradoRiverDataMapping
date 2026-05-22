@@ -2,16 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>state-overview – Colorado River Atlas</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -74,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f9958316283a66cd39213c7e42b019fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-ae0e08687815a4e4946745a463ffc9cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -191,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="12" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 11;"><span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Consumptive_Use_Dataset <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/WaterYear_Annual_Use.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="12" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 11;"><span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Consumptive_Use_Dataset <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/WaterYear_Annual_Use.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Date</span><span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Water_Year</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">Water_Year</span>)<span class="op">,</span></span>
@@ -235,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Ten_Year_Avg</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">Ten_Year_Average</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))<span class="op">,</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="dt">UB_10yr_Avg</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">UB_10yr_Avg</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))<span class="op">,</span></span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  <span class="dt">LB_10yr_Avg</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">LB_10yr_Avg</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>}))<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">Date</span> <span class="op">-</span> b<span class="op">.</span><span class="at">Date</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>}))<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">Date</span> <span class="op">-</span> b<span class="op">.</span><span class="at">Date</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -282,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As discussed further down, evaporation from Lower Basin reservoirs are not counted towards its consumptive use total but are included in the chart below to illustrate scale of evaporative losses. Lake Powell is also included as a separate category because Upper Basin states share responsibility for the reservoir proportionately. Upper Basin reservoir evaporation is counted towards Upper Basin consumptive use totals.</p>
 <p><font size="1">*Water that is “consumed” is lost as evaporation and transpiration from plants and is different from “withdrawals”, which return part of the water to streams and aquifers for other users.</font></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="73" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>Basin_wEvap <span class="op">=</span> WY_Basin_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="73" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>Basin_wEvap <span class="op">=</span> WY_Basin_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="declaration">
 
@@ -290,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="77" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 76;"><span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="77" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 76;"><span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Arizona Upper Basin consumption is exluded for now to simplify the graph and processing but needs to be wrapped into all of Arizona. Amounts negligble so taking quickest route to remove for now</span></span>
 <span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plot_data <span class="op">=</span> WY_State_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> </span>
@@ -356,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>      }))</span>
 <span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="expression">
 
@@ -371,8 +368,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Significantly, long-term supply figures show a similar decline in supplies in the mid-20th century. We are looking to include demand data prior to 1971, but figures for the 70s from USBR give a glimpse to the overall lower demand from that period and the reduced impact that a large decline in supply had at the time.</p>
 <p>While researchers consider the current drought to be the worst in 1,200 years – using data from tree rings to reconstruct historic flows – data from the past century shows that the current crisis along the Colorado is not one of supply but of demand. The current drought will not be resolved by waiting for a sudden shift in climatic trends or through the grand schemes of engineers for thousand mile pipelines to import water from elsewhere. This drought is fundamentally a human issue of demand, economic interests, priorities and infrastructure and it will only be resolved through the complete overhaul of how water is used and managed on a basin wide scale.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="157" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 156;"><span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a><span class="co">// Build lookup map from second dataset - one row per date</span></span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>supply_use_map <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>(Basin_wEvap<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> [d<span class="op">.</span><span class="at">Water_Year</span><span class="op">,</span> d]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="157" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 156;"><span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a><span class="co">// Build lookup map from second dataset - one row per date</span></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>supply_use_map <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>(Basin_wEvap<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> [d<span class="op">.</span><span class="at">Water_Year</span><span class="op">,</span> d]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="declaration">
 
@@ -380,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="161" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 160;"><span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="161" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 160;"><span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> marks <span class="op">=</span> [</span>
 <span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Annual Supply</span></span>
 <span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>  Plot<span class="op">.</span><span class="fu">lineY</span>(Supply<span class="op">,</span> { </span>
@@ -449,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a>      }<span class="op">,</span></span>
 <span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> marks</span>
 <span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="expression">
 
@@ -461,9 +458,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="regional-water-consumption" class="level1">
 <h1>Regional Water Consumption</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="237" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 236;"><span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a>Region_wEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="237" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 236;"><span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a>Region_wEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)</span>
 <span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>Region_woEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"No Evap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>Region_woEvap <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"No Evap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-6-1" data-nodetype="declaration">
@@ -485,11 +482,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Upper Basin use has rarely exceeded 4.5maf owning to a combination of climate, terrain and infrastructure. The Lower Basin has a longer and hotter growing season and larger areas suitable for irrigation. Meanwhile, the Upper Basin largely lacks the large reservoir infrastructure of the Lower Basin, making less efficient flood irrigation more common.</p>
 <p>Spikes in deliveries in Mexico reflect release of excess flood water during periods when Lakes Mead and Powell were near full capacity.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Include Lower Basin Reservoir Evaporation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Exclude Lower Basin Reservoir Evaporation</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Include Lower Basin Reservoir Evaporation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Exclude Lower Basin Reservoir Evaporation</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="256" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 255;"><span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="256" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 255;"><span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Region_Use_wEvap <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
 <span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
@@ -512,7 +509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-276"><a href="#cb7-276" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb7-277"><a href="#cb7-277" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb7-278"><a href="#cb7-278" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Region_Use_wEvap</span>
-<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="expression">
 
@@ -522,7 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="284" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 283;"><span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="284" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 283;"><span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Region_Use_woEvap <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> width<span class="op">,</span></span>
 <span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
@@ -545,7 +542,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-304"><a href="#cb8-304" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb8-305"><a href="#cb8-305" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb8-306"><a href="#cb8-306" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Region_Use_woEvap</span>
-<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-8" data-nodetype="expression">
 
@@ -566,7 +563,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <section id="upper-basin-state-consumption" class="level3">
 <h3 class="anchored" data-anchor-id="upper-basin-state-consumption">Upper Basin State Consumption</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="323" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 322;"><span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>Upper_Basin_States <span class="op">=</span> WY_State_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Upper Basin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="323" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 322;"><span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>Upper_Basin_States <span class="op">=</span> WY_State_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Upper Basin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-9" data-nodetype="declaration">
 
@@ -574,10 +571,10 @@ New Mexico: 11.25% - up to 843,750af</p>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="326" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 325;"><span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>viewof upper_basin_options <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="326" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 325;"><span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>viewof upper_basin_options <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
 <span id="cb10-327"><a href="#cb10-327" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Show Apportionment Lines"</span>]<span class="op">,</span></span>
 <span id="cb10-328"><a href="#cb10-328" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">value</span><span class="op">:</span> [<span class="st">"Show Apportionment Lines"</span>] }</span>
-<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-10" data-nodetype="declaration">
 
@@ -585,7 +582,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="333" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 332;"><span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="333" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 332;"><span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> show_apportionment_lines <span class="op">=</span> upper_basin_options<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Show Apportionment Lines"</span>)</span>
 <span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> apportionment_marks <span class="op">=</span> show_apportionment_lines <span class="op">?</span> [</span>
@@ -625,7 +622,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>apportionment_marks</span>
 <span id="cb11-371"><a href="#cb11-371" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb11-372"><a href="#cb11-372" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb11-373"><a href="#cb11-373" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-373"><a href="#cb11-373" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-11" data-nodetype="expression">
 
@@ -638,7 +635,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <section id="upper-basin-use-vs.-supply" class="level3">
 <h3 class="anchored" data-anchor-id="upper-basin-use-vs.-supply">Upper Basin Use vs.&nbsp;Supply</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="381" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 380;"><span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="381" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 380;"><span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> UB_Total <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Upper Basin"</span>)<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">Date</span> <span class="op">-</span> b<span class="op">.</span><span class="at">Date</span>)</span>
 <span id="cb12-383"><a href="#cb12-383" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-384"><a href="#cb12-384" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> UB_Supply_Plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
@@ -712,7 +709,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> UB_Supply_Plot</span>
-<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-12" data-nodetype="expression">
 
@@ -727,7 +724,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <section id="upper-basin-use-by-category" class="level3">
 <h3 class="anchored" data-anchor-id="upper-basin-use-by-category">Upper Basin Use by Category</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="468" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 467;"><span id="cb13-468"><a href="#cb13-468" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb13" data-startfrom="468" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 467;"><span id="cb13-468"><a href="#cb13-468" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb13-469"><a href="#cb13-469" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> UB_Use_Categories <span class="op">=</span> Consumptive_Use_Dataset<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> </span>
 <span id="cb13-470"><a href="#cb13-470" aria-hidden="true" tabindex="-1"></a>    d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Upper Basin"</span> <span class="op">&amp;&amp;</span></span>
 <span id="cb13-471"><a href="#cb13-471" aria-hidden="true" tabindex="-1"></a>    d<span class="op">.</span><span class="at">State</span> <span class="op">!==</span> <span class="st">"Lake Powell"</span> <span class="op">&amp;&amp;</span></span>
@@ -778,7 +775,7 @@ New Mexico: 11.25% - up to 843,750af</p>
 <span id="cb13-516"><a href="#cb13-516" aria-hidden="true" tabindex="-1"></a>    }))</span>
 <span id="cb13-517"><a href="#cb13-517" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb13-518"><a href="#cb13-518" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb13-519"><a href="#cb13-519" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-519"><a href="#cb13-519" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-13" data-nodetype="expression">
 
@@ -797,7 +794,7 @@ Nevada: 0.3maf</p>
 <section id="lower-basin-state-consumption" class="level3">
 <h3 class="anchored" data-anchor-id="lower-basin-state-consumption">Lower Basin State Consumption</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="534" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 533;"><span id="cb14-534"><a href="#cb14-534" aria-hidden="true" tabindex="-1"></a>Lower_Basin_States <span class="op">=</span> WY_State_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Lower Basin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code hidden" id="cb14" data-startfrom="534" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 533;"><span id="cb14-534"><a href="#cb14-534" aria-hidden="true" tabindex="-1"></a>Lower_Basin_States <span class="op">=</span> WY_State_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Lower Basin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-14" data-nodetype="declaration">
 
@@ -805,10 +802,10 @@ Nevada: 0.3maf</p>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="537" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 536;"><span id="cb15-537"><a href="#cb15-537" aria-hidden="true" tabindex="-1"></a>viewof lower_basin_options <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<div class="sourceCode cell-code hidden" id="cb15" data-startfrom="537" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 536;"><span id="cb15-537"><a href="#cb15-537" aria-hidden="true" tabindex="-1"></a>viewof lower_basin_options <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
 <span id="cb15-538"><a href="#cb15-538" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Show Apportionment Lines"</span>]<span class="op">,</span></span>
 <span id="cb15-539"><a href="#cb15-539" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">value</span><span class="op">:</span> [<span class="st">"Show Apportionment Lines"</span>] }</span>
-<span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-15" data-nodetype="declaration">
 
@@ -816,7 +813,7 @@ Nevada: 0.3maf</p>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb16" data-startfrom="544" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 543;"><span id="cb16-544"><a href="#cb16-544" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb16" data-startfrom="544" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 543;"><span id="cb16-544"><a href="#cb16-544" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb16-545"><a href="#cb16-545" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> show_apportionment_lines <span class="op">=</span> lower_basin_options<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Show Apportionment Lines"</span>)</span>
 <span id="cb16-546"><a href="#cb16-546" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-547"><a href="#cb16-547" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> apportionment_marks <span class="op">=</span> show_apportionment_lines <span class="op">?</span> [</span>
@@ -855,7 +852,7 @@ Nevada: 0.3maf</p>
 <span id="cb16-580"><a href="#cb16-580" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>apportionment_marks</span>
 <span id="cb16-581"><a href="#cb16-581" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb16-582"><a href="#cb16-582" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb16-583"><a href="#cb16-583" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-583"><a href="#cb16-583" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-16" data-nodetype="expression">
 
@@ -868,7 +865,7 @@ Nevada: 0.3maf</p>
 <section id="lower-basin-use-vs.-supply" class="level3">
 <h3 class="anchored" data-anchor-id="lower-basin-use-vs.-supply">Lower Basin Use vs.&nbsp;Supply</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb17" data-startfrom="592" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 591;"><span id="cb17-592"><a href="#cb17-592" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb17" data-startfrom="592" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 591;"><span id="cb17-592"><a href="#cb17-592" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb17-593"><a href="#cb17-593" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Type = Evap used to include reservoir evaporation in consumptive use figures</span></span>
 <span id="cb17-594"><a href="#cb17-594" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> LB_Total <span class="op">=</span> WY_Region_Use<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Lower Basin"</span> <span class="op">&amp;</span> d<span class="op">.</span><span class="at">Type</span> <span class="op">===</span> <span class="st">"Evap"</span>)<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">Date</span> <span class="op">-</span> b<span class="op">.</span><span class="at">Date</span>)</span>
 <span id="cb17-595"><a href="#cb17-595" aria-hidden="true" tabindex="-1"></a></span>
@@ -943,7 +940,7 @@ Nevada: 0.3maf</p>
 <span id="cb17-664"><a href="#cb17-664" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb17-665"><a href="#cb17-665" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb17-666"><a href="#cb17-666" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> LB_Supply_Plot</span>
-<span id="cb17-667"><a href="#cb17-667" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-667"><a href="#cb17-667" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-17" data-nodetype="expression">
 
@@ -960,7 +957,7 @@ Nevada: 0.3maf</p>
 <h3 class="anchored" data-anchor-id="lower-basin-use-by-category">Lower Basin Use by Category</h3>
 <p>The chart below is derived from data from the US Bureau of Reclamation on consumptive use. Unfortunately, the USBR categorizes broadly by the initial form of transfer for its consumptive use reporting on the Lower Basin. This is most clear for California, which does in fact export most of its water outside of the drainage basin of the Colorado, but uses the vast majority of that water for agriculture and the rest to supply cities like LA and San Diego.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb18" data-startfrom="681" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 680;"><span id="cb18-681"><a href="#cb18-681" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb18" data-startfrom="681" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 680;"><span id="cb18-681"><a href="#cb18-681" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb18-682"><a href="#cb18-682" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> LB_Use_Categories <span class="op">=</span> Consumptive_Use_Dataset<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> </span>
 <span id="cb18-683"><a href="#cb18-683" aria-hidden="true" tabindex="-1"></a>    d<span class="op">.</span><span class="at">Region</span> <span class="op">===</span> <span class="st">"Lower Basin"</span> <span class="op">&amp;&amp;</span></span>
 <span id="cb18-684"><a href="#cb18-684" aria-hidden="true" tabindex="-1"></a>    d<span class="op">.</span><span class="at">Water_Year</span> <span class="op">!==</span> <span class="st">"2025"</span> <span class="op">&amp;&amp;</span></span>
@@ -1009,7 +1006,7 @@ Nevada: 0.3maf</p>
 <span id="cb18-727"><a href="#cb18-727" aria-hidden="true" tabindex="-1"></a>    }))</span>
 <span id="cb18-728"><a href="#cb18-728" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb18-729"><a href="#cb18-729" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb18-730"><a href="#cb18-730" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-730"><a href="#cb18-730" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-18" data-nodetype="expression">
 
@@ -1022,7 +1019,7 @@ Nevada: 0.3maf</p>
 <p>Regardless of hydrologic continuity, though, the USBR figures do not effectively show the dominance of agriculture in Lower Colorado River water demand.</p>
 <p>For this we must use more limited data provided by the USBR in specific evapotranspiration and evaporation reports.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb19" data-startfrom="745" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 744;"><span id="cb19-745"><a href="#cb19-745" aria-hidden="true" tabindex="-1"></a>StateET_TypeTotal <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/StateET_TypeTotal.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
+<div class="sourceCode cell-code hidden" id="cb19" data-startfrom="745" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 744;"><span id="cb19-745"><a href="#cb19-745" aria-hidden="true" tabindex="-1"></a>StateET_TypeTotal <span class="op">=</span> (<span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"Data/StateET_TypeTotal.csv"</span>)<span class="op">.</span><span class="fu">csv</span>())<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span>({</span>
 <span id="cb19-746"><a href="#cb19-746" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
 <span id="cb19-747"><a href="#cb19-747" aria-hidden="true" tabindex="-1"></a>  <span class="dt">State</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">State</span>)<span class="op">,</span></span>
 <span id="cb19-748"><a href="#cb19-748" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Year</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
@@ -1044,7 +1041,7 @@ Nevada: 0.3maf</p>
 <span id="cb19-764"><a href="#cb19-764" aria-hidden="true" tabindex="-1"></a>  <span class="dt">ET</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">ET</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))<span class="op">,</span></span>
 <span id="cb19-765"><a href="#cb19-765" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Acres</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">Acres</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))<span class="op">,</span></span>
 <span id="cb19-766"><a href="#cb19-766" aria-hidden="true" tabindex="-1"></a>  <span class="dt">ET_per_Acre</span><span class="op">:</span> <span class="pp">parseFloat</span>((<span class="op">+</span>d<span class="op">.</span><span class="at">ET</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>))</span>
-<span id="cb19-767"><a href="#cb19-767" aria-hidden="true" tabindex="-1"></a>}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-767"><a href="#cb19-767" aria-hidden="true" tabindex="-1"></a>}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-19-1" data-nodetype="declaration">
@@ -1063,7 +1060,7 @@ Nevada: 0.3maf</p>
 <section id="evapotranspiration-by-state-and-type" class="level4">
 <h4 class="anchored" data-anchor-id="evapotranspiration-by-state-and-type">Evapotranspiration by State and Type</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb20" data-startfrom="770" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 769;"><span id="cb20-770"><a href="#cb20-770" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb20" data-startfrom="770" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 769;"><span id="cb20-770"><a href="#cb20-770" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb20-771"><a href="#cb20-771" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb20-772"><a href="#cb20-772" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
 <span id="cb20-773"><a href="#cb20-773" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
@@ -1085,7 +1082,7 @@ Nevada: 0.3maf</p>
 <span id="cb20-789"><a href="#cb20-789" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb20-790"><a href="#cb20-790" aria-hidden="true" tabindex="-1"></a>  ]</span>
 <span id="cb20-791"><a href="#cb20-791" aria-hidden="true" tabindex="-1"></a> })</span>
-<span id="cb20-792"><a href="#cb20-792" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-792"><a href="#cb20-792" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-20" data-nodetype="expression">
 
@@ -1096,7 +1093,7 @@ Nevada: 0.3maf</p>
 <section id="evapotranspiration-by-crop-type" class="level4">
 <h4 class="anchored" data-anchor-id="evapotranspiration-by-crop-type">Evapotranspiration by Crop Type</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb21" data-startfrom="797" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 796;"><span id="cb21-797"><a href="#cb21-797" aria-hidden="true" tabindex="-1"></a>{</span>
+<div class="sourceCode cell-code hidden" id="cb21" data-startfrom="797" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 796;"><span id="cb21-797"><a href="#cb21-797" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb21-798"><a href="#cb21-798" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb21-799"><a href="#cb21-799" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
 <span id="cb21-800"><a href="#cb21-800" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
@@ -1118,7 +1115,7 @@ Nevada: 0.3maf</p>
 <span id="cb21-816"><a href="#cb21-816" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb21-817"><a href="#cb21-817" aria-hidden="true" tabindex="-1"></a>  ]</span>
 <span id="cb21-818"><a href="#cb21-818" aria-hidden="true" tabindex="-1"></a> })</span>
-<span id="cb21-819"><a href="#cb21-819" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-819"><a href="#cb21-819" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-21" data-nodetype="expression">
 
@@ -1195,14 +1192,13 @@ window._ojs.runtime.interpretFromScriptTags();
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
