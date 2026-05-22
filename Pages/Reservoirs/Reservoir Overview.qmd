@@ -253,7 +253,6 @@ html`
   // Build marks array dynamically
   const marks = [
     Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
-    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" })),
     //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
 
     // Add a ruleY and text annotation for each reference line
@@ -269,7 +268,8 @@ html`
       dy: -8,
       fill: ref.color,
       fontSize: 11
-    }))
+    })),
+    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }))
   ]
 
   const Elevation_Chart = Plot.plot({
@@ -501,7 +501,7 @@ viewof DateSlider = {
 
   const Previous_Year = filtered_elv
     .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date <= new Date("2026-01-01T00:00:00"))
+                 d.Date <= new Date("2025-12-31T00:00:00"))
     .map(d => ({
       ...d,
       Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
@@ -518,6 +518,8 @@ viewof DateSlider = {
         "Elevation (ft)": { value: d => d.Elevation }
       },
     tip: {
+      pointer: "xy",
+      maxRadius: 8,
       format: {
         x: false,
         y: false,
@@ -529,9 +531,72 @@ viewof DateSlider = {
       }
     }
    }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elevation", stroke: "green" }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_10yr", stroke: "#ffc107" }),
-  Plot.lineY(Previous_Year, { x: "Normalized_Date", y: "Elv_Day_Avg_30yr", stroke: "red" }),
+  Plot.lineY(Previous_Year, { 
+    x: "Normalized_Date", 
+    y: "Elevation", 
+    stroke: "green",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Elevation (ft)": { value: d => d.Elevation }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Elevation (ft)": true
+      }
+    }
+    }),
+  Plot.lineY(Previous_Year, { 
+    x: "Normalized_Date", 
+    y: "Elv_Day_Avg_10yr", 
+    stroke: "#ffc107",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Elevation (ft)": { value: d => d.Elevation }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Elevation (ft)": true
+      }
+    } 
+    }),
+  Plot.lineY(Previous_Year, { 
+    x: "Normalized_Date", 
+    y: "Elv_Day_Avg_30yr", 
+    stroke: "red",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Elevation (ft)": { value: d => d.Elevation }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Elevation (ft)": true
+      }
+    }  
+    }),
   ]
 
   return Plot.plot({
@@ -701,7 +766,6 @@ html`
     x: { label: "Date", domain: StorDateSlider },
     marks: [
       Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
-      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" })),
          // Add a ruleY and text annotation for each reference line
       ...Stor_refLines.map(ref => Plot.ruleY([ref.y], {
         stroke: ref.color,
@@ -715,7 +779,8 @@ html`
         dy: -8,
         fill: ref.color,
         fontSize: 11
-      }))
+      })),
+      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
     ]
   })
   return Storage_Chart
@@ -940,6 +1005,8 @@ viewof StorDateSlider = {
         "Storage (MAF)": { value: d => d.Storage_MAF }
       },
     tip: {
+      pointer: "xy",
+      maxRadius: 8,
       format: {
         x: false,
         y: false,
@@ -951,9 +1018,63 @@ viewof StorDateSlider = {
       }
     } 
    }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Storage_MAF",       stroke: "green" }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107" }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red" }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Storage_MAF",       stroke: "green",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Storage (MAF)": { value: d => d.Storage_MAF }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Storage (MAF)": true
+      }
+    } 
+   }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Storage (MAF)": { value: d => d.Storage_MAF }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Storage (MAF)": true
+      }
+    } 
+   }),
+  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red",
+    channels: {
+        "Day":      { value: d => d.Month_Day },
+        "Storage (MAF)": { value: d => d.Storage_MAF }
+      },
+    tip: {
+      pointer: "xy",
+      maxRadius: 8,
+      format: {
+        x: false,
+        y: false,
+        y1: false,
+        y2: false,
+        fill: false,
+        "Day": true,
+        "Storage (MAF)": true
+      }
+    } 
+   }),
   ]
 
   return Plot.plot({
