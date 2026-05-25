@@ -9,8 +9,6 @@ format:
       body-width: 1000px
 project:
   type: website
-  resources:
-    - "Pages/Reservoirs/Data/*.csv"
 ---
 
 ```{ojs}
@@ -40,35 +38,26 @@ html`
 ```{ojs}
 //| echo: false
 // Data
-Res_Elv = {
-  const rows = await d3.csv("Data/Reservoir_Elevation.csv?v=" + Date.now());
-
-  return rows.map(d => ({
-    ...d,
-    Date: new Date(d.Date + "T00:00:00"), // adjusts for JS messing with time zone
-    Elevation: parseFloat((+d.Elevation).toFixed(2)),
-    Elv_1yr_Ago: parseFloat((+d.Elv_1yr_Ago).toFixed(2)),
-    Elv_Day_Avg_10yr: parseFloat((+d.Elv_Day_Avg_10yr).toFixed(2)),
-    Elv_Day_Avg_30yr: parseFloat((+d.Elv_Day_Avg_30yr).toFixed(2))
-  }));
-}
+Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
+  ...d,
+  Date: new Date(d.Date + "T00:00:00"), // adjusts for JS messing with time zone
+  Elevation: parseFloat((+d.Elevation).toFixed(2)),
+  Elv_1yr_Ago: parseFloat((+d.Elv_1yr_Ago).toFixed(2)),
+  Elv_Day_Avg_10yr: parseFloat((+d.Elv_Day_Avg_10yr).toFixed(2)),
+  Elv_Day_Avg_30yr: parseFloat((+d.Elv_Day_Avg_30yr).toFixed(2))
+}))
 ```
 ```{ojs}
 //| echo: false
-Res_Stor = { 
-  const rows = await d3.csv("Data/Reservoir_Storage.csv?v=" + Date.now());
-
-  return rows.map(d => ({
-
-    ...d,
-    Date: new Date(d.Date + "T00:00:00"),
-    Storage_MAF: parseFloat((+d.Storage_MAF).toFixed(2)),
-    Stor_1yr_Ago: parseFloat((+d.StorMAF_1yr_Ago).toFixed(2)),
-    Stor_Day_Avg_10yr: parseFloat((+d.Stor_Day_Avg_10yr).toFixed(2)),
-    Stor_Day_Avg_30yr: parseFloat((+d.Stor_Day_Avg_30yr).toFixed(2)),
-    Perc_Full: parseFloat((+d.Percent_Full_MAF).toFixed(2))
-  }));
-}
+Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
+  ...d,
+  Date: new Date(d.Date + "T00:00:00"),
+  Storage_MAF: parseFloat((+d.Storage_MAF).toFixed(2)),
+  Stor_1yr_Ago: parseFloat((+d.StorMAF_1yr_Ago).toFixed(2)),
+  Stor_Day_Avg_10yr: parseFloat((+d.Stor_Day_Avg_10yr).toFixed(2)),
+  Stor_Day_Avg_30yr: parseFloat((+d.Stor_Day_Avg_30yr).toFixed(2)),
+  Perc_Full: parseFloat((+d.Percent_Full_MAF).toFixed(2))
+}))
 ```
 
 ```{ojs}
