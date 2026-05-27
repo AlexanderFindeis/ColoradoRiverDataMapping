@@ -9,20 +9,27 @@ format:
 ---
 
 ```{ojs}
-// Link to tutorial
-// https://observablehq.com/@observablehq/plot-cyclical-time-scale
+SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
+    const date  = new Date(d.Snow_Date + "T00:00:00")
+    const month = date.getUTCMonth()
 
-SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => ({
-  ...d,
-  Date: new Date(d.Date + "T00:00:00"), // adjusts for JS messing with time zone
-  //Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
-  //Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" }),
-  HUC6: d.HUC6,
-  Minimum: +d.Min,
-  Maximum: +d.Max,
-  Median_91_20: +d.Median_91_20,
-  Average_SWE: +d.Average_SWE
-}))
+    return {
+        ...d,
+        Date: date, 
+        Normalized_Date: new Date(Date.UTC(
+            month >= 9 ? 2000 : 2001,
+            month,
+            date.getUTCDate()
+        )),
+        Calendar_Year: d.Calendar_Year,
+        Snow_Year: d.Snow_Year,
+        HUC6: d.HUC6,
+        Minimum: +d.Min,
+        Maximum: +d.Max,
+        Median_91_20: +d.Median_91_20,
+        Average_SWE: +d.Average_SWE
+        }
+}).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 ```
 ```{ojs}
 SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
@@ -31,14 +38,23 @@ SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
   { label: "Basin:", value: "Full Basin" })
 ```
+
+::: {style="text-align: center;"}
+# Daily Snow Water Equivalent Trends
+:::
+
 ```{ojs}
 {
-    const Current_Year_Start = "2026-01-01";
-    const Previous_Year_Start = "2025-01-01";
-    const Previous_year_End = "2025-12-31";
+    const current_wy  = "2026"
+    const previous_wy = "2025"
+
+    const Current_Year  = SNOTEL_Filtered.filter(d => d.Snow_Year === current_wy)
+    // Use previous year to get a full year's worth of records for min, max and median
+    const Previous_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === previous_wy)
+    const Historical    = SNOTEL_Filtered.filter(d => d.Snow_Year !== current_wy)
 
     return Plot.plot({
-        title: "Basin-Wide Average Snow Water Equivalent Trends",
+        //title: "Basin-Wide Average Snow Water Equivalent Trends",
         width: width,
         height: 500,
         color: { // For some reason adding the legend is causing the multi-year lines to disappear
@@ -48,23 +64,30 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
             },
         x: {
             // map all dates to 2000 by removing n * 365.24 days; Feb 29 will not create a gap
-            transform: (d) => d3.utcDay.offset(d, (2000 - d.getUTCFullYear()) * 365.24),
+            // transform: d => new Date(Date.UTC(
+            //     d.getUTCMonth() >= 9 ? 2001 : 2000,
+            //     d.getUTCMonth(),
+            //     d.getUTCDate()
+            //     )),
+             domain: [
+                new Date(Date.UTC(2000, 9, 1)),    // October 1 2000
+                new Date(Date.UTC(2001, 8, 30))    // September 30 2001
+            ],
             tickFormat: "%b",
             line: true,
             label: "Month"
         },
         y: { nice: true, grid: true, zero: true, label: "Snow Water Equivalent (in)" },
         marks: [
-            Plot.line(SNOTEL_Filtered, {
-                x: "Date",
+            Plot.line(Historical, {
+                x: "Normalized_Date",
                 y: "Average_SWE",
                 stroke: "#aaaaaa",
                 z: ({ Date }) => Date.getUTCFullYear(), // z separates the lines
                 strokeOpacity: 0.3
                 }),
-            Plot.line(SNOTEL_Filtered, {
-                filter: d => d.Date >= new Date(Previous_Year_Start) && d.Date <= new Date(Previous_year_End),
-                x: "Date",
+            Plot.line(Previous_Year, {
+                x: "Normalized_Date",
                 y: "Median_91_20",
                 stroke: "#00c01a",
                 strokeWidth: 2,
@@ -76,9 +99,8 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                     }
                 }
             }),
-            Plot.line(SNOTEL_Filtered, {
-                filter: d => d.Date >= new Date(Previous_Year_Start) && d.Date <= new Date(Previous_year_End),
-                x: "Date",
+            Plot.line(Previous_Year, {
+                x: "Normalized_Date",
                 y: "Minimum",
                 stroke: "#f54242",
                 strokeWidth: 3,
@@ -90,9 +112,8 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                     }
                 }
             }),
-            Plot.line(SNOTEL_Filtered, {
-                filter: d => d.Date >= new Date(Previous_Year_Start) && d.Date <= new Date(Previous_year_End),
-                x: "Date",
+            Plot.line(Previous_Year, {
+                x: "Normalized_Date",
                 y: "Maximum",
                 stroke: "#3765fa",
                 strokeWidth: 3,
@@ -104,9 +125,8 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                     }
                 }
             }),
-            Plot.line(SNOTEL_Filtered, {
-                filter: d => d.Date >= new Date(Current_Year_Start),
-                x: "Date",
+            Plot.line(Current_Year, {
+                x: "Normalized_Date",
                 y: "Average_SWE",
                 stroke: "#000000",
                 strokeWidth: 3,
@@ -118,6 +138,143 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                     }
                 }
             })
+        ]
+    })
+}
+```
+
+::: {style="text-align: center;"}
+# Annual Peak Average Snow Water Equivalent
+:::
+
+```{ojs}
+// Get the max average SWE for each HUC each year
+yearly_max = {
+  const rolled = d3.rollups(
+    SNOTEL_Filtered,
+    v => d3.max(v, d => d.Average_SWE),
+    d => d.Snow_Year
+  )
+  return rolled.map(([year, max_avg]) => ({
+    Year:        year,
+    Date:        new Date(year, 1, 1),
+    Average_SWE: max_avg
+  })).sort((a, b) => a.Date - b.Date).filter(d => d.Date >= new Date("1979-01-01"))
+}
+```
+```{ojs}
+{
+    const valid = SNOTEL_Filtered.filter(d => d.Average_SWE != null && !isNaN(d.Average_SWE))
+    const Date_Domain =  [d3.min(valid, d => d.Date), d3.max(valid, d => d.Date)]
+
+    return Plot.plot({
+        //title: "Basin-Wide Average Snow Water Equivalent Trends",
+        width: width,
+        height: 500,
+        color: { 
+            legend: true,
+            domain: ["Annual Peak Avg SWE", "Peak Avg SWE 10yr-Avg", "Trend Line"],
+            range: ["#0049b8", "steelblue", "black"]
+        },
+        x: { label: "Water Year", domain: Date_Domain },
+        y: { nice: true, grid: true, zero: true, label: "Snow Water Equivalent (in)" },
+        marks: [
+            Plot.line(yearly_max, {
+                x: "Date",
+                y: "Average_SWE",
+                stroke: "#0049b8",
+                strokeOpacity: 1,
+                channels: {
+                    "Year":      { value: d => d.Year },
+                    "SWE (in)":  { value: d => d.Average_SWE }
+                },
+                tip: {
+                    pointer: "xy",
+                    maxRadius: 8,
+                    format: {
+                        x: false,
+                        y: false,
+                        y1: false,
+                        y2: false,
+                        fill: false,
+                        "Year": true,
+                        "SWE (in)": true
+                    }
+                }
+            }),
+            Plot.line(yearly_max, Plot.windowY(
+                { k: 10, reduce: "mean", anchor: "end" },
+                { x: "Date", y: "Average_SWE", stroke: "steelblue", strokeDasharray: "4,4" }
+            )),
+            Plot.linearRegressionY(yearly_max, {x: "Date", y: "Average_SWE"})
+        ]
+    })
+}
+```
+
+::: {style="text-align: center;"}
+# Days to Peak Average SWE Each Year
+:::
+
+```{ojs}
+Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => ({
+    ...d,
+    Date: new Date(d.Date + "T00:00:00"), 
+    Peak_Avg_SWE: +d.Peak_AVG_SWE,
+    HUC6: d.HUC6,
+    Days2Peak: +d.Days2Peak,
+    Snow_Year: d.Snow_Year
+})).sort((a, b) => a.Date - b.Date)
+```
+```{ojs}
+{
+    const Days2Peak = Days2Peak_Data.filter(d => d.HUC6 === Basin_Select)
+
+    const valid = SNOTEL_Filtered.filter(d => d.Average_SWE != null && !isNaN(d.Average_SWE))
+    const Date_Domain =  [d3.min(valid, d => d.Date), d3.max(valid, d => d.Date)]
+
+    return Plot.plot({
+        //title: "Basin-Wide Average Snow Water Equivalent Trends",
+        width: width,
+        height: 500,
+        color: { 
+            legend: true,
+            domain: ["Days to Peak Avg SWE", "Days to Peak 10yr-Avg", "Trend Line"],
+            range: ["#0049b8", "steelblue", "black"] 
+        },
+        x: { label: "Water Year", domain: Date_Domain },
+        y: { grid: true, label: "Number of Days",
+             domain: [d3.min(Days2Peak, d => d.Days2Peak) * 0.9, d3.max(Days2Peak, d => d.Days2Peak) * 1.1]
+         },
+        marks: [
+            Plot.line(Days2Peak, {
+                x: "Date",
+                y: "Days2Peak",
+                stroke: "#0049b8",
+                strokeOpacity: 1,
+                channels: {
+                    "Year":      { value: d => d.Snow_Year },
+                    "Days to Peak SWE":  { value: d => d.Days2Peak }
+                },
+                tip: {
+                    pointer: "xy",
+                    maxRadius: 8,
+                    format: {
+                        x: false,
+                        y: false,
+                        y1: false,
+                        y2: false,
+                        fill: false,
+                        "Year": true,
+                        "Days to Peak SWE": true
+                    }
+                }
+            }),
+            Plot.line(Days2Peak, Plot.windowY(
+                { k: 10, reduce: "mean", anchor: "end" },
+                { x: "Date", y: "Days2Peak", stroke: "steelblue", strokeDasharray: "4,4" }
+            )),
+            Plot.linearRegressionY(Days2Peak, {x: "Date", y: "Days2Peak"})
         ]
     })
 }

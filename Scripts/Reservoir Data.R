@@ -2,8 +2,18 @@ library(dplyr)
 library(zoo)
 library(lubridate)
 library(sf)
+library(httr2)
 
 options(timeout = 300)
+
+# base_url <- 'https://data.usbr.gov/rise/api/catalog-item'
+# response <- request(base_url) |> 
+#   req_url_path_append(
+#     'page=2',
+#     'itemsPerPage=25'
+#   ) |> 
+#   req_perform()
+# response
 
 # Lake Mead Elevation
 Mead.Elv <- read.csv("https://www.usbr.gov/uc/water/hydrodata/reservoir_data/921/csv/49.csv") %>% mutate(Reservoir = "Lake Mead")
