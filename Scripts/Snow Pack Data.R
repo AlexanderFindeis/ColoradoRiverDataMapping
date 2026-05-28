@@ -6,7 +6,7 @@ Upper_Green <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR
     mutate(HUC6 = "Upper Green")
 
 White_Yampa <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140500_White-Yampa.csv") %>%
-    mutate(HUC6 = "White Yampa")
+    mutate(HUC6 = "White-Yampa")
 
 Colorado_Headwaters <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140100_Colorado_Headwaters.csv") %>%
     mutate(HUC6 = "Colorado Headwaters")
@@ -15,7 +15,7 @@ Lower_Green <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR
     mutate(HUC6 = "Lower Green")
 
 Upper_Colorado_Dolores <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140300_Upper_Colorado-Dolores.csv") %>%
-    mutate(HUC6 = "Upper Colorado - Dolores")
+    mutate(HUC6 = "Upper Colorado-Dolores")
 
 Gunnison <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140200_Gunnison.csv") %>%
     mutate(HUC6 = "Gunnison")
@@ -27,10 +27,10 @@ Lower_San_Juan <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/
     mutate(HUC6 = "Lower San Juan")
 
 UpperColorado_DirtyDevil <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140700_Upper_Colorado-Dirty_Devil.csv") %>%
-    mutate(HUC6 = "Upper Colorado - Dirty Devil")
+    mutate(HUC6 = "Upper Colorado-Dirty Devil")
 
 LowerColorado_LakeMead <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/150100_Lower_Colorado-Lake_Mead.csv") %>%
-    mutate(HUC6 = "Lower Colorado - Lake Mead")
+    mutate(HUC6 = "Lower Colorado-Lake Mead")
 
 Little_Colorado <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/150200_Little_Colorado.csv") %>%
     mutate(HUC6 = "Little Colorado")
@@ -97,11 +97,14 @@ write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
 UB_HUC6 <- st_read("GIS_Data/UpperBasin_HUC6.geojson")
 LB_HUC6 <- st_read("GIS_Data/LowerBasin_HUC6.geojson")
 
-SWE_Current <- data_long %>%
+SWE_Current <- read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv") %>%
+    filter(!is.na(Average_SWE)) %>%
+    filter(HUC6 != "Full Basin") %>%
     group_by(HUC6) %>%
-    filter(Snow_Date == max(Snow_Date, na.rm = TRUE))
+    filter(Calendar_Date == max(Calendar_Date, na.rm = TRUE))
 
-HUC6_Full <- bind_rows(UB_HUC6, LB_HUC6) %>%
-    right_join(data_long, by = c("name" = "HUC6"))
+HUC6_Full <- union(UB_HUC6, LB_HUC6) %>%
+    right_join(SWE_Current, by = c("name" = "HUC6")) %>%
+    mutate(across(c("Average_SWE"), round, 2))
 
 st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)

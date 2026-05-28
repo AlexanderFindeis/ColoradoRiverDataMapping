@@ -9,6 +9,9 @@ project:
 website:
   title: "Colorado River Atlas"
   navbar:
+    tools:
+      - icon: github
+        href: "https://github.com/AlexanderFindeis/ColoradoRiverDataMapping"
     right:
       - href: index.qmd
         text: Home

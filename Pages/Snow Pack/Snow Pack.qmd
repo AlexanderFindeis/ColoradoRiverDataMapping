@@ -8,6 +8,17 @@ format:
       body-width: 1000px
 ---
 
+```{=html}
+<style>
+  .leaflet-interactive:focus {
+    outline: none !important;
+  }
+  path.leaflet-interactive {
+    outline: none !important;
+  }
+</style>
+```
+
 ```{ojs}
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
     const date  = new Date(d.Snow_Date + "T00:00:00")
@@ -63,12 +74,6 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
             range:  ["black", "#00c01a", "#f54242", "#3765fa", "#aaaaaa"]
             },
         x: {
-            // map all dates to 2000 by removing n * 365.24 days; Feb 29 will not create a gap
-            // transform: d => new Date(Date.UTC(
-            //     d.getUTCMonth() >= 9 ? 2001 : 2000,
-            //     d.getUTCMonth(),
-            //     d.getUTCDate()
-            //     )),
              domain: [
                 new Date(Date.UTC(2000, 9, 1)),    // October 1 2000
                 new Date(Date.UTC(2001, 8, 30))    // September 30 2001
@@ -140,6 +145,83 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
             })
         ]
     })
+}
+```
+
+::: {style="text-align: center;"}
+# Current SWE Map
+:::
+```{ojs}
+//| echo: false
+L = require("leaflet")
+```
+```{=html}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+```
+```{ojs}
+HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
+```
+```{ojs}
+{
+  const div = html`<div style="width:100%; height:700px;"></div>`
+
+  // Allow div to render before initializing map
+  yield div
+
+  const map = L.map(div, { 
+    center: [36.5, -112], 
+    zoom: 6 
+  })
+
+    // Basemap tile layer
+  const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
+    maxZoom: 18
+  }).addTo(map)
+
+  // Color scale based on Average SWE
+  const color_scale = d3.scaleSequential()
+  .domain([ 0, 30 // Setting top end of color gradient to 30inches to extend just beyond maximum values observed in past
+  ])
+  .interpolator(d3.interpolateRdYlGn)
+
+  // HUC6 layer
+  const average_swe_layer = L.geoJSON(HUC6_geo, {
+    style: feature => ({
+      color: "#000000",
+      weight: 2,
+      fillColor: color_scale(feature.properties.Average_SWE),
+      fillOpacity: 0.4
+    }),
+    onEachFeature: (feature, layer) => {
+        layer.bindTooltip(
+            `${feature.properties.name}: ${feature.properties.Average_SWE}in`,
+            { sticky: true}
+        )
+    }
+  }).addTo(map)
+
+  const legend = L.control({ position: "bottomleft" })
+
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    // White background
+    div.style.cssText = `
+        background: white; padding: 10px 14px;
+        border-radius: 6px; border: 1px solid #dee2e6;
+        font-size: 12px; font-family: sans-serif;
+        `
+    // Use CSS to create a smooth gradient bar
+    div.innerHTML = '<div style="background: linear-gradient(to left, green, yellow, red); height: 20px; width: 200px;"></div>' +
+                    '<div style="display: flex; justify-content: space-between;"><span>0in</span><span>30in</span></div>';
+    return div;
+  };
+
+  legend.addTo(map);
+
+  // Force Leaflet to recalculate map size after render
+  setTimeout(() => map.invalidateSize(), 100)
+
 }
 ```
 
