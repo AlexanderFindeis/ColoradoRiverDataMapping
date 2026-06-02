@@ -45,7 +45,7 @@ Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => 
   Elv_1yr_Ago: parseFloat((+d.Elv_1yr_Ago).toFixed(2)),
   Elv_Day_Avg_10yr: parseFloat((+d.Elv_Day_Avg_10yr).toFixed(2)),
   Elv_Day_Avg_30yr: parseFloat((+d.Elv_Day_Avg_30yr).toFixed(2))
-}))
+})).sort((a, b) => a.Date - b.Date)
 ```
 ```{ojs}
 //| echo: false
@@ -57,7 +57,7 @@ Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
   Stor_Day_Avg_10yr: parseFloat((+d.Stor_Day_Avg_10yr).toFixed(2)),
   Stor_Day_Avg_30yr: parseFloat((+d.Stor_Day_Avg_30yr).toFixed(2)),
   Perc_Full: parseFloat((+d.Percent_Full_MAF).toFixed(2))
-}))
+})).sort((a, b) => a.Date - b.Date)
 ```
 
 ```{ojs}
@@ -526,7 +526,7 @@ viewof DateSlider = {
     stroke: "green",
     channels: {
         "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elevation }
+        "Elevation (ft)": { value: d => d.Elv_1yr_Ago }
       },
     tip: {
       pointer: "xy",
@@ -548,7 +548,7 @@ viewof DateSlider = {
     stroke: "#ffc107",
     channels: {
         "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elevation }
+        "Elevation (ft)": { value: d => d.Elv_Day_Avg_10yr }
       },
     tip: {
       pointer: "xy",
@@ -570,7 +570,7 @@ viewof DateSlider = {
     stroke: "red",
     channels: {
         "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elevation }
+        "Elevation (ft)": { value: d => d.Elv_Day_Avg_30yr }
       },
     tip: {
       pointer: "xy",
@@ -1029,7 +1029,7 @@ viewof StorDateSlider = {
   Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107",
     channels: {
         "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Storage_MAF }
+        "Storage (MAF)": { value: d => d.Stor_Day_Avg_10yr }
       },
     tip: {
       pointer: "xy",
@@ -1048,7 +1048,7 @@ viewof StorDateSlider = {
   Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red",
     channels: {
         "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Storage_MAF }
+        "Storage (MAF)": { value: d => d.Stor_Day_Avg_30yr }
       },
     tip: {
       pointer: "xy",
