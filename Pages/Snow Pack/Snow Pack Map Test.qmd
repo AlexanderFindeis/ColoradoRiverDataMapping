@@ -1,0 +1,184 @@
+---
+execute:
+  echo: false
+format: 
+  html: 
+    page-layout: full
+    grid:
+      body-width: 1000px
+---
+```{ojs}
+SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
+    const date  = new Date(d.Snow_Date + "T00:00:00")
+    const month = date.getUTCMonth()
+
+    return {
+        ...d,
+        Date: date, 
+        Normalized_Date: new Date(Date.UTC(
+            month >= 9 ? 2000 : 2001,
+            month,
+            date.getUTCDate()
+        )),
+        Calendar_Year: d.Calendar_Year,
+        Snow_Year: d.Snow_Year,
+        HUC6: d.HUC6,
+        Minimum: +d.Min,
+        Maximum: +d.Max,
+        Median_91_20: +d.Median_91_20,
+        Average_SWE: +d.Average_SWE
+        }
+}).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+```
+```{ojs}
+SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
+```
+```{ojs}
+viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
+  { label: "Basin:", value: "Full Basin" })
+```
+
+```{ojs}
+d3 = require("d3@7")
+d3tile = require("d3-tile@1")
+```
+```{ojs}
+// Load GeoJSON
+HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
+
+Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
+```
+
+
+```{ojs}
+//| echo: false
+{
+  const selected = Basin_Select
+
+  return Plot.plot({
+    width:  width,
+    height: 500,
+    projection: {
+      type: "albers",
+      domain: HUC6_geo    // auto-fits projection to your data extent
+    },
+    color: {
+      legend:      true,
+      label:       "Avg SWE (in)",
+      domain:      [0, 30],
+      interpolate: d3.interpolateRdYlGn
+    },
+    marks: [
+      // Filled polygons colored by SWE value
+      Plot.geo(HUC6_geo, {
+        fill:        d => d.properties.Average_SWE,
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#999999",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.5,
+        tip:         true,
+        channels: {
+          "Basin":   { value: d => d.properties.name },
+          "Avg SWE": { value: d => `${d.properties.Average_SWE} in` }
+        }
+      })
+    ]
+  })
+}
+```
+
+
+```{ojs}
+{
+  const width = 900;
+  const height = 700;
+
+  const div = d3.create("div")
+      .style("width", "100%")
+      .style("height", height + "px")
+      .style("position", "relative");
+
+  const svg = div.append("svg")
+      .attr("width", "100%")
+      .attr("height", height)
+      .style("cursor", "grab");
+
+  // Tooltip
+  const tooltip = div.append("div")
+      .style("position", "absolute")
+      .style("pointer-events", "none")
+      .style("background", "white")
+      .style("padding", "6px 10px")
+      .style("border", "1px solid #ccc")
+      .style("border-radius", "4px")
+      .style("font-size", "12px")
+      .style("opacity", 0);
+
+  // Projection centered on your Leaflet map center
+  const projection = d3.geoMercator()
+      .center([-112, 36.5])
+      .scale(2000)
+      .translate([width / 2, height / 2]);
+
+  const path = d3.geoPath().projection(projection);
+
+  // Color scale
+  const color_scale = d3.scaleSequential()
+      .domain([0, 30])
+      .interpolator(d3.interpolateRdYlGn);
+
+  // Draw polygons
+  const g = svg.append("g");
+  
+  // Watershed basins
+  g.selectAll("path")
+    .data(HUC6_geo.features)
+    .join("path")
+      .attr("d", path)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1)
+      .attr("fill", d => color_scale(d.properties.Average_SWE))
+      .attr("fill-opacity", 0.4)
+      .on("mousemove", (event, d) => {
+        tooltip.style("opacity", 1)
+          .style("left", event.offsetX + 15 + "px")
+          .style("top", event.offsetY + "px")
+          .html(`<strong>${d.properties.name}</strong><br>${d.properties.Average_SWE} in`);
+      })
+      .on("mouseleave", () => tooltip.style("opacity", 0));
+
+  // Zoom behavior
+  svg.call(
+    d3.zoom()
+      .scaleExtent([1, 15])
+      .on("zoom", (event) => {
+        g.attr("transform", event.transform);
+      })
+  );
+
+  // Legend
+  const legend = div.append("div")
+      .style("position", "absolute")
+      .style("bottom", "20px")
+      .style("left", "20px")
+      .style("background", "white")
+      .style("padding", "10px 14px")
+      .style("border-radius", "6px")
+      .style("border", "1px solid #dee2e6")
+      .style("font-size", "12px")
+      .style("font-family", "sans-serif");
+
+  legend.html(`
+    <div style="
+      background: linear-gradient(to left, green, yellow, red);
+      height: 20px; width: 200px; margin-bottom: 4px;">
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+      <span>0 in</span><span>30 in</span>
+    </div>
+  `);
+
+  return div.node();
+}
+```

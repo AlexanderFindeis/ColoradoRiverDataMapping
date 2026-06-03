@@ -49,6 +49,11 @@ SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
   { label: "Basin:", value: "Full Basin" })
 ```
+```{ojs}
+HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
+
+Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
+```
 
 ::: {style="text-align: center;"}
 # Daily Snow Water Equivalent Trends
@@ -151,6 +156,57 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
 ::: {style="text-align: center;"}
 # Current SWE Map
 :::
+
+```{ojs}
+//| echo: false
+{
+  const selected = Basin_Select
+
+  return Plot.plot({
+    width:  width,
+    height: 500,
+    marginLeft: 25,
+    projection: {
+      type: "albers",
+      domain: HUC6_geo    // auto-fits projection to data extent
+    },
+    color: {
+      legend:      true,
+      marginLeft:  25,
+      label:       "Avg SWE (in)",
+      domain:      [0, 30],
+      interpolate: d3.interpolateRdYlGn
+    },
+    marks: [
+      // Filled polygons colored by SWE value
+      Plot.geo(HUC6_geo, {
+        fill:        d => d.properties.Average_SWE,
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+        title:    d => `${d.properties.name}\n${d.properties.Average_SWE} in`,
+        geometry: d => d.geometry
+            }))
+        ),
+      Plot.frame()
+    ]
+  })
+}
+```
+
+
 ```{ojs}
 //| echo: false
 L = require("leaflet")
@@ -159,9 +215,7 @@ L = require("leaflet")
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 ```
 ```{ojs}
-HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
-```
-```{ojs}
+//| output: false
 {
   const div = html`<div style="width:100%; height:700px;"></div>`
 
