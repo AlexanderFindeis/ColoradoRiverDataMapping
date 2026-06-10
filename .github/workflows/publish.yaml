@@ -66,8 +66,8 @@ jobs:
         with:
           path: |
             index.qmd
-            Pages/Reservoirs/Reservoir Overview.qmd
-            Pages/Snow Pack/Snow Pack.qmd
+            "Pages/Reservoirs/Reservoir Overview.qmd"
+            "Pages/Snow Pack/Snow Pack.qmd"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
