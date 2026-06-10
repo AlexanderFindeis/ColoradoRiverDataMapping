@@ -1,0 +1,68 @@
+name: Update Data and Re-render Live Data Pages
+
+on:
+  push:
+    branches: main
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev \
+            libudunits2-dev
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("httr2", "jsonlite", "dplyr", "zoo", "lubridate", "sf"), repos = "https://cloud.r-project.org")'
+
+      - name: Run Reservoir Data Pull
+        run: Rscript "scripts/Reservoir Data.R"
+
+      - name: Run Snow Pack Data Pull
+        run: Rscript "scripts/Snow Pack Data.R"
+
+      - name: Render updated pages
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: |
+            index.qmd
+            Pages/Reservoirs/Reservoir Overview.qmd
+            Pages/Snow Pack/Snow Pack.qmd
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push updates
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "Automated data update: $(date +'%Y-%m-%d %H:%M:%S')"
+            git push origin main
+          else
+            echo "No data changes detected. Skipping push."
+          fi

@@ -7,9 +7,6 @@ library(jsonlite)
 
 options(timeout = 300)
 
-library(httr)
-library(jsonlite)
-
 # Query data
 # Example: "https://data.usbr.gov/rise/api/result?itemsPerPage=2000&order%5BdateTime%5D=ASC&itemId=6123&dateTime%5Bafter%5D=20260501&dateTime%5Bstrictly_before%5D=20260522"
 DataFetch <- function(ItemID, dateFrom, dateTo){
