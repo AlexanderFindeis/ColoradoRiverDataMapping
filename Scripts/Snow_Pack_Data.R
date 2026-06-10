@@ -2,6 +2,8 @@ library(dplyr)
 library(tidyr)
 library(sf)
 
+options(timeout = 300)
+
 Upper_Green <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140401_Upper_Green.csv") %>%
     mutate(HUC6 = "Upper Green")
 
