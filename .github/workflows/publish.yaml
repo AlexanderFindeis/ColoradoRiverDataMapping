@@ -12,6 +12,7 @@ env:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   update-data:
@@ -27,16 +28,12 @@ jobs:
           echo "--- Root contents ---"
           ls -la
           echo "--- Scripts directory ---"
-          ls -la scripts/ || echo "scripts/ directory not found"
+          ls -la Scripts/ || echo "Scripts/ directory not found"
           echo "--- All R files ---"
           find . -name "*.R" -type f
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Make scripts executable
-        run: chmod +x "Pages/Reservoirs/Reservoir Overview.qmd"
-        run: chmod +x "Pages/Snow Pack/Snow Pack.qmd"
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
