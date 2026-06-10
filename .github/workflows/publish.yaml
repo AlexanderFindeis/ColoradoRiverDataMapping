@@ -41,9 +41,11 @@ jobs:
 
       - name: Run Reservoir Data Pull
         run: Rscript "scripts/Reservoir_Data.R"
+        working-directory: ${{ github.workspace }}
 
       - name: Run Snow Pack Data Pull
         run: Rscript "scripts/Snow_Pack_Data.R"
+        working-directory: ${{ github.workspace }}
 
       - name: Render updated pages
         uses: quarto-dev/quarto-actions/render@v2
