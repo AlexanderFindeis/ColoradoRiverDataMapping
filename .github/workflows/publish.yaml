@@ -51,7 +51,7 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c("httr", "jsonlite", "dplyr", "zoo", "lubridate", "sf"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages(c("httr", "jsonlite", "tidyr", "dplyr", "zoo", "lubridate", "sf"), repos = "https://cloud.r-project.org")'
 
       - name: Run Reservoir Data Pull
         run: Rscript "Scripts/Reservoir_Data.R"
