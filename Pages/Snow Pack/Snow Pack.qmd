@@ -18,6 +18,17 @@ format:
   }
 </style>
 ```
+```{=html}
+<style>
+.floating-container {
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+  background: #34d6ff27; /* Optional: keeps background solid when overlapping text */
+  padding: 10px;
+}
+</style>
+```
 
 ```{ojs}
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
@@ -45,10 +56,12 @@ SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d =>
 ```{ojs}
 SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 ```
+:::{.floating-container}
 ```{ojs}
 viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
   { label: "Basin:", value: "Full Basin" })
 ```
+:::
 ```{ojs}
 HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
 

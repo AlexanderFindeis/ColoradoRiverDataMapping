@@ -7,6 +7,7 @@ format:
     grid:
       body-width: 1000px
 ---
+
 ```{ojs}
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
     const date  = new Date(d.Snow_Date + "T00:00:00")
@@ -37,11 +38,6 @@ SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
   { label: "Basin:", value: "Full Basin" })
 ```
-
-```{ojs}
-d3 = require("d3@7")
-d3tile = require("d3-tile@1")
-```
 ```{ojs}
 // Load GeoJSON
 HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
@@ -49,6 +45,59 @@ HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
 Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 ```
 
+# Geoviz
+```{ojs}
+geoviz = require("geoviz@1.0.0")
+d3 = require("d3@7")
+dicopal = require("dicopal@0.5")
+```
+
+```{ojs}
+d3
+  .selectAll(`#basin_layer > plot`)
+  .transition()
+  .delay(50)
+  .attr("fillOpacity", d => Basin_Select === "Full Basin"
+          ? 0.7
+          : d.properties.name === Basin_Select ? 0.9 : 0.15)
+```
+```{ojs}
+{
+  let svg = geoviz.create({ 
+    projection: "albers", 
+    width: 700,
+    domain: HUC6_geo,
+    zoomable: true 
+  });
+  svg.plot({ type: "outline" });
+  svg.plot({
+    id: "basin_layer",
+    type: "choro",
+    data: HUC6_geo,
+    missing: "#CCC",
+    leg_missing_text: "no data",
+    colors: "RdYlGn",
+    var: "Average_SWE",
+    breaks: [0, 5, 10, 15, 20, 25, 30],
+    leg_values_round: 0,
+    reverse: false,
+    fillOpacity: 0.9,
+    strokeWidth: 0.3,
+    leg_title: "SWE inches",
+    tip: true
+  });
+  return svg.render();
+}
+```
+
+
+
+
+
+<!-- ```{ojs}
+d3 = require("d3@7")
+d3tile = require("d3-tile@1")
+```
 
 ```{ojs}
 //| echo: false
@@ -181,4 +230,4 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 
   return div.node();
 }
-```
+``` -->
