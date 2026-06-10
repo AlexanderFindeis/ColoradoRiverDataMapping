@@ -1,7 +1,10 @@
 @echo off
+
+set RSCRIPT="C:\Program Files\R\R-4.2.3\bin\Rscript.exe"
+
 echo === Running R data scripts ===
-Rscript Scripts/Reservoir_Data.R
-Rscript Scripts/Snow_Pack_Data.R
+%Rscript% Scripts/Reservoir_Data.R
+%Rscript% Scripts/Snow_Pack_Data.R
 
 echo === Rendering Quarto pages ===
 quarto render index.qmd
