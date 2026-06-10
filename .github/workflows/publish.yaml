@@ -35,7 +35,8 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Make scripts executable
-        run: chmod +x path/to/your/script.sh
+        run: chmod +x "Pages/Reservoirs/Reservoir Overview.qmd"
+        run: chmod +x "Pages/Snow Pack/Snow Pack.qmd"
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
