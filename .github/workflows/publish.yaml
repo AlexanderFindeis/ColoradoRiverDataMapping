@@ -7,6 +7,9 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
 
@@ -16,6 +19,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Debug workspace contents
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "Workspace: ${{ github.workspace }}"
+          echo "--- Root contents ---"
+          ls -la
+          echo "--- Scripts directory ---"
+          ls -la scripts/ || echo "scripts/ directory not found"
+          echo "--- All R files ---"
+          find . -name "*.R" -type f
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
