@@ -7,8 +7,8 @@ echo === Running R data scripts ===
 %Rscript% Scripts/Snow_Pack_Data.R
 
 echo === Rendering Quarto pages ===
-quarto render index.qmd
-quarto render "Pages/Reservoirs/Reservoir Overview.qmd"
+quarto.cmd render index.qmd
+quarto.cmd render "Pages/Reservoirs/Reservoir Overview.qmd"
 quarto render "Pages/Snow Pack/Snow Pack.qmd"
 
 echo === Committing and pushing changes ===
