@@ -26,6 +26,7 @@ DataFetch <- function(ItemID, dateFrom, dateTo){
   data.frame(Date = unlist(results$data$attributes$dateTime), Result = unlist(results$data$attributes$result))
 }
 
+print("Beginning data fetch...")
 
 # Lake Mead Elevation
 Mead.Elv1 <- DataFetch(6123, "20200101", "") # Leaving dateTo blank will pull to latest date
@@ -51,6 +52,8 @@ Mead.Stor <- bind_rows(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor
 rm(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor5, Mead.Stor6)
 Stor.DataFrames <- list(Mead.Stor)
 
+print("Lake Mead Data Fetched")
+
 ## Lake Powell
 # evapotation = 510, inflow cfs = 511, infow af = 4288, outflow cfs = 4315, outflow af = 4354, area acres = 4784
 # Lake Powell Elevation
@@ -71,6 +74,8 @@ Powell.Stor <- bind_rows(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4)
   mutate(Date = as.Date(Date), Reservoir = "Lake Powell") %>% distinct()
 rm(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Powell.Stor))
+
+print("Lake Powell Data Fetched")
 
 ## Flaming Gorge - https://data.usbr.gov/catalog/2300
 # Elevation
@@ -93,6 +98,8 @@ Flaming.Gorge.Stor <- bind_rows(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flamin
   mutate(Date = as.Date(Date), Reservoir = "Flaming Gorge")
 rm(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flaming.Gorge.Stor3, Flaming.Gorge.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Flaming.Gorge.Stor))
+
+print("Flaming Gorge Data Fetched")
 
 
 ## Lake Mohave https://data.usbr.gov/catalog/4369
@@ -117,6 +124,8 @@ Mohave.Stor <- bind_rows(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4)
 rm(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Mohave.Stor))
 
+print("Lake Mohave Data Fetched")
+
 ## Navajo Reservoir https://data.usbr.gov/catalog/2392
 # Elevation
 Navajo.Elv1 <- DataFetch(612, "20200101", "")
@@ -136,6 +145,8 @@ Navajo.Stor <- bind_rows(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4)
   mutate(Date = as.Date(Date), Reservoir = "Navajo Reservoir")
 rm(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Navajo.Stor))
+
+print("Navajo Reservoir Data Fetched")
 
 
 ## Strawberry Reservoir https://data.usbr.gov/catalog/2456
@@ -158,6 +169,8 @@ Strawberry.Stor <- bind_rows(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor
 rm(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor3, Strawberry.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Strawberry.Stor))
 
+print("Strawberry Reservoir Data Fetched")
+
 
 ## Blue Mesa https://data.usbr.gov/catalog/2249
 # Elevation
@@ -178,6 +191,8 @@ Blue.Mesa.Stor <- bind_rows(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, B
   mutate(Date = as.Date(Date), Reservoir = "Blue Mesa Reservoir")
 rm(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, Blue.Mesa.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Blue.Mesa.Stor))
+
+print("Blue Mesa Data Fetched")
 
 
 ## Havasu https://data.usbr.gov/catalog/4371
@@ -200,6 +215,8 @@ Havasu.Stor <- bind_rows(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4)
 rm(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Havasu.Stor))
 
+print("Lake Havasu Data Fetched")
+
 
 ## Granby Reservoir https://data.usbr.gov/catalog/2321
 # Elevation
@@ -221,6 +238,8 @@ Granby.Stor <- bind_rows(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4)
 rm(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4)
 Stor.DataFrames <- append(Stor.DataFrames, list(Granby.Stor))
 
+print("Granby Reservoir Data Fetched")
+print("Compiling data...")
 
 
 ## Elevation Data
@@ -389,3 +408,5 @@ latest_res_data <- latest_storage %>%
 latest_res_sf <- st_as_sf(latest_res_data, coords = c("long", "lat"), crs=4326)
 
 st_write(latest_res_sf, "GIS_Data/Reservoirs.geojson", append=FALSE, delete_dsn = TRUE)
+
+print("Reservoir Data Preparation Compelte")

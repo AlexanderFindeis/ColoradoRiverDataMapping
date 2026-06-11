@@ -4,6 +4,8 @@ library(sf)
 
 options(timeout = 300)
 
+print("Pulling Snow Pack Data")
+
 Upper_Green <- read.csv("https://nwcc-apps.sc.egov.usda.gov/awdb/basin-plots/POR/WTEQ/assocHUC6/140401_Upper_Green.csv") %>%
     mutate(HUC6 = "Upper Green")
 
@@ -110,3 +112,5 @@ HUC6_Full <- union(UB_HUC6, LB_HUC6) %>%
     mutate(across(c("Average_SWE"), round, 2))
 
 st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
+
+print("Snow Pack Data Compilation Complete")
