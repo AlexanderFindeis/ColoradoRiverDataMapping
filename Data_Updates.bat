@@ -8,9 +8,9 @@ set quarto="C:\Users\a1928\AppData\Local\Programs\Positron\resources\app\quarto\
 @REM %Rscript% Scripts/Snow_Pack_Data.R
 
 echo === Rendering Quarto pages ===
-quarto.cmd render index.qmd
-quarto.cmd render "Pages/Reservoirs/Reservoir Overview.qmd"
-quarto.cmd render "Pages/Snow Pack/Snow Pack.qmd"
+%quarto% render index.qmd
+%quarto% render "Pages/Reservoirs/Reservoir Overview.qmd"
+%quarto% render "Pages/Snow Pack/Snow Pack.qmd"
 
 echo === Committing and pushing changes ===
 git add .
