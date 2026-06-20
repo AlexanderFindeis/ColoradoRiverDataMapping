@@ -68,6 +68,15 @@ viewof reservoir_choice = Inputs.select(
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```
+```{=html}
+<style>
+  /* Set width of label */
+  form.oi-3a86ea>label {
+  width: 80px;
+  }
+</style>
+```
+  
 
 ::: {#reservoir-tabset .panel-tabset .ojs-track-layout}
 

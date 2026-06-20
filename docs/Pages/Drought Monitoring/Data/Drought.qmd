@@ -1,0 +1,39 @@
+---
+execute:
+  echo: false
+format: 
+  html: 
+    page-layout: full
+    grid:
+      body-width: 1000px
+project:
+  type: website
+---
+
+```{ojs}
+geoviz = require("geoviz@1.0.0")
+d3 = require("d3@7")
+dicopal = require("dicopal@0.5")
+```
+
+
+```{ojs}
+drought_layer = d3.json("https://droughtmonitor.unl.edu/data/json/usdm_current.json")
+Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
+// Upper_Basin = FileAttachment("../../GIS_Data/UpperBasin_HUC2.geojson").json()
+// Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
+```
+
+```{ojs}
+{
+  let svg = geoviz.create({ 
+    projection: "albers", 
+    width: 700,
+    domain: Basin_States,
+    zoomable: true 
+  });
+  svg.path({ datum: drought_layer, stroke: "#38896F", strokeWidth: 1.5 });
+  svg.path({ datum: Basin_States, stroke: "#000000", strokeWidth: 2});
+  return svg.render();
+}
+```

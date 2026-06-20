@@ -1,0 +1,140 @@
+---
+execute:
+  echo: false
+format: 
+  html: 
+    page-layout: full
+    grid:
+      body-width: 1000px
+project:
+  type: website
+---
+
+```{=html}
+<style>
+  /* Make the gis layers non-interactable */
+  #basin-states path {
+    pointer-events: none !important;
+  }
+  #lower-basin path {
+    pointer-events: none !important;
+  }
+  #upper-basin path {
+    pointer-events: none !important;
+  }
+</style>
+```
+
+
+```{ojs}
+geoviz = require("geoviz@1.0.0")
+d3 = require("d3@7")
+dicopal = require("dicopal@0.5")
+```
+```{r}
+#| include: false
+library(sf)
+library(dplyr)
+geo <- sf::st_read("/vsizip//vsicurl/https://droughtmonitor.unl.edu/data/shapefiles_m/USDM_current_M.zip")
+st_write(geo, "GIS_Data/Current_Drought.geojson", delete_dsn = TRUE)
+
+UB <- st_read("GIS/UpperBasin_HUC2.geojson")
+LB <- st_read("GIS/LowerBasin_HUC2.geojson")
+```
+
+```{ojs}
+//drought_layer = d3.json("https://droughtmonitor.unl.edu/data/json/usdm_current.json")
+drought_layer = FileAttachment("../../GIS_Data/Current_Drought.geojson").json()
+Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
+Upper_Basin = FileAttachment("../../GIS_Data/UpperBasin_HUC2.geojson").json()
+Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
+```
+::: {style="text-align: center;"}
+# Current Drought Conditions
+:::
+```{ojs}
+//| echo: false
+{
+  // Define custom color mapping
+  const drought_color_map = {
+    "0": "#FFFF00",
+    "1": "#FCD37F", 
+    "2": "#FFAA00",
+    "3": "#E60000",
+    "4": "#730000"
+  }
+
+  // Legend labeling
+  const drought_label_map = {
+    "0": "D0 - Abnormally Dry",
+    "1": "D1 - Moderate Drought",
+    "2": "D2 - Severe Drought",
+    "3": "D3 - Extreme Drought",
+    "4": "D4 - Exceptional Drought"
+  }
+
+  // Map container
+  let svg = geoviz.create({ 
+    domain:   Basin_States, 
+    width:    width, 
+    margin: [25, 25, 60, 25],
+    zoomable: [0.5, 5],
+    background: "#ffffff00",
+    outline:  false
+  })
+
+  svg.path({
+    strokeWidth: 0.2,
+    data:        drought_layer,
+    fill:        d => drought_color_map[String(d.properties.DM)] ?? "#cccccc",
+    tip:         d => drought_label_map[String(d.properties.DM)] ?? "No Data"
+  })
+
+  // Legend
+  svg.legend.typo_vertical({
+    pos:         [20, 500],
+    title:       "Drought Level",
+    alphabetical: false,
+    colors:      Object.values(drought_color_map),
+    types:       Object.values(drought_label_map),
+    missing:     false
+  })
+
+  svg.path({
+    id: "basin-states",
+    datum:       Basin_States,
+    fill:        "#00000000",
+    stroke:      "#000000",
+    strokeWidth: 2,
+    tip: false,
+    styles:      "pointer-events: none;"
+  })
+
+  svg.path({
+    id:          "upper-basin",
+    datum:       Upper_Basin,
+    fill:        "#1a64960a",
+    stroke:      "#1a6496",
+    strokeWidth: 2,
+    tip: false,
+    styles:      "pointer-events: none;"
+  })
+
+  svg.path({
+    id:          "lower-basin",
+    datum:       Lower_Basin,
+    fill:        "#a944420a",
+    stroke:      "#a94442",
+    strokeWidth: 2,
+    tip: false,
+    styles:      "pointer-events: none;"
+  })
+
+  return svg.render()
+}
+```
+::: chart-description
+<font size="2">Data from the National Drought Mitigation Center (NDMC), the U.S. Department of Agriculture (USDA) and the National Oceanic and Atmospheric Administration (NOAA).  
+  
+[US Drought Monitor GIS Data](https://droughtmonitor.unl.edu/DmData/GISData.aspx)</font>
+:::

@@ -6,29 +6,8 @@ format:
     page-layout: full
     grid:
       body-width: 1000px
+bibliography: references.bib
 ---
-
-```{=html}
-<style>
-  .leaflet-interactive:focus {
-    outline: none !important;
-  }
-  path.leaflet-interactive {
-    outline: none !important;
-  }
-</style>
-```
-```{=html}
-<style>
-.floating-container {
-  position: sticky;
-  top: 20px;
-  z-index: 1000;
-  background: #34d6ff27; /* Optional: keeps background solid when overlapping text */
-  padding: 10px;
-}
-</style>
-```
 
 ```{ojs}
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
@@ -49,24 +28,50 @@ SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d =>
         Minimum: +d.Min,
         Maximum: +d.Max,
         Median_91_20: +d.Median_91_20,
-        Average_SWE: +d.Average_SWE
+        Average_SWE: parseFloat((+d.Average_SWE).toFixed(2)),
+        Percent_of_Median: parseFloat((+d.Percent_of_Median).toFixed(2))
         }
 }).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
 ```
+
 ```{ojs}
 SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 ```
-:::{.floating-container}
-```{ojs}
-viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
-  { label: "Basin:", value: "Full Basin" })
-```
-:::
+
 ```{ojs}
 HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
 
 Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 ```
+
+::: {style="text-align: center;"}
+# Colorado Basin Snow Pack
+:::
+
+Snow pack is an essential supply of water to the Colorado River. Researchers estimate that snow melt accounts for 70% of Colorado River supply [@xiao2021].As climate change alters weather patterns, reducing snow fall and speeding up snow melt, downstream supply is threatened. The snow season of 2025/2026 was the worst on record for much of the Colorado headwaters as a major heatwave in March caused an already poor year to see an unprecedented collapse in snow levels.
+
+The charts below demonstrate current and historical conditions in snow water equivalent (SWE) measured in inches of water. This data is derived from the National Weather and Climate Center and processed for display [@NWCC].
+
+Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for aggregated data of the entire Colorado River Basin.
+
+<br>
+
+```{=html}
+<style>
+  /* Set width of label */
+  form.oi-3a86ea>label {
+  width: 70px;
+  }
+</style>
+```
+::: floating-container
+```{ojs}
+viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
+  { label: "Basin:", value: "Full Basin" })
+```
+:::
+
+<br>
 
 ::: {style="text-align: center;"}
 # Daily Snow Water Equivalent Trends
@@ -166,10 +171,16 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 }
 ```
 
-::: {style="text-align: center;"}
-# Current SWE Map
+::: chart-description
+<font size="2">Daily data trends for snow water equivalent in inches averaged to the HUC6 watershed level. "Full Basin" is an average of Maximum, Minimum and Median statistics from all sub-basins, may not reflect true extremes. Dates arranged to the water year (October 1 to September 30). </font>
 :::
 
+::: {style="text-align: center;"}
+# Current SWE Maps
+:::
+
+::: {.panel-tabset}
+## Current SWE (inches)
 ```{ojs}
 //| echo: false
 {
@@ -218,17 +229,64 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
   })
 }
 ```
-
-
+## SWE Percent of Median
 ```{ojs}
 //| echo: false
-L = require("leaflet")
+{
+  const selected = Basin_Select
+
+  return Plot.plot({
+    width:  width,
+    height: 500,
+    marginLeft: 25,
+    projection: {
+      type: "albers",
+      domain: HUC6_geo    // auto-fits projection to data extent
+    },
+    color: {
+      legend:      true,
+      marginLeft:  25,
+      label:       "SWE Percent of Median",
+      domain:      [0, 200],
+      interpolate: d3.interpolateRdYlBu
+    },
+    marks: [
+      // Filled polygons colored by SWE value
+      Plot.geo(HUC6_geo, {
+        fill:        d => d.properties.Percent_of_Median,
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+        title:    d => `${d.properties.name}\n${d.properties.Percent_of_Median} in`,
+        geometry: d => d.geometry
+            }))
+        ),
+      Plot.frame()
+    ]
+  })
+}
 ```
-```{=html}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-```
+:::
+
+::: chart-description
+<font size="2">Hover mouse over a sub-basin for current SWE conditions. Use the basin selector to highlight a specific sub-basin on the map.</font>
+:::
+
 ```{ojs}
 //| output: false
+// Not being rendered, keeping as a non-output code chunk for reference
 {
   const div = html`<div style="width:100%; height:700px;"></div>`
 
@@ -311,6 +369,7 @@ yearly_max = {
   })).sort((a, b) => a.Date - b.Date).filter(d => d.Date >= new Date("1979-01-01"))
 }
 ```
+
 ```{ojs}
 {
     const valid = SNOTEL_Filtered.filter(d => d.Average_SWE != null && !isNaN(d.Average_SWE))
@@ -361,6 +420,10 @@ yearly_max = {
 }
 ```
 
+::: chart-description
+<font size="2">Maximum snow water equivalent values were taken from each year data was available from the USDA for each sub-basin and aggregated for the entire basin. This chart shows long-term trends in peak SWE and the consistent decline in peak values over time for most sub-basins and the Colorado River Basin as a whole.</font>
+:::
+
 ::: {style="text-align: center;"}
 # Days to Peak Average SWE Each Year
 :::
@@ -375,6 +438,7 @@ Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => 
     Snow_Year: d.Snow_Year
 })).sort((a, b) => a.Date - b.Date)
 ```
+
 ```{ojs}
 {
     const Days2Peak = Days2Peak_Data.filter(d => d.HUC6 === Basin_Select)
@@ -428,3 +492,7 @@ Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => 
     })
 }
 ```
+
+::: chart-description
+<font size="2">The number of days from October 1 (the start of the water year) to peak snow pack was calcualted for each year. This chart shows the long-term trend in declining number of days to peak snow pack, reflecting a tightening snow storage system that is receiving less snow and melting sooner than before</font>
+:::

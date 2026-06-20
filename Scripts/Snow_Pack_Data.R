@@ -1,6 +1,7 @@
 library(dplyr) 
 library(tidyr)
 library(sf)
+library(terra)
 
 options(timeout = 300)
 
@@ -58,7 +59,7 @@ Colorado_Basin_SWE_Full <- bind_rows(Upper_Green, White_Yampa, Colorado_Headwate
     summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE)))
 
 ### !!! - Year fields are not calendar years, they are snow years
-### treating them like calendar years assigns values to fall and winter of this year that haven't happened year
+### treating them like calendar years assigns values to fall and winter of this year that haven't happened yet
 ### Need to adjust dates to account for this
 data_long <- Colorado_Basin_SWE_Full %>%
   group_by(HUC6) %>%
@@ -77,6 +78,7 @@ data_long <- Colorado_Basin_SWE_Full %>%
     Calendar_Date = as.Date(paste(Calendar_Year, date, sep = "-"), format = "%Y-%m-%d")
   ) %>%
   rename(Median_91_20 = `Median...91..20.`, Month_Day = date) %>%
+  mutate(Percent_of_Median = (Average_SWE / Median_91_20)*100, 0) %>%
   filter(Snow_Year > 100) # Removes values for percentile statistics that were pivoted as if they were years
 
 write.csv(data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.csv")
@@ -105,12 +107,16 @@ SWE_Current <- read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv") %>%
     filter(!is.na(Average_SWE)) %>%
     filter(HUC6 != "Full Basin") %>%
     group_by(HUC6) %>%
-    filter(Calendar_Date == max(Calendar_Date, na.rm = TRUE))
+    filter(Calendar_Date == max(Calendar_Date, na.rm = TRUE)) %>% ungroup()
 
-HUC6_Full <- union(UB_HUC6, LB_HUC6) %>%
+HUC6_Full <- union_all(UB_HUC6, LB_HUC6) %>%
     right_join(SWE_Current, by = c("name" = "HUC6")) %>%
     mutate(across(c("Average_SWE"), round, 2))
 
 st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
 
 print("Snow Pack Data Compilation Complete")
+
+
+## Snow raster
+#SWE_Raster <- terra::rast("C:/Users/a1928/Downloads/4km_SWE_Depth_WY2023_v01.nc")

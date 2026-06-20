@@ -1,0 +1,46 @@
+.chart-description {
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: center;
+}
+
+/* Style for markdown div to make a container sticky (move when scrolling) */
+.floating-container {
+position: sticky;
+top: 50px;
+z-index: 1000;
+background: #a9d0f500; /* Optional: keeps background solid when overlapping text */
+padding: 15px 20px 15px 20px;
+width: 350px;
+border-radius: 25px;
+}
+
+
+/* Styling for dropdown selector */
+/*  */
+
+/* Target the select element inside Observable inputs */
+.observablehq select {
+background-color: #a2ccf723;
+border: 1px solid #0080ff85;
+border-radius: 6px;
+padding: 6px 12px;
+font-size: 13px;
+font-family: sans-serif;
+color: #333;
+cursor: pointer;
+width: 100%;
+}
+
+/* Hover state */
+.observablehq select:hover {
+border-color: steelblue;
+}
+
+/* Focus state */
+.observablehq select:focus {
+outline: none;
+border-color: steelblue;
+box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.25);
+}
+/*  */

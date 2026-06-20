@@ -23,6 +23,8 @@ website:
         text: State Usage
       - href: Pages/Snow Pack/Snow Pack.qmd
         text: Snow Pack
+      - href: Pages/Drought Monitoring/Drought.qmd
+        text: Drought Conditions
       #   menu:
       #     - text: Reservoir Overview
       #       href: Pages/Reservoirs/Reservoir Overview.qmd

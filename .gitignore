@@ -5,3 +5,5 @@ _site
 /.quarto/
 .github/workflows
 Data_Updates.bat
+Scripts/Snow_Raster.py
+Pages/Snow Pack/Snow Pack Map Test.qmd
