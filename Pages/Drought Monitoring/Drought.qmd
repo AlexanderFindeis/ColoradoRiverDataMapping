@@ -37,9 +37,6 @@ library(sf)
 library(dplyr)
 geo <- sf::st_read("/vsizip//vsicurl/https://droughtmonitor.unl.edu/data/shapefiles_m/USDM_current_M.zip")
 st_write(geo, "GIS_Data/Current_Drought.geojson", delete_dsn = TRUE)
-
-UB <- st_read("GIS/UpperBasin_HUC2.geojson")
-LB <- st_read("GIS/LowerBasin_HUC2.geojson")
 ```
 
 ```{ojs}
@@ -76,6 +73,7 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
   // Map container
   let svg = geoviz.create({ 
     domain:   Basin_States, 
+    projection: "albers",
     width:    width, 
     margin: [25, 25, 60, 25],
     zoomable: [0.5, 5],
