@@ -33,10 +33,7 @@ dicopal = require("dicopal@0.5")
 ```
 ```{r}
 #| include: false
-library(sf)
-library(dplyr)
-geo <- sf::st_read("/vsizip//vsicurl/https://droughtmonitor.unl.edu/data/shapefiles_m/USDM_current_M.zip")
-st_write(geo, "GIS_Data/Current_Drought.geojson", delete_dsn = TRUE)
+Drought_Stats <- read.csv("Pages/Drought Monitoring/Data/Drought_Stats.csv")
 ```
 
 ```{ojs}
@@ -49,6 +46,122 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
 ::: {style="text-align: center;"}
 # Current Drought Conditions
 :::
+
+<br>
+
+```{=html}
+<div style="font-family: sans-serif; max-width: 900px; margin: 0 auto;">
+
+  <h3 style="text-align: center; margin-bottom: 20px;">Current Drought Area</h3>
+
+  <div style="display: grid; grid-template-columns: 220px 1fr 1fr; gap: 0; align-items: center;">
+
+    <!-- Header row -->
+    <div></div>
+    <div style="background:#a8c4e07e; border-radius:10px 10px 0 0; padding:14px 24px;
+                font-size:18px; font-weight:600; text-align:center; margin-right:10px;">
+      Upper Basin
+    </div>
+    <div style="background:#139C1A59; border-radius:10px 10px 0 0; padding:14px 24px;
+                font-size:18px; font-weight:600; text-align:center; margin-left:10px;">
+      Lower Basin
+    </div>
+
+    <!-- Abnormally Dry -->
+    <div style="display:flex; align-items:center; gap:8px; padding:12px 0;
+                border-bottom:1px solid #dee2e6; font-size:13px;">
+      <div style="width:12px; height:12px; background:#ffff00;
+                  border:1px solid #ccc; border-radius:2px; flex-shrink:0;"></div>
+      Abnormally Dry
+    </div>
+    <div style="background:#a8c4e07e; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-right:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[1], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[1], 2)` %
+    </div>
+    <div style="background:#139C1A59; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-left:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[6], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[6], 2)` %
+    </div>
+
+    <!-- Moderate Drought -->
+    <div style="display:flex; align-items:center; gap:8px; padding:12px 0;
+                border-bottom:1px solid #dee2e6; font-size:13px;">
+      <div style="width:12px; height:12px; background:#fcd37f;
+                  border:1px solid #ccc; border-radius:2px; flex-shrink:0;"></div>
+      Moderate Drought
+    </div>
+    <div style="background:#a8c4e07e; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-right:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[2], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[2], 2)` %
+    </div>
+    <div style="background:#139C1A59; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-left:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[7], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[7], 2)` %
+    </div>
+
+    <!-- Severe Drought -->
+    <div style="display:flex; align-items:center; gap:8px; padding:12px 0;
+                border-bottom:1px solid #dee2e6; font-size:13px;">
+      <div style="width:12px; height:12px; background:#ffaa00;
+                  border:1px solid #ccc; border-radius:2px; flex-shrink:0;"></div>
+      Severe Drought
+    </div>
+    <div style="background:#a8c4e07e; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-right:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[3], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[3], 2)` %
+    </div>
+    <div style="background:#139C1A59; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-left:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[8], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[8], 2)` %
+    </div>
+
+    <!-- Extreme Drought -->
+    <div style="display:flex; align-items:center; gap:8px; padding:12px 0;
+                border-bottom:1px solid #dee2e6; font-size:13px;">
+      <div style="width:12px; height:12px; background:#e60000;
+                  border:1px solid #ccc; border-radius:2px; flex-shrink:0;"></div>
+      Extreme Drought
+    </div>
+    <div style="background:#a8c4e07e; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-right:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[4], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[4], 2)` %
+    </div>
+    <div style="background:#139C1A59; padding:12px 24px; text-align:center;
+                border-bottom:1px solid rgba(255,255,255,0.4); font-size:13px;
+                font-weight:600; margin-left:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[9], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[9], 2)` %
+    </div>
+
+    <!-- Exceptional Drought -->
+    <div style="display:flex; align-items:center; gap:8px; padding:12px 0;
+                font-size:13px;">
+      <div style="width:12px; height:12px; background:#730000;
+                  border:1px solid #ccc; border-radius:2px; flex-shrink:0;"></div>
+      Exceptional Drought
+    </div>
+    <div style="background:#a8c4e07e; border-radius:0 0 10px 10px; padding:12px 24px;
+                text-align:center; font-size:13px; font-weight:600; margin-right:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[5], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[5], 2)` %
+    </div>
+    <div style="background:#139C1A59; border-radius:0 0 10px 10px; padding:12px 24px;
+                text-align:center; font-size:13px; font-weight:600; margin-left:10px;">
+      `r formatC(Drought_Stats$Drought_Area_SqKm[10], format = "f", digits = 0, big.mark = ",")` km² | `r round(Drought_Stats$Drought_Area_Percent[10], 2)` %
+    </div>
+
+  </div>
+</div>
+```
+  
+<br>
+
+
 ```{ojs}
 //| echo: false
 {
@@ -111,9 +224,9 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
   svg.path({
     id:          "upper-basin",
     datum:       Upper_Basin,
-    fill:        "#1a64960a",
+    fill:        "#00000000",
     stroke:      "#1a6496",
-    strokeWidth: 2,
+    strokeWidth: 2.5,
     tip: false,
     styles:      "pointer-events: none;"
   })
@@ -121,9 +234,9 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
   svg.path({
     id:          "lower-basin",
     datum:       Lower_Basin,
-    fill:        "#a944420a",
-    stroke:      "#a94442",
-    strokeWidth: 2,
+    fill:        "#00000000",
+    stroke:      "#139C1A",
+    strokeWidth: 2.5,
     tip: false,
     styles:      "pointer-events: none;"
   })

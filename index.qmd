@@ -95,9 +95,9 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
   // Lower Basin polygon layer
   const lower_basin_layer = L.geoJSON(lower_basin_geo, {
     style: {
-      color: "#a94442",
+      color: "#5B7EDE",
       weight: 2,
-      fillColor: "#e06666",
+      fillColor: "#5B7EDE",
       fillOpacity: 0.3
     }
   }).addTo(map)
