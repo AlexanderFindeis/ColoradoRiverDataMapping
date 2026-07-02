@@ -11,6 +11,7 @@ echo === Rendering Quarto pages ===
 %quarto% render index.qmd
 %quarto% render "Pages/Reservoirs/Reservoir Overview.qmd"
 %quarto% render "Pages/Snow Pack/Snow Pack.qmd"
+%quarto% render "Pages/Drought Monitoring/Drought.qmd"
 
 echo === Committing and pushing changes ===
 git add .

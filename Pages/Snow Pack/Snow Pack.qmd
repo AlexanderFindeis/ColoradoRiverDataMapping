@@ -50,7 +50,7 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 
 Snow pack is an essential supply of water to the Colorado River. Researchers estimate that snow melt accounts for 70% of Colorado River supply [@xiao2021]. As climate change alters weather patterns, reducing snow fall and speeding up snow melt, downstream supply is threatened. The snow season of 2025/2026 was the worst on record for much of the Colorado headwaters as a major heatwave in March caused an already poor year to see an unprecedented collapse in snow levels.
 
-The charts below demonstrate current and historical conditions in snow water equivalent (SWE) measured in inches of water. This data is derived from the National Weather and Climate Center and processed for display [@NWCC].
+The charts below demonstrate current and historical conditions of snow water equivalent (SWE) measured in inches of water. This data is derived from the National Weather and Climate Center and processed for display [@NWCC].
 
 Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for aggregated data of the entire Colorado River Basin.
 
