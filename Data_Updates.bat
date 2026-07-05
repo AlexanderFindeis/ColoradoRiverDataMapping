@@ -6,6 +6,7 @@ set quarto="C:\Users\a1928\AppData\Local\Programs\Positron\resources\app\quarto\
 echo === Running R data scripts ===
 %Rscript% Scripts/Reservoir_Data.R
 %Rscript% Scripts/Snow_Pack_Data.R
+%Rscript% Scripts/Drought.R
 
 echo === Rendering Quarto pages ===
 %quarto% render index.qmd
