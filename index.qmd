@@ -123,7 +123,7 @@ rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson"
        }
       const pct_full = feature.properties.Percent_Full_MAF ?? 0
       const capacity = feature.properties.Max_Capacity_MAF ?? 0
-      const radius = Math.sqrt(capacity) * 5
+      const radius = 3 + Math.sqrt(capacity) * 4
       return L.circleMarker(latlng, {
         radius: radius,
         fillColor: color_scale(pct_full),

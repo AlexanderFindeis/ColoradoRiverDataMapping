@@ -64,7 +64,8 @@ Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
 //| echo: false
 //| panel: sidebar
 viewof reservoir_choice = Inputs.select(
-  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge", "Lake Mohave", "Navajo Reservoir", "Strawberry Reservoir", "Blue Mesa Reservoir", "Lake Havasu", "Granby Reservoir"],
+  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge", "Lake Mohave", "Navajo Reservoir", "Strawberry Reservoir", "Blue Mesa Reservoir", "Lake Havasu", "Granby Reservoir","McPhee Reservoir","Fontenelle Reservoir","Starvation Reservoir","Green Mountain Reservoir","Vallecito Reservoir","Lake Nighthorse","Morrow Point Reservoir","Taylor Park Reservoir","Ruedi Reservoir"
+  ],
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```

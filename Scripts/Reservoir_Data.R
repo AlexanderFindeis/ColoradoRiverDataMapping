@@ -1,4 +1,5 @@
 library(dplyr)
+library(purrr)
 library(zoo)
 library(lubridate)
 library(sf)
@@ -28,223 +29,318 @@ DataFetch <- function(ItemID, dateFrom, dateTo){
 
 print("Beginning data fetch...")
 
-# Lake Mead Elevation
-Mead.Elv1 <- DataFetch(6123, "20200101", "") # Leaving dateTo blank will pull to latest date
-Mead.Elv2 <- DataFetch(6123, "20000101", "20191231")
-Mead.Elv3 <- DataFetch(6123, "19800101", "19991231")
-Mead.Elv4 <- DataFetch(6123, "19600101", "19791231")
-Mead.Elv5 <- DataFetch(6123, "19400101", "19591231")
-Mead.Elv6 <- DataFetch(6123, "", "19391231")
-Mead.Elv <- bind_rows(Mead.Elv1, Mead.Elv2, Mead.Elv3, Mead.Elv4, Mead.Elv5, Mead.Elv6) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Mead") %>% distinct()
-rm(Mead.Elv1, Mead.Elv2, Mead.Elv3, Mead.Elv4, Mead.Elv5, Mead.Elv6)
-Elv.DataFrames <- list(Mead.Elv)
+# Date chunks 
+# Necessary to keep data pulls within max of 10,000 records at once
+date_chunks <- list(
+  c("20200101", ""        ),
+  c("20000101", "20191231"),
+  c("19800101", "19991231"),
+  c("19600101", "19791231"),
+  c("19400101", "19591231"),
+  c("",         "19391231")
+)
 
-# Lake Mead Storage
-Mead.Stor1 <- DataFetch(6124, "20200101", "") # Leaving before blank will pull to latest date
-Mead.Stor2 <- DataFetch(6124, "20000101", "20191231")
-Mead.Stor3 <- DataFetch(6124, "19800101", "19991231")
-Mead.Stor4 <- DataFetch(6124, "19600101", "19791231")
-Mead.Stor5 <- DataFetch(6124, "19400101", "19591231")
-Mead.Stor6 <- DataFetch(6124, "", "19391231")
-Mead.Stor <- bind_rows(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor5, Mead.Stor6) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Mead") %>% distinct()
-rm(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor5, Mead.Stor6)
-Stor.DataFrames <- list(Mead.Stor)
+# Reservoir definitions
+# All USBR managed reservoirs with data above 100k AF
+# Arizona based reservoirs not included in RISE API system
+# Non USBR managed reservoirs not included yet
+reservoirs <- tribble(
+  ~name,               ~elv_id, ~stor_id,
+  "Lake Mead",         6123,    6124,
+  "Lake Powell",       508,     509,
+  "Flaming Gorge",     341,     337,
+  "Lake Mohave",       6133,    6133,
+  "Navajo Reservoir",  612,     613,
+  "Strawberry Reservoir", 782,  779,
+  "Blue Mesa Reservoir",  78,      76,
+  "Lake Havasu",       6128,    6129,
+  "Granby Reservoir",  384,     383,
+  "McPhee Reservoir",  572,     569,
+  "Fontenelle Reservoir", 349,  347,
+  "Starvation Reservoir", 767,  764,
+  "Green Mountain Reservoir", 22, 21,
+  "Vallecito Reservoir", 834,   831,
+  "Lake Nighthorse",    505,    504,
+  "Morrow Point Reservoir", 594, 592,
+  "Taylor Park Reservoir", 796, 793,
+  "Ruedi Reservoir",    712,    711
+)
 
-print("Lake Mead Data Fetched")
+# Function to fetch all chunks for one item ID
+fetch_all_chunks <- function(item_id, reservoir_name) {
+  message(paste("Fetching:", reservoir_name, "| Item ID:", item_id))
 
-## Lake Powell
-# evapotation = 510, inflow cfs = 511, infow af = 4288, outflow cfs = 4315, outflow af = 4354, area acres = 4784
-# Lake Powell Elevation
-Powell.Elv1 <- DataFetch(508, "20200101", "") # Leaving before blank will pull to latest date
-Powell.Elv2 <- DataFetch(508, "20000101", "20191231")
-Powell.Elv3 <- DataFetch(508, "19800101", "19991231")
-Powell.Elv4 <- DataFetch(508, "19600101", "19791231")
-Powell.Elv <- bind_rows(Powell.Elv1, Powell.Elv2, Powell.Elv3, Powell.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Powell") %>% distinct()
-rm(Powell.Elv1, Powell.Elv2, Powell.Elv3, Powell.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Powell.Elv))
-# Lake Powell Storage
-Powell.Stor1 <- DataFetch(509, "20200101", "") # Leaving before blank will pull to latest date
-Powell.Stor2 <- DataFetch(509, "20000101", "20191231")
-Powell.Stor3 <- DataFetch(509, "19800101", "19991231")
-Powell.Stor4 <- DataFetch(509, "19600101", "19791231")
-Powell.Stor <- bind_rows(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Powell") %>% distinct()
-rm(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Powell.Stor))
+  map_dfr(date_chunks, function(chunk) {
+    tryCatch(
+      DataFetch(item_id, chunk[1], chunk[2]),
+      error = function(e) {
+        message(paste("  Failed chunk:", chunk[1], "-", chunk[2], ":", e$message))
+        NULL
+      }
+    )
+  }) %>%
+    mutate(
+      Date      = as.Date(Date),
+      Result    = as.numeric(Result),
+      Reservoir = reservoir_name
+    ) %>%
+    distinct()
+}
 
-print("Lake Powell Data Fetched")
+# Fetch all data
+message("Beginning data fetch...")
 
-## Flaming Gorge - https://data.usbr.gov/catalog/2300
-# Elevation
-# Lake Flaming.Gorge Elevation
-Flaming.Gorge.Elv1 <- DataFetch(341, "20200101", "")
-Flaming.Gorge.Elv2 <- DataFetch(341, "20000101", "20191231")
-Flaming.Gorge.Elv3 <- DataFetch(341, "19800101", "19991231")
-Flaming.Gorge.Elv4 <- DataFetch(341, "19600101", "19791231")
-Flaming.Gorge.Elv <- bind_rows(Flaming.Gorge.Elv1, Flaming.Gorge.Elv2, Flaming.Gorge.Elv3, Flaming.Gorge.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Flaming Gorge")
-rm(Flaming.Gorge.Elv1, Flaming.Gorge.Elv2, Flaming.Gorge.Elv3, Flaming.Gorge.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Flaming.Gorge.Elv))
-# Storage
-# Lake Flaming.Gorge Elevation
-Flaming.Gorge.Stor1 <- DataFetch(337, "20200101", "")
-Flaming.Gorge.Stor2 <- DataFetch(337, "20000101", "20191231")
-Flaming.Gorge.Stor3 <- DataFetch(337, "19800101", "19991231")
-Flaming.Gorge.Stor4 <- DataFetch(337, "19600101", "19791231")
-Flaming.Gorge.Stor <- bind_rows(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flaming.Gorge.Stor3, Flaming.Gorge.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Flaming Gorge")
-rm(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flaming.Gorge.Stor3, Flaming.Gorge.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Flaming.Gorge.Stor))
+Elevation <- pmap_dfr(
+  reservoirs %>% select(name, item_id = elv_id),
+  ~ fetch_all_chunks(..2, ..1)
+)
 
-print("Flaming Gorge Data Fetched")
+Storage <- pmap_dfr(
+  reservoirs %>% select(name, item_id = stor_id),
+  # Purrr positional references to reservoir definitions tribble
+  ~ fetch_all_chunks(..2, ..1)
+)
 
+message("All data fetched successfully")
 
-## Lake Mohave https://data.usbr.gov/catalog/4369
-# Elevation
-# Lake Mohave Elevation
-Mohave.Elv1 <- DataFetch(6133, "20200101", "")
-Mohave.Elv2 <- DataFetch(6133, "20000101", "20191231")
-Mohave.Elv3 <- DataFetch(6133, "19800101", "19991231")
-Mohave.Elv4 <- DataFetch(6133, "19600101", "19791231")
-Mohave.Elv <- bind_rows(Mohave.Elv1, Mohave.Elv2, Mohave.Elv3, Mohave.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Mohave")
-rm(Mohave.Elv1, Mohave.Elv2, Mohave.Elv3, Mohave.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Mohave.Elv))
-# Storage
-# Lake Mohave Elevation
-Mohave.Stor1 <- DataFetch(6134, "20200101", "")
-Mohave.Stor2 <- DataFetch(6134, "20000101", "20191231")
-Mohave.Stor3 <- DataFetch(6134, "19800101", "19991231")
-Mohave.Stor4 <- DataFetch(6134, "19600101", "19791231")
-Mohave.Stor <- bind_rows(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Mohave")
-rm(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Mohave.Stor))
+# # Lake Mead Elevation
+# Mead.Elv1 <- DataFetch(6123, "20200101", "") # Leaving dateTo blank will pull to latest date
+# Mead.Elv2 <- DataFetch(6123, "20000101", "20191231")
+# Mead.Elv3 <- DataFetch(6123, "19800101", "19991231")
+# Mead.Elv4 <- DataFetch(6123, "19600101", "19791231")
+# Mead.Elv5 <- DataFetch(6123, "19400101", "19591231")
+# Mead.Elv6 <- DataFetch(6123, "", "19391231")
+# Mead.Elv <- bind_rows(Mead.Elv1, Mead.Elv2, Mead.Elv3, Mead.Elv4, Mead.Elv5, Mead.Elv6) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Mead") %>% distinct()
+# rm(Mead.Elv1, Mead.Elv2, Mead.Elv3, Mead.Elv4, Mead.Elv5, Mead.Elv6)
+# Elv.DataFrames <- list(Mead.Elv)
 
-print("Lake Mohave Data Fetched")
+# # Lake Mead Storage
+# Mead.Stor1 <- DataFetch(6124, "20200101", "") # Leaving before blank will pull to latest date
+# Mead.Stor2 <- DataFetch(6124, "20000101", "20191231")
+# Mead.Stor3 <- DataFetch(6124, "19800101", "19991231")
+# Mead.Stor4 <- DataFetch(6124, "19600101", "19791231")
+# Mead.Stor5 <- DataFetch(6124, "19400101", "19591231")
+# Mead.Stor6 <- DataFetch(6124, "", "19391231")
+# Mead.Stor <- bind_rows(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor5, Mead.Stor6) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Mead") %>% distinct()
+# rm(Mead.Stor1, Mead.Stor2, Mead.Stor3, Mead.Stor4, Mead.Stor5, Mead.Stor6)
+# Stor.DataFrames <- list(Mead.Stor)
 
-## Navajo Reservoir https://data.usbr.gov/catalog/2392
-# Elevation
-Navajo.Elv1 <- DataFetch(612, "20200101", "")
-Navajo.Elv2 <- DataFetch(612, "20000101", "20191231")
-Navajo.Elv3 <- DataFetch(612, "19800101", "19991231")
-Navajo.Elv4 <- DataFetch(612, "19600101", "19791231")
-Navajo.Elv <- bind_rows(Navajo.Elv1, Navajo.Elv2, Navajo.Elv3, Navajo.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Navajo Reservoir")
-rm(Navajo.Elv1, Navajo.Elv2, Navajo.Elv3, Navajo.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Navajo.Elv))
-# Storage
-Navajo.Stor1 <- DataFetch(613, "20200101", "")
-Navajo.Stor2 <- DataFetch(613, "20000101", "20191231")
-Navajo.Stor3 <- DataFetch(613, "19800101", "19991231")
-Navajo.Stor4 <- DataFetch(613, "19600101", "19791231")
-Navajo.Stor <- bind_rows(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Navajo Reservoir")
-rm(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Navajo.Stor))
+# print("Lake Mead Data Fetched")
 
-print("Navajo Reservoir Data Fetched")
+# ## Lake Powell
+# # evapotation = 510, inflow cfs = 511, infow af = 4288, outflow cfs = 4315, outflow af = 4354, area acres = 4784
+# # Lake Powell Elevation
+# Powell.Elv1 <- DataFetch(508, "20200101", "") # Leaving before blank will pull to latest date
+# Powell.Elv2 <- DataFetch(508, "20000101", "20191231")
+# Powell.Elv3 <- DataFetch(508, "19800101", "19991231")
+# Powell.Elv4 <- DataFetch(508, "19600101", "19791231")
+# Powell.Elv <- bind_rows(Powell.Elv1, Powell.Elv2, Powell.Elv3, Powell.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Powell") %>% distinct()
+# rm(Powell.Elv1, Powell.Elv2, Powell.Elv3, Powell.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Powell.Elv))
+# # Lake Powell Storage
+# Powell.Stor1 <- DataFetch(509, "20200101", "") # Leaving before blank will pull to latest date
+# Powell.Stor2 <- DataFetch(509, "20000101", "20191231")
+# Powell.Stor3 <- DataFetch(509, "19800101", "19991231")
+# Powell.Stor4 <- DataFetch(509, "19600101", "19791231")
+# Powell.Stor <- bind_rows(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Powell") %>% distinct()
+# rm(Powell.Stor1, Powell.Stor2, Powell.Stor3, Powell.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Powell.Stor))
 
+# print("Lake Powell Data Fetched")
 
-## Strawberry Reservoir https://data.usbr.gov/catalog/2456
-# Elevation
-Strawberry.Elv1 <- DataFetch(782, "20200101", "")
-Strawberry.Elv2 <- DataFetch(782, "20000101", "20191231")
-Strawberry.Elv3 <- DataFetch(782, "19800101", "19991231")
-Strawberry.Elv4 <- DataFetch(782, "19600101", "19791231")
-Strawberry.Elv <- bind_rows(Strawberry.Elv1, Strawberry.Elv2, Strawberry.Elv3, Strawberry.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Strawberry Reservoir")
-rm(Strawberry.Elv1, Strawberry.Elv2, Strawberry.Elv3, Strawberry.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Strawberry.Elv))
-# Storage
-Strawberry.Stor1 <- DataFetch(779, "20200101", "")
-Strawberry.Stor2 <- DataFetch(779, "20000101", "20191231")
-Strawberry.Stor3 <- DataFetch(779, "19800101", "19991231")
-Strawberry.Stor4 <- DataFetch(779, "19600101", "19791231")
-Strawberry.Stor <- bind_rows(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor3, Strawberry.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Strawberry Reservoir")
-rm(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor3, Strawberry.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Strawberry.Stor))
+# ## Flaming Gorge - https://data.usbr.gov/catalog/2300
+# # Elevation
+# # Lake Flaming.Gorge Elevation
+# Flaming.Gorge.Elv1 <- DataFetch(341, "20200101", "")
+# Flaming.Gorge.Elv2 <- DataFetch(341, "20000101", "20191231")
+# Flaming.Gorge.Elv3 <- DataFetch(341, "19800101", "19991231")
+# Flaming.Gorge.Elv4 <- DataFetch(341, "19600101", "19791231")
+# Flaming.Gorge.Elv <- bind_rows(Flaming.Gorge.Elv1, Flaming.Gorge.Elv2, Flaming.Gorge.Elv3, Flaming.Gorge.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Flaming Gorge")
+# rm(Flaming.Gorge.Elv1, Flaming.Gorge.Elv2, Flaming.Gorge.Elv3, Flaming.Gorge.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Flaming.Gorge.Elv))
+# # Storage
+# # Lake Flaming.Gorge Elevation
+# Flaming.Gorge.Stor1 <- DataFetch(337, "20200101", "")
+# Flaming.Gorge.Stor2 <- DataFetch(337, "20000101", "20191231")
+# Flaming.Gorge.Stor3 <- DataFetch(337, "19800101", "19991231")
+# Flaming.Gorge.Stor4 <- DataFetch(337, "19600101", "19791231")
+# Flaming.Gorge.Stor <- bind_rows(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flaming.Gorge.Stor3, Flaming.Gorge.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Flaming Gorge")
+# rm(Flaming.Gorge.Stor1, Flaming.Gorge.Stor2, Flaming.Gorge.Stor3, Flaming.Gorge.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Flaming.Gorge.Stor))
 
-print("Strawberry Reservoir Data Fetched")
-
-
-## Blue Mesa https://data.usbr.gov/catalog/2249
-# Elevation
-Blue.Mesa.Elv1 <- DataFetch(78, "20200101", "")
-Blue.Mesa.Elv2 <- DataFetch(78, "20000101", "20191231")
-Blue.Mesa.Elv3 <- DataFetch(78, "19800101", "19991231")
-Blue.Mesa.Elv4 <- DataFetch(78, "19600101", "19791231")
-Blue.Mesa.Elv <- bind_rows(Blue.Mesa.Elv1, Blue.Mesa.Elv2, Blue.Mesa.Elv3, Blue.Mesa.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Blue Mesa Reservoir")
-rm(Blue.Mesa.Elv1, Blue.Mesa.Elv2, Blue.Mesa.Elv3, Blue.Mesa.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Blue.Mesa.Elv))
-# Storage
-Blue.Mesa.Stor1 <- DataFetch(76, "20200101", "")
-Blue.Mesa.Stor2 <- DataFetch(76, "20000101", "20191231")
-Blue.Mesa.Stor3 <- DataFetch(76, "19800101", "19991231")
-Blue.Mesa.Stor4 <- DataFetch(76, "19600101", "19791231")
-Blue.Mesa.Stor <- bind_rows(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, Blue.Mesa.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Blue Mesa Reservoir")
-rm(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, Blue.Mesa.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Blue.Mesa.Stor))
-
-print("Blue Mesa Data Fetched")
+# print("Flaming Gorge Data Fetched")
 
 
-## Havasu https://data.usbr.gov/catalog/4371
-# Elevation
-Havasu.Elv1 <- DataFetch(6128, "20200101", "")
-Havasu.Elv2 <- DataFetch(6128, "20000101", "20191231")
-Havasu.Elv3 <- DataFetch(6128, "19800101", "19991231")
-Havasu.Elv4 <- DataFetch(6128, "19600101", "19791231")
-Havasu.Elv <- bind_rows(Havasu.Elv1, Havasu.Elv2, Havasu.Elv3, Havasu.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Havasu")
-rm(Havasu.Elv1, Havasu.Elv2, Havasu.Elv3, Havasu.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Havasu.Elv))
-# Storage
-Havasu.Stor1 <- DataFetch(6129, "20200101", "")
-Havasu.Stor2 <- DataFetch(6129, "20000101", "20191231")
-Havasu.Stor3 <- DataFetch(6129, "19800101", "19991231")
-Havasu.Stor4 <- DataFetch(6129, "19600101", "19791231")
-Havasu.Stor <- bind_rows(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Lake Havasu")
-rm(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Havasu.Stor))
+# ## Lake Mohave https://data.usbr.gov/catalog/4369
+# # Elevation
+# # Lake Mohave Elevation
+# Mohave.Elv1 <- DataFetch(6133, "20200101", "")
+# Mohave.Elv2 <- DataFetch(6133, "20000101", "20191231")
+# Mohave.Elv3 <- DataFetch(6133, "19800101", "19991231")
+# Mohave.Elv4 <- DataFetch(6133, "19600101", "19791231")
+# Mohave.Elv <- bind_rows(Mohave.Elv1, Mohave.Elv2, Mohave.Elv3, Mohave.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Mohave")
+# rm(Mohave.Elv1, Mohave.Elv2, Mohave.Elv3, Mohave.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Mohave.Elv))
+# # Storage
+# # Lake Mohave Elevation
+# Mohave.Stor1 <- DataFetch(6134, "20200101", "")
+# Mohave.Stor2 <- DataFetch(6134, "20000101", "20191231")
+# Mohave.Stor3 <- DataFetch(6134, "19800101", "19991231")
+# Mohave.Stor4 <- DataFetch(6134, "19600101", "19791231")
+# Mohave.Stor <- bind_rows(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Mohave")
+# rm(Mohave.Stor1, Mohave.Stor2, Mohave.Stor3, Mohave.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Mohave.Stor))
 
-print("Lake Havasu Data Fetched")
+# print("Lake Mohave Data Fetched")
+
+# ## Navajo Reservoir https://data.usbr.gov/catalog/2392
+# # Elevation
+# Navajo.Elv1 <- DataFetch(612, "20200101", "")
+# Navajo.Elv2 <- DataFetch(612, "20000101", "20191231")
+# Navajo.Elv3 <- DataFetch(612, "19800101", "19991231")
+# Navajo.Elv4 <- DataFetch(612, "19600101", "19791231")
+# Navajo.Elv <- bind_rows(Navajo.Elv1, Navajo.Elv2, Navajo.Elv3, Navajo.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Navajo Reservoir")
+# rm(Navajo.Elv1, Navajo.Elv2, Navajo.Elv3, Navajo.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Navajo.Elv))
+# # Storage
+# Navajo.Stor1 <- DataFetch(613, "20200101", "")
+# Navajo.Stor2 <- DataFetch(613, "20000101", "20191231")
+# Navajo.Stor3 <- DataFetch(613, "19800101", "19991231")
+# Navajo.Stor4 <- DataFetch(613, "19600101", "19791231")
+# Navajo.Stor <- bind_rows(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Navajo Reservoir")
+# rm(Navajo.Stor1, Navajo.Stor2, Navajo.Stor3, Navajo.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Navajo.Stor))
+
+# print("Navajo Reservoir Data Fetched")
 
 
-## Granby Reservoir https://data.usbr.gov/catalog/2321
-# Elevation
-Granby.Elv1 <- DataFetch(384, "20200101", "")
-Granby.Elv2 <- DataFetch(384, "20000101", "20191231")
-Granby.Elv3 <- DataFetch(384, "19800101", "19991231")
-Granby.Elv4 <- DataFetch(384, "19600101", "19791231")
-Granby.Elv <- bind_rows(Granby.Elv1, Granby.Elv2, Granby.Elv3, Granby.Elv4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Granby Reservoir")
-rm(Granby.Elv1, Granby.Elv2, Granby.Elv3, Granby.Elv4)
-Elv.DataFrames <- append(Elv.DataFrames, list(Granby.Elv))
-# Storage
-Granby.Stor1 <- DataFetch(383, "20200101", "")
-Granby.Stor2 <- DataFetch(383, "20000101", "20191231")
-Granby.Stor3 <- DataFetch(383, "19800101", "19991231")
-Granby.Stor4 <- DataFetch(383, "19600101", "19791231")
-Granby.Stor <- bind_rows(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4) %>%
-  mutate(Date = as.Date(Date), Reservoir = "Granby Reservoir")
-rm(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4)
-Stor.DataFrames <- append(Stor.DataFrames, list(Granby.Stor))
+# ## Strawberry Reservoir https://data.usbr.gov/catalog/2456
+# # Elevation
+# Strawberry.Elv1 <- DataFetch(782, "20200101", "")
+# Strawberry.Elv2 <- DataFetch(782, "20000101", "20191231")
+# Strawberry.Elv3 <- DataFetch(782, "19800101", "19991231")
+# Strawberry.Elv4 <- DataFetch(782, "19600101", "19791231")
+# Strawberry.Elv <- bind_rows(Strawberry.Elv1, Strawberry.Elv2, Strawberry.Elv3, Strawberry.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Strawberry Reservoir")
+# rm(Strawberry.Elv1, Strawberry.Elv2, Strawberry.Elv3, Strawberry.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Strawberry.Elv))
+# # Storage
+# Strawberry.Stor1 <- DataFetch(779, "20200101", "")
+# Strawberry.Stor2 <- DataFetch(779, "20000101", "20191231")
+# Strawberry.Stor3 <- DataFetch(779, "19800101", "19991231")
+# Strawberry.Stor4 <- DataFetch(779, "19600101", "19791231")
+# Strawberry.Stor <- bind_rows(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor3, Strawberry.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Strawberry Reservoir")
+# rm(Strawberry.Stor1, Strawberry.Stor2, Strawberry.Stor3, Strawberry.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Strawberry.Stor))
 
-print("Granby Reservoir Data Fetched")
-print("Compiling data...")
+# print("Strawberry Reservoir Data Fetched")
+
+
+# ## Blue Mesa https://data.usbr.gov/catalog/2249
+# # Elevation
+# Blue.Mesa.Elv1 <- DataFetch(78, "20200101", "")
+# Blue.Mesa.Elv2 <- DataFetch(78, "20000101", "20191231")
+# Blue.Mesa.Elv3 <- DataFetch(78, "19800101", "19991231")
+# Blue.Mesa.Elv4 <- DataFetch(78, "19600101", "19791231")
+# Blue.Mesa.Elv <- bind_rows(Blue.Mesa.Elv1, Blue.Mesa.Elv2, Blue.Mesa.Elv3, Blue.Mesa.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Blue Mesa Reservoir")
+# rm(Blue.Mesa.Elv1, Blue.Mesa.Elv2, Blue.Mesa.Elv3, Blue.Mesa.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Blue.Mesa.Elv))
+# # Storage
+# Blue.Mesa.Stor1 <- DataFetch(76, "20200101", "")
+# Blue.Mesa.Stor2 <- DataFetch(76, "20000101", "20191231")
+# Blue.Mesa.Stor3 <- DataFetch(76, "19800101", "19991231")
+# Blue.Mesa.Stor4 <- DataFetch(76, "19600101", "19791231")
+# Blue.Mesa.Stor <- bind_rows(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, Blue.Mesa.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Blue Mesa Reservoir")
+# rm(Blue.Mesa.Stor1, Blue.Mesa.Stor2, Blue.Mesa.Stor3, Blue.Mesa.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Blue.Mesa.Stor))
+
+# print("Blue Mesa Data Fetched")
+
+
+# ## Havasu https://data.usbr.gov/catalog/4371
+# # Elevation
+# Havasu.Elv1 <- DataFetch(6128, "20200101", "")
+# Havasu.Elv2 <- DataFetch(6128, "20000101", "20191231")
+# Havasu.Elv3 <- DataFetch(6128, "19800101", "19991231")
+# Havasu.Elv4 <- DataFetch(6128, "19600101", "19791231")
+# Havasu.Elv <- bind_rows(Havasu.Elv1, Havasu.Elv2, Havasu.Elv3, Havasu.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Havasu")
+# rm(Havasu.Elv1, Havasu.Elv2, Havasu.Elv3, Havasu.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Havasu.Elv))
+# # Storage
+# Havasu.Stor1 <- DataFetch(6129, "20200101", "")
+# Havasu.Stor2 <- DataFetch(6129, "20000101", "20191231")
+# Havasu.Stor3 <- DataFetch(6129, "19800101", "19991231")
+# Havasu.Stor4 <- DataFetch(6129, "19600101", "19791231")
+# Havasu.Stor <- bind_rows(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Lake Havasu")
+# rm(Havasu.Stor1, Havasu.Stor2, Havasu.Stor3, Havasu.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Havasu.Stor))
+
+# print("Lake Havasu Data Fetched")
+
+
+# ## Granby Reservoir https://data.usbr.gov/catalog/2321
+# # Elevation
+# Granby.Elv1 <- DataFetch(384, "20200101", "")
+# Granby.Elv2 <- DataFetch(384, "20000101", "20191231")
+# Granby.Elv3 <- DataFetch(384, "19800101", "19991231")
+# Granby.Elv4 <- DataFetch(384, "19600101", "19791231")
+# Granby.Elv <- bind_rows(Granby.Elv1, Granby.Elv2, Granby.Elv3, Granby.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Granby Reservoir")
+# rm(Granby.Elv1, Granby.Elv2, Granby.Elv3, Granby.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(Granby.Elv))
+# # Storage
+# Granby.Stor1 <- DataFetch(383, "20200101", "")
+# Granby.Stor2 <- DataFetch(383, "20000101", "20191231")
+# Granby.Stor3 <- DataFetch(383, "19800101", "19991231")
+# Granby.Stor4 <- DataFetch(383, "19600101", "19791231")
+# Granby.Stor <- bind_rows(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "Granby Reservoir")
+# rm(Granby.Stor1, Granby.Stor2, Granby.Stor3, Granby.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(Granby.Stor))
+
+# print("Granby Reservoir Data Fetched")
+
+# ## McPhee Reservoir https://data.usbr.gov/catalog/2379
+# # Elevation
+# McPhee.Elv1 <- DataFetch(572, "20200101", "")
+# McPhee.Elv2 <- DataFetch(572, "20000101", "20191231")
+# McPhee.Elv3 <- DataFetch(572, "19800101", "19991231")
+# McPhee.Elv4 <- DataFetch(572, "19600101", "19791231")
+# McPhee.Elv <- bind_rows(McPhee.Elv1, McPhee.Elv2, McPhee.Elv3, McPhee.Elv4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "McPhee Reservoir")
+# rm(McPhee.Elv1, McPhee.Elv2, McPhee.Elv3, McPhee.Elv4)
+# Elv.DataFrames <- append(Elv.DataFrames, list(McPhee.Elv))
+# # Storage
+# McPhee.Stor1 <- DataFetch(569, "20200101", "")
+# McPhee.Stor2 <- DataFetch(569, "20000101", "20191231")
+# McPhee.Stor3 <- DataFetch(569, "19800101", "19991231")
+# McPhee.Stor4 <- DataFetch(569, "19600101", "19791231")
+# McPhee.Stor <- bind_rows(McPhee.Stor1, McPhee.Stor2, McPhee.Stor3, McPhee.Stor4) %>%
+#   mutate(Date = as.Date(Date), Reservoir = "McPhee Reservoir")
+# rm(McPhee.Stor1, McPhee.Stor2, McPhee.Stor3, McPhee.Stor4)
+# Stor.DataFrames <- append(Stor.DataFrames, list(McPhee.Stor))
+
 
 
 ## Elevation Data
+print("Compiling data...")
 # Elevation Plot
-Res.Elv <- bind_rows(Elv.DataFrames) %>%
+Res.Elv <- Elevation %>%
   rename(Elevation = Result) %>%
   mutate(
     Year = as.integer(substr(Date, 0,4)),
@@ -286,7 +382,7 @@ write.csv(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.csv")
 
 
 ## Storage Data
-Res.Stor <- bind_rows(Stor.DataFrames) %>%
+Res.Stor <- Storage %>%
   rename(Storage = Result) %>%
   mutate(
     Storage_MAF = Storage / 1000000
@@ -321,7 +417,16 @@ Reservoir.Capacity <- Res.Stor.Bind %>%
     Reservoir == "Blue Mesa Reservoir" ~ 827940,
     Reservoir == "Lake Havasu" ~ 619400,
     Reservoir == "Granby Reservoir" ~ 539758,
-    Reservoir == "Total" ~ 60712498
+    Reservoir == "McPhee Reservoir" ~ 381100,
+    Reservoir == "Fontenelle Reservoir" ~ 345360,
+    Reservoir == "Starvation Reservoir" ~ 167300,
+    Reservoir == "Green Mountain Reservoir" ~ 153639,
+    Reservoir == "Vallecito Reservoir" ~ 129700,
+    Reservoir == "Lake Nighthorse" ~ 120000,
+    Reservoir == "Morrow Point Reservoir" ~ 117190,
+    Reservoir == "Taylor Park Reservoir" ~ 106200,
+    Reservoir == "Ruedi Reservoir" ~ 102000,
+    Reservoir == "Total" ~ 61953887
 )) %>%
   mutate(Max_Capacity_MAF = Max_Capacity / 1000000)
 
@@ -389,7 +494,16 @@ latest_res_data <- latest_storage %>%
     Reservoir == "Strawberry Reservoir" ~ 40.14,
     Reservoir == "Blue Mesa Reservoir" ~ 38.45,
     Reservoir == "Lake Havasu" ~ 34.40,
-    Reservoir == "Granby Reservoir" ~ 40.14
+    Reservoir == "Granby Reservoir" ~ 40.14,
+    Reservoir == "McPhee Reservoir" ~ 37.577,
+    Reservoir == "Fontenelle Reservoir" ~ 42.0989,
+    Reservoir == "Starvation Reservoir" ~ 40.1897,
+    Reservoir == "Green Mountain Reservoir" ~ 39.8789,
+    Reservoir == "Vallecito Reservoir" ~ 37.3922,
+    Reservoir == "Lake Nighthorse" ~ 37.2182,
+    Reservoir == "Morrow Point Reservoir" ~ 38.4516,
+    Reservoir == "Taylor Park Reservoir" ~ 38.8388,
+    Reservoir == "Ruedi Reservoir" ~ 39.363
   )) %>%
   mutate(long = case_when(
     Reservoir == "Lake Mead" ~ -114.74,
@@ -400,7 +514,16 @@ latest_res_data <- latest_storage %>%
     Reservoir == "Strawberry Reservoir" ~ -111.03,
     Reservoir == "Blue Mesa Reservoir" ~ -107.33,
     Reservoir == "Lake Havasu" ~ -114.14,
-    Reservoir == "Granby Reservoir" ~ -105.87
+    Reservoir == "Granby Reservoir" ~ -105.87,
+    Reservoir == "McPhee Reservoir" ~ -108.571,
+    Reservoir == "Fontenelle Reservoir" ~ -110.1343,
+    Reservoir == "Starvation Reservoir" ~ -110.4528,
+    Reservoir == "Green Mountain Reservoir" ~ -106.3133,
+    Reservoir == "Vallecito Reservoir" ~ -107.5702,
+    Reservoir == "Lake Nighthorse" ~ -107.8976,
+    Reservoir == "Morrow Point Reservoir" ~ -107.5372,
+    Reservoir == "Taylor Park Reservoir" ~ -106.578,
+    Reservoir == "Ruedi Reservoir" ~ -106.7847
   )) %>%
   filter(Reservoir != "Total") %>%
   mutate(across(where(is.numeric), round, 2))
