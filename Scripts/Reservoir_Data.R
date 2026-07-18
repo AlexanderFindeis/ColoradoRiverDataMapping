@@ -49,7 +49,7 @@ reservoirs <- tribble(
   "Lake Mead",         6123,    6124,
   "Lake Powell",       508,     509,
   "Flaming Gorge",     341,     337,
-  "Lake Mohave",       6133,    6133,
+  "Lake Mohave",       6133,    6134,
   "Navajo Reservoir",  612,     613,
   "Strawberry Reservoir", 782,  779,
   "Blue Mesa Reservoir",  78,      76,
