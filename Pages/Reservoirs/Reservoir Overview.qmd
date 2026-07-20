@@ -697,7 +697,7 @@ html`
     border-radius: 6px;
     padding: 16px;
   ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Elevation ${stor_stats.Date} Last Year</div>
+    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Storage ${stor_stats.Date} Last Year</div>
     <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.prior_yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
     <div style="font-size: 12px; color: ${stor_stats.dif_1yr_color}; margin-top: 4px;">${stor_stats.dif_1yr}MAF | ${stor_stats.perc_1yr}% Change</div>
   </div>
