@@ -3,6 +3,7 @@ project:
   resources:
     - Data/
     - CNAME
+    - GIS_Data/
   type: website
   output-dir: docs
 
