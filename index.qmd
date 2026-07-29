@@ -129,8 +129,7 @@ async function init_map() {
           ["linear"],
           ["get", "DIS_AV_CMS"],
           0,    "#7bbbf7",   // light blue - low flow
-          500,  "#4292c6",   // medium blue
-          2000, "#054aa5"    // dark blue - high flow
+          550, "#054aa5"    // dark blue - high flow
         ],
         "line-width": [
           "interpolate",
