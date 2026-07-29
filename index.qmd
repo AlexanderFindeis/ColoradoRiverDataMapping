@@ -48,226 +48,255 @@ Click here to learn more about basin water use
 [State Usage](./Pages/States/State%20Overview.qmd)  
 :::
 
-```{ojs}
-//| echo: false
-L = require("leaflet")
-```
 ```{=html}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-```
+<link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet"/>
+<script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
 
-```{ojs}
-// Load all three datasets
-upper_basin_geo  = FileAttachment("GIS_Data/UpperBasin_HUC2.geojson").json()
-lower_basin_geo  = FileAttachment("GIS_Data/LowerBasin_HUC2.geojson").json()
-reservoirs_geo   = FileAttachment("GIS_Data/Reservoirs.geojson").json()
-rivers           = FileAttachment("GIS_Data/Colorado_River_Basin_Rivers.geojson").json()
-```
-```{ojs}
-//| echo: false
-{
-  const div = html`<div style="width:100%; height:700px;"></div>`
+<div id="basin-map" style="width:100%; height:700px; border-radius:8px;"></div>
 
-  // Allow div to render before initializing map
-  yield div
+<script>
+async function init_map() {
 
-  const map = L.map(div, { 
-    center: [36.5, -112], 
-    zoom: 6 
+  // ── Load all GeoJSON files ────────────────────────────────────────────────
+  const [upper_basin, lower_basin, reservoirs, rivers] = await Promise.all([
+    fetch("GIS_Data/UpperBasin_HUC2.geojson").then(r => r.json()),
+    fetch("GIS_Data/LowerBasin_HUC2.geojson").then(r => r.json()),
+    fetch("GIS_Data/Reservoirs.geojson").then(r => r.json()),
+    fetch("GIS_Data/HydroSheds_Rivers.geojson").then(r => r.json())
+  ])
+
+  // ── Initialize map ────────────────────────────────────────────────────────
+  const map = new maplibregl.Map({
+    container: "basin-map",
+    style: {
+      version: 8,
+      sources: {
+        "satellite": {
+          type: "raster",
+          tiles: [
+            "https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+            "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+            "https://mt2.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+            "https://mt3.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+          ],
+          tileSize: 256,
+        },
+        // ── Elevation data ──────────────────────────
+        "terrarium": {
+          type: "raster-dem",
+          tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+          tileSize: 256,
+          encoding: "terrarium",
+        },
+      },
+      layers: [{ id: "satellite", type: "raster", source: "satellite" }],
+      // ── Enable 3D terrain from elevation source ──
+      terrain: { source: "terrarium", exaggeration: 2 },
+    },
+    center:    [-112, 36.5],
+    zoom:      5
   })
 
-  // Basemap tile layer
-  const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors",
-    maxZoom: 18
-  }).addTo(map)
+  map.addControl(new maplibregl.NavigationControl(), "top-right")
+  map.addControl(new maplibregl.ScaleControl(), "bottom-left")
 
-  // Upper Basin polygon layer
-  const upper_basin_layer = L.geoJSON(upper_basin_geo, {
-    style: {
-      color: "#1a6496",
-      weight: 2,
-      fillColor: "#5bc0de",
-      fillOpacity: 0.3
-    }
-  }).addTo(map)
+  map.on("load", () => {
 
-  // Lower Basin polygon layer
-  const lower_basin_layer = L.geoJSON(lower_basin_geo, {
-    style: {
-      color: "#5B7EDE",
-      weight: 2,
-      fillColor: "#5B7EDE",
-      fillOpacity: 0.3
-    }
-  }).addTo(map)
-    
-  // Rivers
-  const rivers_layer = L.geoJSON(rivers, {
-    style: {
-      color: "#006cfa",
-      weight: 2
-    }
-  }).addTo(map)
+    // ── Upper Basin ───────────────────────────────────────────────────────
+    map.addSource("upper-basin", { type: "geojson", data: upper_basin })
+    map.addLayer({ id: "upper-basin-fill",    type: "fill",   source: "upper-basin", paint: { "fill-color": "#5bc0de", "fill-opacity": 0.3 } })
+    map.addLayer({ id: "upper-basin-outline", type: "line",   source: "upper-basin", paint: { "line-color": "#1a6496", "line-width": 2 } })
 
-  // Reservoir point layer
-  const reservoirs_layer = L.geoJSON(reservoirs_geo, {
-    // Custom marker style
-    pointToLayer: (feature, latlng) => {
-      // Color scaling
-      const color_scale = pct => {
-       if (pct >= 70)      return "#198754"   // green  - above 70%
-       else if (pct >= 50) return "#ffc107"   // yellow - 50-70%
-       else if (pct >= 30) return "#fd7e14"   // orange - 30-50%
-       else                return "#dc3545"   // red    - below 30%
-       }
-      const pct_full = feature.properties.Percent_Full_MAF ?? 0
-      const capacity = feature.properties.Max_Capacity_MAF ?? 0
-      const radius = 3 + Math.sqrt(capacity) * 4
-      return L.circleMarker(latlng, {
-        radius: radius,
-        fillColor: color_scale(pct_full),
-        color: "white",
-        weight: 2,
-        fillOpacity: 0.9
+    // ── Lower Basin ───────────────────────────────────────────────────────
+    map.addSource("lower-basin", { type: "geojson", data: lower_basin })
+    map.addLayer({ id: "lower-basin-fill",    type: "fill",   source: "lower-basin", paint: { "fill-color": "#5B7EDE", "fill-opacity": 0.3 } })
+    map.addLayer({ id: "lower-basin-outline", type: "line",   source: "lower-basin", paint: { "line-color": "#5B7EDE", "line-width": 2 } })
+
+    // ── Rivers ────────────────────────────────────────────────────────────
+    map.addSource("rivers", { type: "geojson", data: rivers,
+      attribution: '<a href="https://www.hydrosheds.org/products/hydrorivers" target="_blank">HydroSheds</a>' })
+    map.addLayer({
+      id:     "rivers-line",
+      type:   "line",
+      source: "rivers",
+      layout: {
+        "line-join": "round",
+        "line-cap": "round"
+      },
+      paint: {
+        "line-color": [
+          "interpolate",
+          ["linear"],
+          ["get", "DIS_AV_CMS"],
+          0,    "#7bbbf7",   // light blue - low flow
+          500,  "#4292c6",   // medium blue
+          2000, "#054aa5"    // dark blue - high flow
+        ],
+        "line-width": [
+          "interpolate",
+          ["linear"],
+          ["get", "DIS_AV_CMS"],
+          1,    1,
+          550,  12
+        ],
+        "line-opacity": 0.85
+      }
+    })
+
+    // ── Reservoirs ────────────────────────────────────────────────────────
+    map.addSource("reservoirs", { type: "geojson", data: reservoirs, attribution: '<a href="https://data.usbr.gov/catalog" target="_blank">USBR</a>' })
+    map.addLayer({
+      id:     "reservoirs-circle",
+      type:   "circle",
+      source: "reservoirs",
+      paint: {
+        "circle-color": [
+          "step", ["get", "Percent_Full_MAF"],
+          "#dc3545", 30, "#fd7e14", 50, "#ffc107", 70, "#198754"
+        ],
+        "circle-radius":       ["+", 3, ["*", 4, ["sqrt", ["max", ["get", "Max_Capacity_MAF"], 0]]]],
+        "circle-stroke-color": "white",
+        "circle-stroke-width": 2,
+        "circle-opacity":      0.9
+      }
+    })
+
+    // Popup debug
+    map.on("click", "reservoirs-circle", (e) => {
+      console.log("Feature properties:", e.features[0].properties)
       })
-    },
-    onEachFeature: (feature, layer) => {
-        const p = feature.properties
 
-        const popup_html = `
-            <div style="width: 380px; font-family: sans-serif;">
+    // ── Popups ────────────────────────────────────────────────────────────
+    map.on("click", "reservoirs-circle", (e) => {
+      const p   = e.features[0].properties
+      const val = (v) => (v === null || v === undefined || v === "null" || v === "") ? "N/A" : v
 
-            <b style="font-size: 14px;">${p.Reservoir}: ${p.Date}</b>
-            <hr style="margin: 6px 0; border-color: #dee2e6;">
+      // Build popup using createElement to avoid Quarto markdown processing
+      const container = document.createElement("div")
+      container.style.cssText = "width:380px; font-family:sans-serif;"
 
-            <div style="display: flex; gap: 16px;">
+      container.innerHTML = [
+        `<b style="font-size:14px;">${val(p.Reservoir)}: ${val(p.Date)}</b>`,
+        `<hr style="margin:6px 0; border-color:#dee2e6;">`,
+        `<div style="display:flex; gap:16px;">`,
 
-                <!-- Elevation column -->
-                <div style="flex: 1;">
-                <div style="font-size: 11px; font-weight: 700; color: steelblue; 
-                            text-transform: uppercase; margin-bottom: 6px;">
-                    Elevation
-                </div>
-                <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">Current</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elevation ?? "N/A"} ft</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">1yr Ago</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_1yr_Ago ?? "N/A"} ft</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">10yr Avg</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_Day_Avg_10yr ?? "N/A"} ft</td>
-                    </tr>
-                    <tr>
-                    <td style="padding: 4px 0; color: #6c757d;">30yr Avg</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Elv_Day_Avg_30yr ?? "N/A"} ft</td>
-                    </tr>
-                </table>
-                </div>
+          // Elevation column
+          `<div style="flex:1;">`,
+            `<div style="font-size:11px; font-weight:700; color:steelblue; text-transform:uppercase; margin-bottom:6px;">Elevation</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">Current</span>`,
+              `<span style="font-weight:600;">${val(p.Elevation)} ft</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">1yr Ago</span>`,
+              `<span style="font-weight:600;">${val(p.Elv_1yr_Ago)} ft</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">10yr Avg</span>`,
+              `<span style="font-weight:600;">${val(p.Elv_Day_Avg_10yr)} ft</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; font-size:12px;">`,
+              `<span style="color:#6c757d;">30yr Avg</span>`,
+              `<span style="font-weight:600;">${val(p.Elv_Day_Avg_30yr)} ft</span>`,
+            `</div>`,
+          `</div>`,
 
-                <!-- Divider -->
-                <div style="width: 1px; background: #dee2e6;"></div>
+          // Divider
+          `<div style="width:1px; background:#dee2e6;"></div>`,
 
-                <!-- Storage column -->
-                <div style="flex: 1;">
-                <div style="font-size: 11px; font-weight: 700; color: steelblue;
-                            text-transform: uppercase; margin-bottom: 6px;">
-                    Storage
-                </div>
-                <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">Current</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Storage_MAF ?? "N/A"} MAF | ${p.Percent_Full_MAF}%</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">1yr Ago</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.StorMAF_1yr_Ago ?? "N/A"} MAF</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 4px 0; color: #6c757d;">10yr Avg</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Stor_Day_Avg_10yr ?? "N/A"} MAF</td>
-                    </tr>
-                    <tr>
-                    <td style="padding: 4px 0; color: #6c757d;">30yr Avg</td>
-                    <td style="padding: 4px 0; text-align: right; font-weight: 600;">${p.Stor_Day_Avg_30yr ?? "N/A"} MAF</td>
-                    </tr>
-                </table>
-                </div>
+          // Storage column
+          `<div style="flex:1;">`,
+            `<div style="font-size:11px; font-weight:700; color:steelblue; text-transform:uppercase; margin-bottom:6px;">Storage</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">Current</span>`,
+              `<span style="font-weight:600;">${val(p.Storage_MAF)} MAF | ${val(p.Percent_Full_MAF)}%</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">1yr Ago</span>`,
+              `<span style="font-weight:600;">${val(p.StorMAF_1yr_Ago)} MAF</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #dee2e6; font-size:12px;">`,
+              `<span style="color:#6c757d;">10yr Avg</span>`,
+              `<span style="font-weight:600;">${val(p.Stor_Day_Avg_10yr)} MAF</span>`,
+            `</div>`,
+            `<div style="display:flex; justify-content:space-between; padding:4px 0; font-size:12px;">`,
+              `<span style="color:#6c757d;">30yr Avg</span>`,
+              `<span style="font-weight:600;">${val(p.Stor_Day_Avg_30yr)} MAF</span>`,
+            `</div>`,
+          `</div>`,
 
-            </div>
-            </div>
-        `
+        `</div>`
+      ].join("")
 
-        layer.bindPopup(popup_html, { maxWidth: 400 })
-        }
-        }).addTo(map)
+      new maplibregl.Popup({ maxWidth: "420px" })
+        .setLngLat(e.lngLat)
+        .setDOMContent(container)   // use setDOMContent instead of setHTML
+        .addTo(map)
+    })
 
-  // Layer control
-  L.control.layers(
-    {
-      // Base layers - only one can be active at a time
-      "OpenStreetMap": tiles
-    },
-    {
-      // Overlay layers - each has its own checkbox
-      "Upper Basin":  upper_basin_layer,
-      "Lower Basin":  lower_basin_layer,
-      "Reservoirs":   reservoirs_layer,
-      "Rivers":       rivers_layer
-    },
-    {
-      position:    "topright",   // position on map
-      collapsed:   true          // true = collapses to icon, false = always open
-    }
-  ).addTo(map)
+    map.on("mouseenter", "reservoirs-circle", () => map.getCanvas().style.cursor = "pointer")
+    map.on("mouseleave", "reservoirs-circle", () => map.getCanvas().style.cursor = "")
 
-  // Custom legend control
-  const legend = L.control({ position: "bottomleft" })
-
-  legend.onAdd = () => {
-    const legend_div = L.DomUtil.create("div")
-    legend_div.style.cssText = `
-      background: white;
-      padding: 10px 14px;
-      border-radius: 6px;
-      border: 1px solid #dee2e6;
-      font-size: 12px;
-      font-family: sans-serif;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    // ── Legend ────────────────────────────────────────────────────────────
+    const legend = document.createElement("div")
+    legend.style.cssText = `
+      position:absolute; bottom:40px; left:10px; background:white;
+      padding:10px 14px; border-radius:6px; border:1px solid #dee2e6;
+      font-size:12px; font-family:sans-serif; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:1;
     `
-    legend_div.innerHTML = `
-      <b style="font-size: 13px;">% of Capacity</b>
-      <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:14px; height:14px; background:#198754; border-radius:50%;"></div>
-          <span>Above 70%</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:14px; height:14px; background:#ffc107; border-radius:50%;"></div>
-          <span>50% - 70%</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:14px; height:14px; background:#fd7e14; border-radius:50%;"></div>
-          <span>30% - 50%</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:14px; height:14px; background:#dc3545; border-radius:50%;"></div>
-          <span>Below 30%</span>
-        </div>
+    legend.innerHTML = `
+      <b style="font-size:13px;">% of Capacity</b>
+      <div style="margin-top:8px; display:flex; flex-direction:column; gap:4px;">
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:14px; height:14px; background:#198754; border-radius:50%;"></div><span>Above 70%</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:14px; height:14px; background:#ffc107; border-radius:50%;"></div><span>50% - 70%</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:14px; height:14px; background:#fd7e14; border-radius:50%;"></div><span>30% - 50%</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:14px; height:14px; background:#dc3545; border-radius:50%;"></div><span>Below 30%</span></div>
       </div>
     `
-    return legend_div
-  }
+    document.getElementById("basin-map").appendChild(legend)
 
-  legend.addTo(map)
+    // ── Layer toggles ─────────────────────────────────────────────────────
+    const toggle = document.createElement("div")
+    toggle.style.cssText = `
+      position:absolute; top:10px; left:10px; background:white;
+      padding:10px 14px; border-radius:6px; border:1px solid #dee2e6;
+      font-size:12px; font-family:sans-serif; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:1;
+    `
+    toggle.innerHTML = "<b style='font-size:13px;'>Layers</b>"
 
-  // Force Leaflet to recalculate map size after render
-  setTimeout(() => map.invalidateSize(), 100)
+    const layers = [
+      { label: "Upper Basin", ids: ["upper-basin-fill", "upper-basin-outline"] },
+      { label: "Lower Basin", ids: ["lower-basin-fill", "lower-basin-outline"] },
+      { label: "Rivers",      ids: ["rivers-line"] },
+      { label: "Reservoirs",  ids: ["reservoirs-circle"] }
+    ]
+
+    layers.forEach(layer => {
+      const row      = document.createElement("div")
+      row.style.cssText = "display:flex; align-items:center; gap:8px; margin-top:6px;"
+      const checkbox = document.createElement("input")
+      checkbox.type    = "checkbox"
+      checkbox.checked = true
+      checkbox.style.cursor = "pointer"
+      const label      = document.createElement("label")
+      label.textContent = layer.label
+      label.style.cursor = "pointer"
+      checkbox.addEventListener("change", () => {
+        const vis = checkbox.checked ? "visible" : "none"
+        layer.ids.forEach(id => map.setLayoutProperty(id, "visibility", vis))
+      })
+      row.appendChild(checkbox)
+      row.appendChild(label)
+      toggle.appendChild(row)
+    })
+
+    document.getElementById("basin-map").appendChild(toggle)
+
+  }) // end map.on("load")
 }
+
+init_map()
+</script>
 ```
 
 
