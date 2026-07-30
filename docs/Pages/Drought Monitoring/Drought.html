@@ -466,92 +466,6 @@ async function init_map() {
 
 init_map()
 </script>
-<div class="cell hidden">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="277" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 276;"><span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Define custom color mapping</span></span>
-<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> drought_color_map <span class="op">=</span> {</span>
-<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a>    <span class="st">"0"</span><span class="op">:</span> <span class="st">"#FFFF00"</span><span class="op">,</span></span>
-<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1"</span><span class="op">:</span> <span class="st">"#FCD37F"</span><span class="op">,</span> </span>
-<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2"</span><span class="op">:</span> <span class="st">"#FFAA00"</span><span class="op">,</span></span>
-<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span><span class="op">:</span> <span class="st">"#E60000"</span><span class="op">,</span></span>
-<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4"</span><span class="op">:</span> <span class="st">"#730000"</span></span>
-<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Legend labeling</span></span>
-<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> drought_label_map <span class="op">=</span> {</span>
-<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>    <span class="st">"0"</span><span class="op">:</span> <span class="st">"D0 - Abnormally Dry"</span><span class="op">,</span></span>
-<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1"</span><span class="op">:</span> <span class="st">"D1 - Moderate Drought"</span><span class="op">,</span></span>
-<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2"</span><span class="op">:</span> <span class="st">"D2 - Severe Drought"</span><span class="op">,</span></span>
-<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span><span class="op">:</span> <span class="st">"D3 - Extreme Drought"</span><span class="op">,</span></span>
-<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4"</span><span class="op">:</span> <span class="st">"D4 - Exceptional Drought"</span></span>
-<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Map container</span></span>
-<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> svg <span class="op">=</span> geoviz<span class="op">.</span><span class="fu">create</span>({ </span>
-<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span>   Basin_States<span class="op">,</span> </span>
-<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a>    <span class="dt">projection</span><span class="op">:</span> <span class="st">"albers"</span><span class="op">,</span></span>
-<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span>    width<span class="op">,</span> </span>
-<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> [<span class="dv">25</span><span class="op">,</span> <span class="dv">25</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">25</span>]<span class="op">,</span></span>
-<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>    <span class="dt">zoomable</span><span class="op">:</span> [<span class="fl">0.5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span></span>
-<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"#ffffff00"</span><span class="op">,</span></span>
-<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a>    <span class="dt">outline</span><span class="op">:</span>  <span class="kw">false</span></span>
-<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">path</span>({</span>
-<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a>    <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">0.2</span><span class="op">,</span></span>
-<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a>    <span class="dt">data</span><span class="op">:</span>        drought_layer<span class="op">,</span></span>
-<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span>        d <span class="kw">=&gt;</span> drought_color_map[<span class="bu">String</span>(d<span class="op">.</span><span class="at">properties</span><span class="op">.</span><span class="at">DM</span>)] <span class="op">??</span> <span class="st">"#cccccc"</span><span class="op">,</span></span>
-<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tip</span><span class="op">:</span>         d <span class="kw">=&gt;</span> drought_label_map[<span class="bu">String</span>(d<span class="op">.</span><span class="at">properties</span><span class="op">.</span><span class="at">DM</span>)] <span class="op">??</span> <span class="st">"No Data"</span></span>
-<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-313"><a href="#cb3-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Legend</span></span>
-<span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="at">legend</span><span class="op">.</span><span class="fu">typo_vertical</span>({</span>
-<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a>    <span class="dt">pos</span><span class="op">:</span>         [<span class="dv">20</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></span>
-<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span>       <span class="st">"Drought Level"</span><span class="op">,</span></span>
-<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a>    <span class="dt">alphabetical</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a>    <span class="dt">colors</span><span class="op">:</span>      <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(drought_color_map)<span class="op">,</span></span>
-<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a>    <span class="dt">types</span><span class="op">:</span>       <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(drought_label_map)<span class="op">,</span></span>
-<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a>    <span class="dt">missing</span><span class="op">:</span>     <span class="kw">false</span></span>
-<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">path</span>({</span>
-<span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a>    <span class="dt">id</span><span class="op">:</span> <span class="st">"basin-states"</span><span class="op">,</span></span>
-<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a>    <span class="dt">datum</span><span class="op">:</span>       Basin_States<span class="op">,</span></span>
-<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span>        <span class="st">"#00000000"</span><span class="op">,</span></span>
-<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a>    <span class="dt">stroke</span><span class="op">:</span>      <span class="st">"#000000"</span><span class="op">,</span></span>
-<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a>    <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
-<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a>    <span class="dt">styles</span><span class="op">:</span>      <span class="st">"pointer-events: none;"</span></span>
-<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">path</span>({</span>
-<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a>    <span class="dt">id</span><span class="op">:</span>          <span class="st">"basin"</span><span class="op">,</span></span>
-<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a>    <span class="dt">datum</span><span class="op">:</span>       Upper_Basin<span class="op">,</span></span>
-<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span>        <span class="st">"#00000000"</span><span class="op">,</span></span>
-<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">stroke</span><span class="op">:</span>      <span class="st">"#1a6496"</span><span class="op">,</span></span>
-<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a>    <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.5</span><span class="op">,</span></span>
-<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a>    <span class="dt">styles</span><span class="op">:</span>      <span class="st">"pointer-events: none;"</span></span>
-<span id="cb3-342"><a href="#cb3-342" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-343"><a href="#cb3-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-344"><a href="#cb3-344" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">path</span>({</span>
-<span id="cb3-345"><a href="#cb3-345" aria-hidden="true" tabindex="-1"></a>    <span class="dt">id</span><span class="op">:</span>          <span class="st">"lower-basin"</span><span class="op">,</span></span>
-<span id="cb3-346"><a href="#cb3-346" aria-hidden="true" tabindex="-1"></a>    <span class="dt">datum</span><span class="op">:</span>       Lower_Basin<span class="op">,</span></span>
-<span id="cb3-347"><a href="#cb3-347" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span>        <span class="st">"#00000000"</span><span class="op">,</span></span>
-<span id="cb3-348"><a href="#cb3-348" aria-hidden="true" tabindex="-1"></a>    <span class="dt">stroke</span><span class="op">:</span>      <span class="st">"#139C1A"</span><span class="op">,</span></span>
-<span id="cb3-349"><a href="#cb3-349" aria-hidden="true" tabindex="-1"></a>    <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.5</span><span class="op">,</span></span>
-<span id="cb3-350"><a href="#cb3-350" aria-hidden="true" tabindex="-1"></a>    <span class="dt">tip</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb3-351"><a href="#cb3-351" aria-hidden="true" tabindex="-1"></a>    <span class="dt">styles</span><span class="op">:</span>      <span class="st">"pointer-events: none;"</span></span>
-<span id="cb3-352"><a href="#cb3-352" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-353"><a href="#cb3-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-354"><a href="#cb3-354" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">render</span>()</span>
-<span id="cb3-355"><a href="#cb3-355" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display hidden">
-<div id="ojs-cell-3" data-nodetype="expression">
-
-</div>
-</div>
-</div>
 <div class="chart-description">
 <p><font size="2">Data from the National Drought Mitigation Center (NDMC), the U.S. Department of Agriculture (USDA) and the National Oceanic and Atmospheric Administration (NOAA).</font></p><font size="2">
 </font><p><font size="2"><a href="https://droughtmonitor.unl.edu/DmData/GISData.aspx">US Drought Monitor GIS Data</a></font></p>
@@ -561,7 +475,7 @@ init_map()
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Imdlb3ZpeiA9IHJlcXVpcmUoXCJnZW92aXpAMS4wLjBcIilcbmQzID0gcmVxdWlyZShcImQzQDdcIilcbmRpY29wYWwgPSByZXF1aXJlKFwiZGljb3BhbEAwLjVcIilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vZHJvdWdodF9sYXllciA9IGQzLmpzb24oXCJodHRwczovL2Ryb3VnaHRtb25pdG9yLnVubC5lZHUvZGF0YS9qc29uL3VzZG1fY3VycmVudC5qc29uXCIpXG5kcm91Z2h0X2xheWVyID0gRmlsZUF0dGFjaG1lbnQoXCIuLi8uLi9HSVNfRGF0YS9DdXJyZW50X0Ryb3VnaHQuZ2VvanNvblwiKS5qc29uKClcbkJhc2luX1N0YXRlcyA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvQmFzaW5fU3RhdGVzLmdlb2pzb25cIikuanNvbigpXG5VcHBlcl9CYXNpbiA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvVXBwZXJCYXNpbl9IVUMyLmdlb2pzb25cIikuanNvbigpXG5Mb3dlcl9CYXNpbiA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvTG93ZXJCYXNpbl9IVUMyLmdlb2pzb25cIikuanNvbigpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIC8vIERlZmluZSBjdXN0b20gY29sb3IgbWFwcGluZ1xuICBjb25zdCBkcm91Z2h0X2NvbG9yX21hcCA9IHtcbiAgICBcIjBcIjogXCIjRkZGRjAwXCIsXG4gICAgXCIxXCI6IFwiI0ZDRDM3RlwiLCBcbiAgICBcIjJcIjogXCIjRkZBQTAwXCIsXG4gICAgXCIzXCI6IFwiI0U2MDAwMFwiLFxuICAgIFwiNFwiOiBcIiM3MzAwMDBcIlxuICB9XG5cbiAgLy8gTGVnZW5kIGxhYmVsaW5nXG4gIGNvbnN0IGRyb3VnaHRfbGFiZWxfbWFwID0ge1xuICAgIFwiMFwiOiBcIkQwIC0gQWJub3JtYWxseSBEcnlcIixcbiAgICBcIjFcIjogXCJEMSAtIE1vZGVyYXRlIERyb3VnaHRcIixcbiAgICBcIjJcIjogXCJEMiAtIFNldmVyZSBEcm91Z2h0XCIsXG4gICAgXCIzXCI6IFwiRDMgLSBFeHRyZW1lIERyb3VnaHRcIixcbiAgICBcIjRcIjogXCJENCAtIEV4Y2VwdGlvbmFsIERyb3VnaHRcIlxuICB9XG5cbiAgLy8gTWFwIGNvbnRhaW5lclxuICBsZXQgc3ZnID0gZ2Vvdml6LmNyZWF0ZSh7IFxuICAgIGRvbWFpbjogICBCYXNpbl9TdGF0ZXMsIFxuICAgIHByb2plY3Rpb246IFwiYWxiZXJzXCIsXG4gICAgd2lkdGg6ICAgIHdpZHRoLCBcbiAgICBtYXJnaW46IFsyNSwgMjUsIDYwLCAyNV0sXG4gICAgem9vbWFibGU6IFswLjUsIDVdLFxuICAgIGJhY2tncm91bmQ6IFwiI2ZmZmZmZjAwXCIsXG4gICAgb3V0bGluZTogIGZhbHNlXG4gIH0pXG5cbiAgc3ZnLnBhdGgoe1xuICAgIHN0cm9rZVdpZHRoOiAwLjIsXG4gICAgZGF0YTogICAgICAgIGRyb3VnaHRfbGF5ZXIsXG4gICAgZmlsbDogICAgICAgIGQgPT4gZHJvdWdodF9jb2xvcl9tYXBbU3RyaW5nKGQucHJvcGVydGllcy5ETSldID8/IFwiI2NjY2NjY1wiLFxuICAgIHRpcDogICAgICAgICBkID0+IGRyb3VnaHRfbGFiZWxfbWFwW1N0cmluZyhkLnByb3BlcnRpZXMuRE0pXSA/PyBcIk5vIERhdGFcIlxuICB9KVxuXG4gIC8vIExlZ2VuZFxuICBzdmcubGVnZW5kLnR5cG9fdmVydGljYWwoe1xuICAgIHBvczogICAgICAgICBbMjAsIDUwMF0sXG4gICAgdGl0bGU6ICAgICAgIFwiRHJvdWdodCBMZXZlbFwiLFxuICAgIGFscGhhYmV0aWNhbDogZmFsc2UsXG4gICAgY29sb3JzOiAgICAgIE9iamVjdC52YWx1ZXMoZHJvdWdodF9jb2xvcl9tYXApLFxuICAgIHR5cGVzOiAgICAgICBPYmplY3QudmFsdWVzKGRyb3VnaHRfbGFiZWxfbWFwKSxcbiAgICBtaXNzaW5nOiAgICAgZmFsc2VcbiAgfSlcblxuICBzdmcucGF0aCh7XG4gICAgaWQ6IFwiYmFzaW4tc3RhdGVzXCIsXG4gICAgZGF0dW06ICAgICAgIEJhc2luX1N0YXRlcyxcbiAgICBmaWxsOiAgICAgICAgXCIjMDAwMDAwMDBcIixcbiAgICBzdHJva2U6ICAgICAgXCIjMDAwMDAwXCIsXG4gICAgc3Ryb2tlV2lkdGg6IDIsXG4gICAgdGlwOiBmYWxzZSxcbiAgICBzdHlsZXM6ICAgICAgXCJwb2ludGVyLWV2ZW50czogbm9uZTtcIlxuICB9KVxuXG4gIHN2Zy5wYXRoKHtcbiAgICBpZDogICAgICAgICAgXCJiYXNpblwiLFxuICAgIGRhdHVtOiAgICAgICBVcHBlcl9CYXNpbixcbiAgICBmaWxsOiAgICAgICAgXCIjMDAwMDAwMDBcIixcbiAgICBzdHJva2U6ICAgICAgXCIjMWE2NDk2XCIsXG4gICAgc3Ryb2tlV2lkdGg6IDIuNSxcbiAgICB0aXA6IGZhbHNlLFxuICAgIHN0eWxlczogICAgICBcInBvaW50ZXItZXZlbnRzOiBub25lO1wiXG4gIH0pXG5cbiAgc3ZnLnBhdGgoe1xuICAgIGlkOiAgICAgICAgICBcImxvd2VyLWJhc2luXCIsXG4gICAgZGF0dW06ICAgICAgIExvd2VyX0Jhc2luLFxuICAgIGZpbGw6ICAgICAgICBcIiMwMDAwMDAwMFwiLFxuICAgIHN0cm9rZTogICAgICBcIiMxMzlDMUFcIixcbiAgICBzdHJva2VXaWR0aDogMi41LFxuICAgIHRpcDogZmFsc2UsXG4gICAgc3R5bGVzOiAgICAgIFwicG9pbnRlci1ldmVudHM6IG5vbmU7XCJcbiAgfSlcblxuICByZXR1cm4gc3ZnLnJlbmRlcigpXG59XG4ifV19
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Imdlb3ZpeiA9IHJlcXVpcmUoXCJnZW92aXpAMS4wLjBcIilcbmQzID0gcmVxdWlyZShcImQzQDdcIilcbmRpY29wYWwgPSByZXF1aXJlKFwiZGljb3BhbEAwLjVcIilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vZHJvdWdodF9sYXllciA9IGQzLmpzb24oXCJodHRwczovL2Ryb3VnaHRtb25pdG9yLnVubC5lZHUvZGF0YS9qc29uL3VzZG1fY3VycmVudC5qc29uXCIpXG5kcm91Z2h0X2xheWVyID0gRmlsZUF0dGFjaG1lbnQoXCIuLi8uLi9HSVNfRGF0YS9DdXJyZW50X0Ryb3VnaHQuZ2VvanNvblwiKS5qc29uKClcbkJhc2luX1N0YXRlcyA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvQmFzaW5fU3RhdGVzLmdlb2pzb25cIikuanNvbigpXG5VcHBlcl9CYXNpbiA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvVXBwZXJCYXNpbl9IVUMyLmdlb2pzb25cIikuanNvbigpXG5Mb3dlcl9CYXNpbiA9IEZpbGVBdHRhY2htZW50KFwiLi4vLi4vR0lTX0RhdGEvTG93ZXJCYXNpbl9IVUMyLmdlb2pzb25cIikuanNvbigpXG4ifV19
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
