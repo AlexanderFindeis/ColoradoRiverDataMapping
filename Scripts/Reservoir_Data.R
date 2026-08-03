@@ -125,28 +125,20 @@ Res.Elv <- Elevation %>%
 
 # Average Elevation of each day of the year (e.g. August 1 across all years)
 Elv.Day.Average.10yr <- Res.Elv %>%
-  filter(Date >= (max(Date) - years(10))) %>%
+  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
   group_by(Month, Day, Reservoir) %>%
-  # remove statistical outliers within each day group
-  filter(abs(scale(Elevation)) < 3) %>%
   summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop") %>%
-  # smooth the resulting average line with a rolling 7-day window
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
-  mutate(Elv_Day_Avg_10yr = zoo::rollmean(Elv_Day_Avg_10yr, k = 7, fill = "extend", align = "center")) %>%
-  ungroup()
+  # Create rolling median to smooth out line graph and adjust for random dips or spikes in averages
+  mutate(Elv_Day_Avg_10y = rollmedian(Elv_Day_Avg_10yr, k = 3, fill = NA))
 
 Elv.Day.Average.30yr <- Res.Elv %>%
-  filter(Date >= (max(Date) - years(30))) %>%
+    # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
   group_by(Month, Day, Reservoir) %>%
-  # remove statistical outliers within each day group
-  filter(abs(scale(Elevation)) < 3) %>%
   summarise(Elv_Day_Avg_30yr = mean(Elevation, na.rm = TRUE), .groups = "drop") %>%
-  # smooth the resulting average line with a rolling 7-day window
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
-  mutate(Elv_Day_Avg_30yr = zoo::rollmean(Elv_Day_Avg_30yr, k = 7, fill = "extend", align = "center")) %>%
-  ungroup()
+  # Create rolling median to smooth out line graph and adjust for random dips or spikes in averages
+  mutate(Elv_Day_Avg_30y = rollmedian(Elv_Day_Avg_30yr, k = 3, fill = NA))
 
 # Removing for now since it is not being deployed on the site currently
 # Elv.Day.Average.Pre2000 <- Res.Elv %>%
@@ -222,29 +214,17 @@ Reservoir.Capacity <- Res.Stor.Bind %>%
 #   select(Date, Reservoir, WY_Storage_CumSum, WY_StorageMAF_CumSum)
 
 # Average Storage of each day of the year (e.g. August 1 across all years)
-Stor.Day.Average.10yr <- Res.Stor %>%
-  filter(Date >= (max(Date) - years(10))) %>%
+Stor.Day.Average.10yr <- Res.Stor.Bind %>%
+  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
   group_by(Month, Day, Reservoir) %>%
-  # remove statistical outliers within each day group
-  filter(abs(scale(Storage)) < 3) %>%
-  summarise(Stor_Day_Avg_10yr = mean(Storage, na.rm = TRUE), .groups = "drop") %>%
-  # smooth the resulting average line with a rolling 7-day window
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
-  mutate(Stor_Day_Avg_10yr = zoo::rollmean(Stor_Day_Avg_10yr, k = 7, fill = "extend", align = "center")) %>%
-  ungroup()
+  summarise(Stor_Day_Avg_10yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
-Stor.Day.Average.30yr <- Res.Stor %>%
-  filter(Date >= (max(Date) - years(30))) %>%
+Stor.Day.Average.30yr <- Res.Stor.Bind %>%
+  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
   group_by(Month, Day, Reservoir) %>%
-  # remove statistical outliers within each day group
-  filter(abs(scale(Storage)) < 3) %>%
-  summarise(Stor_Day_Avg_30yr = mean(Storage, na.rm = TRUE), .groups = "drop") %>%
-  # smooth the resulting average line with a rolling 7-day window
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
-  mutate(Stor_Day_Avg_30yr = zoo::rollmean(Stor_Day_Avg_30yr, k = 7, fill = "extend", align = "center")) %>%
-  ungroup()
+  summarise(Stor_Day_Avg_30yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
 # Removing for now since it is not being deployed on the site currently
 # Stor.Day.Average.Pre2000 <- Res.Stor %>%
@@ -256,7 +236,7 @@ Res.Stor.Output <- Res.Stor.Bind %>%
   # left_join(Stor.CumSum, by = c("Date", "Reservoir")) %>%
   left_join(Stor.Day.Average.10yr, by = c("Month", "Day", "Reservoir")) %>%
   left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
-  left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
+  #left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
   select(-Year, -Month, -Day) %>%
   group_by(Reservoir) %>%
   mutate(StorMAF_1yr_Ago = lag(Storage_MAF, n = 365)) %>%
@@ -330,4 +310,4 @@ latest_res_sf <- st_as_sf(latest_res_data, coords = c("long", "lat"), crs=4326)
 
 st_write(latest_res_sf, "GIS_Data/Reservoirs.geojson", append=FALSE, delete_dsn = TRUE)
 
-print("Reservoir Data Preparation Compelte")
+print("Reservoir Data Preparation Complete")
