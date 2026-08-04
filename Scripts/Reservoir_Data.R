@@ -128,17 +128,13 @@ Elv.Day.Average.10yr <- Res.Elv %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
   group_by(Month, Day, Reservoir) %>%
-  summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop") %>%
-  # Create rolling median to smooth out line graph and adjust for random dips or spikes in averages
-  mutate(Elv_Day_Avg_10y = rollmedian(Elv_Day_Avg_10yr, k = 3, fill = NA))
+  summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop")
 
 Elv.Day.Average.30yr <- Res.Elv %>%
     # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
   group_by(Month, Day, Reservoir) %>%
-  summarise(Elv_Day_Avg_30yr = mean(Elevation, na.rm = TRUE), .groups = "drop") %>%
-  # Create rolling median to smooth out line graph and adjust for random dips or spikes in averages
-  mutate(Elv_Day_Avg_30y = rollmedian(Elv_Day_Avg_30yr, k = 3, fill = NA))
+  summarise(Elv_Day_Avg_30yr = mean(Elevation, na.rm = TRUE), .groups = "drop")
 
 # Removing for now since it is not being deployed on the site currently
 # Elv.Day.Average.Pre2000 <- Res.Elv %>%
@@ -150,6 +146,11 @@ Res.Elv.Output <- Res.Elv %>%
   left_join(Elv.Day.Average.10yr, by = c("Month", "Day", "Reservoir")) %>%
   left_join(Elv.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
   # left_join(Elv.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
+  # Rolling median window resolves the sudden drop in values on December 31
+  arrange(Reservoir, Month, Day) %>%
+  group_by(Reservoir) %>%
+  mutate(Elv_Day_Avg_10yr = zoo::rollmedian(Elv_Day_Avg_10yr, k = 5, fill = NA)) %>%
+  mutate(Elv_Day_Avg_30yr = zoo::rollmedian(Elv_Day_Avg_30yr, k = 5, fill = NA)) %>%
   select(-Year, -Month, -Day)
 
 write.csv(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.csv")
@@ -205,13 +206,6 @@ Reservoir.Capacity <- Res.Stor.Bind %>%
 )) %>%
   mutate(Max_Capacity_MAF = Max_Capacity / 1000000)
 
-# Comment out, doesn't work for storage. would work for inflows and outflows, maybe evaporation depending on data
-# Stor.CumSum <- Res.Stor.Bind %>% group_by(Water.Year, Reservoir) %>%
-#   mutate(
-#     WY_Storage_CumSum = cumsum(Storage),
-#     WY_StorageMAF_CumSum = cumsum(Storage_MAF)) %>%
-#   ungroup() %>%
-#   select(Date, Reservoir, WY_Storage_CumSum, WY_StorageMAF_CumSum)
 
 # Average Storage of each day of the year (e.g. August 1 across all years)
 Stor.Day.Average.10yr <- Res.Stor.Bind %>%
@@ -233,10 +227,15 @@ Stor.Day.Average.30yr <- Res.Stor.Bind %>%
 #   summarise(Stor_Day_Avg_Pre2000 = mean(Storage, na.rm=T))
 
 Res.Stor.Output <- Res.Stor.Bind %>%
-  # left_join(Stor.CumSum, by = c("Date", "Reservoir")) %>%
   left_join(Stor.Day.Average.10yr, by = c("Month", "Day", "Reservoir")) %>%
   left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
   #left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
+  # Rolling median window resolves the sudden drop in values on December 31
+  # This is working for the Elevation data but not for storage data, working on a solution
+  arrange(Reservoir, Month, Day) %>%
+  group_by(Reservoir) %>%
+  mutate(Stor_Day_Avg_10yr = zoo::rollmedian(Stor_Day_Avg_10yr, k = 5, fill = NA)) %>%
+  mutate(Stor_Day_Avg_30yr = zoo::rollmedian(Stor_Day_Avg_30yr, k = 5, fill = NA)) %>%
   select(-Year, -Month, -Day) %>%
   group_by(Reservoir) %>%
   mutate(StorMAF_1yr_Ago = lag(Storage_MAF, n = 365)) %>%
