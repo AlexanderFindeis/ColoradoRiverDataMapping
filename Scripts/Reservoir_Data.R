@@ -231,7 +231,7 @@ Res.Stor.Output <- Res.Stor.Bind %>%
   left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
   #left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
   # Rolling median window resolves the sudden drop in values on December 31
-  # This is working for the Elevation data but not for storage data, working on a solution
+  #!! This is working for the Elevation data but not for storage data, working on a solution
   arrange(Reservoir, Month, Day) %>%
   group_by(Reservoir) %>%
   mutate(Stor_Day_Avg_10yr = zoo::rollmedian(Stor_Day_Avg_10yr, k = 5, fill = NA)) %>%
