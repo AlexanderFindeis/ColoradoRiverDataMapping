@@ -1457,7 +1457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="map" style="width:100%; height:650px; border-radius:8px;"></div>
 <script>
   // --- Populate year selectors ---
-  const years     = Array.from({length: 2021 - 1984}, (_, i) => 1984 + i)
+  const years     = Array.from({length: 2027 - 1984}, (_, i) => 1984 + i)
   const selectA   = document.getElementById("year-a")
   const selectB   = document.getElementById("year-b")
   const legendA   = document.getElementById("legend-a")
@@ -1508,7 +1508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
   // Set default values
   selectA.value = 2000
-  selectB.value = 2020
+  selectB.value = 2026
 
   // --- Initialize map ---
   const map = new maplibregl.Map({
@@ -1522,13 +1522,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"
                 ],
                 "tileSize": 256
-            }
+            },
+            "terrarium": {
+              type: "raster-dem",
+              tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+              tileSize: 256,
+              encoding: "terrarium",
+            },
         },
         "layers": [{
             "id": "satellite",
             "type": "raster",
             "source": "satellite"
-        }]
+        }],
+        terrain: { source: "terrarium", exaggeration: 1.5 },
     },
     center:    [-114.5, 36.0],
     zoom:      8
@@ -1540,8 +1547,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   // --- Layer update function ---
   function update_layers(year_a, year_b) {
 
-    const path_a = `/GIS_Data/JRC/JRC_${year_a}.geojson`
-    const path_b = `/GIS_Data/JRC/JRC_${year_b}.geojson`
+    const path_a = `/GIS_Data/Surface_Water/SW_${year_a}.geojson`
+    const path_b = `/GIS_Data/Surface_Water/SW_${year_b}.geojson`
 
     // Update legend labels
     legendA.textContent = `Year A: ${year_a}`
@@ -1563,7 +1570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         type:   "fill",
         source: "layer-a",
         paint: {
-          "fill-color":   "#026988",
+          "fill-color":   "#4ddbff",
           "fill-opacity": 0.6
         }
       })
@@ -1593,7 +1600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         type:   "fill",
         source: "layer-b",
         paint: {
-          "fill-color":   "#da3030",
+          "fill-color":   "#fa5a5a",
           "fill-opacity": 0.6
         }
       })
@@ -1644,6 +1651,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   //   add_popup("fill-b", "Year B")
   // })
 </script>
+<div class="chart-description">
+<p>Surface water extent data is from the JRC Global Surface Water Dataset, using satellite data to map surface water from 1984 to 2020. Years after 2020 are created using data from the Sentinel-2 satellite through the OpenEO API. Normalized Difference Water Index was calculated and vectorized to create polygons of surface water extent for included reservoirs, using the median value for each pixel across the entire year. The current year is the median of the past two months to approximate current levels and account for discrepencies and cloud cover in individual collections.</p>
+</div>
 </section>
 </div>
 </div>

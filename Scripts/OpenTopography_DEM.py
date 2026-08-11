@@ -1,5 +1,4 @@
 ## Downloads data to the root directory
-# Move script with API key .txt file to desired download directory or move data once downloaded
 
 from bmi_topography import Topography
 

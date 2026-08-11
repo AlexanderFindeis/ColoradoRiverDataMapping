@@ -172,7 +172,7 @@
     "href": "Pages/Reservoirs/Reservoir Overview.html#reservoir-extent",
     "title": "Overview and Trends at Major Reservoirs",
     "section": "Reservoir Extent",
-    "text": "Reservoir Extent\n\n\n\n\n  \n    \n      Year A\n    \n    \n  \n\n  \n    \n      Year B\n    \n    \n  \n\n  \n  \n    \n      \n      Year A\n    \n    \n      \n      Year B"
+    "text": "Reservoir Extent\n\n\n\n\n  \n    \n      Year A\n    \n    \n  \n\n  \n    \n      Year B\n    \n    \n  \n\n  \n  \n    \n      \n      Year A\n    \n    \n      \n      Year B\n    \n  \n\n\n\n\n\n\nSurface water extent data is from the JRC Global Surface Water Dataset, using satellite data to map surface water from 1984 to 2020. Years after 2020 are created using data from the Sentinel-2 satellite through the OpenEO API. Normalized Difference Water Index was calculated and vectorized to create polygons of surface water extent for included reservoirs, using the median value for each pixel across the entire year. The current year is the median of the past two months to approximate current levels and account for discrepencies and cloud cover in individual collections."
   },
   {
     "objectID": "docs/GIS_Data/UpperBasin_HUC8.html",

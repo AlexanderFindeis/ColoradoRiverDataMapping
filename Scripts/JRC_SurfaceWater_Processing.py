@@ -11,11 +11,11 @@ import gc
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 data_date    = 1984
-cache_dir    = "GIS_Data/JRC"
+cache_dir    = "GIS_Data/Surface_Water"
 os.makedirs(cache_dir, exist_ok=True)
 
 # Load clip geometry
-reservoir_clip = gpd.read_file("GIS_Data/JRC/Reservoir_Clip.geojson")
+reservoir_clip = gpd.read_file("GIS_Data/Surface_Water/Reservoir_Clip.geojson")
 
 # ── Helper: download file ─────────────────────────────────────────────────────
 def download_file(url, dest_path):
@@ -133,7 +133,7 @@ while data_date < 2022:
     water_gdf = raster_to_polygons(clipped_path)
 
     if water_gdf is not None:
-        export_path = os.path.join(cache_dir, f"JRC_{data_date}.geojson")
+        export_path = os.path.join(cache_dir, f"SW_{data_date}.geojson")
         water_gdf.to_file(export_path, driver="GeoJSON")
         print(f"  Written: {export_path} ({len(water_gdf)} features)")
     else:
