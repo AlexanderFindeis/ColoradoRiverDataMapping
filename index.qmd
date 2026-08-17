@@ -260,6 +260,58 @@ async function init_map() {
     `
     document.getElementById("basin-map").appendChild(legend)
 
+    // Reservoirs proportional symbol legend ────────────────────────────────────────────────────────────
+    const reservoir_legend = document.createElement("div")
+    reservoir_legend.style.cssText = `
+      position:absolute; bottom:200px; left:10px; background:white;
+      padding:10px 14px; border-radius:6px; border:1px solid #dee2e6;
+      font-size:12px; font-family:sans-serif;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:1;
+    `
+
+    const calc_radius = capacity => 3 + 4 * Math.sqrt(Math.max(capacity, 0))
+
+    const r1 = calc_radius(1)    // ~7px
+    const r2 = calc_radius(5)    // ~12px
+    const r3 = calc_radius(26)   // ~23px
+
+    const svg_width  = 130
+    const svg_height = r3 * 2 + 10
+    const cx         = r3 + 4          // all circles share the same center x
+    const bottom     = svg_height - 4  // baseline for bottom alignment
+
+    // Set each circle to sit at bottom
+    const cy_1 = bottom - r1
+    const cy_2 = bottom - r2
+    const cy_3 = bottom - r3
+
+    // Build SVG with circles aligned at the bottom
+    const circles_svg = `
+    <!-- Circle 1 - 1 MAF (smallest) -->
+    <circle cx="${cx}" cy="${cy_1}" r="${r1}" fill="#19875400" fill-opacity="0" stroke="black" stroke-width="1.5"/>
+    <line x1="${cx + r1}" y1="${bottom}" x2="65" y2="${bottom}" stroke="#aaaaaa" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <text x="68" y="${bottom}" font-size="10" fill="#333" font-family="sans-serif" dominant-baseline="middle">1 MAF</text>
+
+    <!-- Circle 2 - 5 MAF -->
+    <circle cx="${cx}" cy="${cy_2}" r="${r2}" fill="#19875400" fill-opacity="0" stroke="black" stroke-width="1.5"/>
+    <line x1="${cx + r2}" y1="${cy_2}" x2="65" y2="${cy_2}" stroke="#aaaaaa" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <text x="68" y="${cy_2}" font-size="10" fill="#333" font-family="sans-serif" dominant-baseline="middle">5 MAF</text>
+
+    <!-- Circle 3 - 26 MAF (largest) -->
+    <circle cx="${cx}" cy="${cy_3}" r="${r3}" fill="#19875400" fill-opacity="0" stroke="black" stroke-width="1.5"/>
+    <line x1="${cx + r3}" y1="${cy_3}" x2="65" y2="${cy_3}" stroke="#aaaaaa" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <text x="68" y="${cy_3}" font-size="10" fill="#333" font-family="sans-serif" dominant-baseline="middle">26 MAF</text>
+    `
+
+    reservoir_legend.innerHTML = `
+      <b style="font-size:13px; display:block; margin-bottom:6px;">Reservoir Capacity</b>
+      <svg width="${svg_width}" height="${svg_height}" overflow="visible">
+        ${circles_svg}
+      </svg>
+    `
+
+    document.getElementById("basin-map").appendChild(reservoir_legend)
+
     // ── Layer toggles ─────────────────────────────────────────────────────
     const toggle = document.createElement("div")
     toggle.style.cssText = `
@@ -273,12 +325,12 @@ async function init_map() {
     { 
       label:  "Upper Basin", 
       ids:    ["upper-basin-fill", "upper-basin-outline"],
-      symbol: { type: "fill", color: "#4768c481", outline: "#1c45b6" }
+      symbol: { type: "fill", color: "#4768c44b", outline: "#053bce" }
     },
     { 
       label:  "Lower Basin", 
       ids:    ["lower-basin-fill", "lower-basin-outline"],
-      symbol: { type: "fill", color: "#4768c481", outline: "#3d61ff" }
+      symbol: { type: "fill", color: "#4768c43b", outline: "#4d6cf7" }
     },
     { 
       label:  "Rivers", 
