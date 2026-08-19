@@ -102,7 +102,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "The Colorado River Data Mapping Project is a collaborative effort to make data and information about the history and current status of the Colorado River Basin available to the public.\nData resources can be difficult to access and analyze for the general public, making critical information about the history and future of the United State’s most over stressed river out of reach for many.\nThis project seeks to make this information easier to access and interact with, giving people an important resource to inform themselves and others about the crisis on the Colorado."
+    "text": "The Colorado River Atlas is an effort to make information about the history and status of the Colorado River Basin available to the public.\nExisting data resources can often be difficult to access and analyze for the general public, making critical information about the history and future of the United State’s most over stressed river out of reach for many. As reservoir levels continue to fall and long-term management of the river remains tenuous, public accessibility to this information becomes increasingly important.\nThis project seeks to make this information easier to access and interact with, giving people an important resource to inform themselves and others about the challenges facing the Colorado. It began as a personal project, filling in gaps in data presentation and consolidating different resources into one place, and is aiming to grow to include more resources on water usage, land use patterns, water conservation efforts, legal and political issues, science, history and more.\nThe CRA is built using Quarto, an open-source scientific and technical publishing system, and published through GitHub Pages. Click on the GitHub icon in the top-right to visit the GitHub repository and explore the scripts used to process data and build the site.\n\n\nWant to contribute to this project? Visit the GitHub repo and make a pull request or use the email below to get in contact with your ideas.\n\n\n\nSend an email to coloradoriveratlas@gmail.com to get in contact with questions, comments and submissions."
   },
   {
     "objectID": "GIS_Data/Basin_States.html",
@@ -250,5 +250,19 @@
     "title": "Colorado River Atlas",
     "section": "",
     "text": "&lt;!DOCTYPE qgis PUBLIC ‘http://mrcc.com/qgis.dtd’ ‘SYSTEM’&gt;     dataset\n\n\n               GEOGCRS[“WGS 84”,ENSEMBLE[“World Geodetic System 1984 ensemble”,MEMBER[“World Geodetic System 1984 (Transit)”],MEMBER[“World Geodetic System 1984 (G730)”],MEMBER[“World Geodetic System 1984 (G873)”],MEMBER[“World Geodetic System 1984 (G1150)”],MEMBER[“World Geodetic System 1984 (G1674)”],MEMBER[“World Geodetic System 1984 (G1762)”],MEMBER[“World Geodetic System 1984 (G2139)”],ELLIPSOID[“WGS 84”,6378137,298.257223563,LENGTHUNIT[“metre”,1]],ENSEMBLEACCURACY[2.0]],PRIMEM[“Greenwich”,0,ANGLEUNIT[“degree”,0.0174532925199433]],CS[ellipsoidal,2],AXIS[“geodetic latitude (Lat)”,north,ORDER[1],ANGLEUNIT[“degree”,0.0174532925199433]],AXIS[“geodetic longitude (Lon)”,east,ORDER[2],ANGLEUNIT[“degree”,0.0174532925199433]],USAGE[SCOPE[“Horizontal component of 3D system.”],AREA[“World.”],BBOX[-90,-180,90,180]],ID[“EPSG”,4326]] +proj=longlat +datum=WGS84 +no_defs 3452 4326 EPSG:4326 WGS 84 longlat EPSG:7030 true"
+  },
+  {
+    "objectID": "about.html#contribute",
+    "href": "about.html#contribute",
+    "title": "About",
+    "section": "",
+    "text": "Want to contribute to this project? Visit the GitHub repo and make a pull request or use the email below to get in contact with your ideas."
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "",
+    "text": "Send an email to coloradoriveratlas@gmail.com to get in contact with questions, comments and submissions."
   }
 ]

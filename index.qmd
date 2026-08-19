@@ -46,6 +46,8 @@ Click here to learn more about basin water use
 [State Usage](./Pages/States/State%20Overview.qmd) 
 
 # Major Reservoirs Current Conditions 
+
+Click on a reservoir marker to see current and past elevation and storage figures. Popups for stream segments and regions coming soon. Right-click with a mouse to rotate the map and see elevation data. Terrain is displayed with 2-times exageration for visibilty.
 :::
 
 ```{=html}
