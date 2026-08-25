@@ -251,7 +251,6 @@ write.csv(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.csv")
 
 
 ### Spatial Data
-reservoirs <- st_read("GIS_Data/Colorado_River_Basin_Reservoirs.geojson")
 
 latest_storage <- Res.Stor.Output %>%
   group_by(Reservoir) %>%
