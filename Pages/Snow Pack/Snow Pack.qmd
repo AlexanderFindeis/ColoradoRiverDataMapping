@@ -3,9 +3,9 @@ execute:
   echo: false
 format: 
   html: 
-    page-layout: full
-    grid:
-      body-width: 1000px
+    margin-left: 5%
+    margin-right: 5%
+    page-layout: custom
 bibliography: references.bib
 ---
 
@@ -56,23 +56,78 @@ Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for a
 
 <br>
 
+::::: {.columns}
+::: {.column width="15%"}
 ```{=html}
 <style>
-  /* Set width of label */
-  form.oi-3a86ea>label {
-  width: 70px;
+  .floating-container form {
+    display: flex;
+    flex-wrap: wrap;   /* lets label drop to its own line if space is tight */
+    width: 100%;
+    min-width: 0;       /* <- overrides flexbox default, allows shrinking */
+    box-sizing: border-box;
+  }
+
+  .floating-container {
+    overflow: hidden;     /* nothing can visually escape this box, period */
+    max-width: 100%;
+  }
+
+  .floating-container select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;   /* "Upper Colorado…" instead of spilling over */
+  }
+</style>
+```
+```{=html}
+<style>
+  /* Target the first column in any columns div */
+  .columns > div:first-child {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    height: fit-content;
   }
 </style>
 ```
 ::: floating-container
 ```{ojs}
-viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
-  { label: "Basin:", value: "Full Basin" })
+viewof Basin_Select = {
+  const input = Inputs.select(
+    Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
+    { label: "Basin:", value: "Full Basin" }
+  );
+
+  const select = input.querySelector("select");
+  const updateTitle = () => select.title = input.value; `select`
+  updateTitle();
+  input.addEventListener("input", updateTitle); `select`
+
+  return input;
+}
+```
+```{ojs}
+viewof Year_Select = Inputs.select(
+  d3.range(2026, 1985, -1),   // descending: 2026, 2025, ... 1986
+  { 
+    label: "Water Year:", 
+    value: 2026,
+    format: d => String(d) }
+)
 ```
 :::
+:::
 
-<br>
+::: {.column width="5%"}
+<!-- empty column to create gap -->
+:::
 
+::: {.column width="80%"}
 ::: {style="text-align: center;"}
 # Daily Snow Water Equivalent Trends
 :::
@@ -86,6 +141,7 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
     // Use previous year to get a full year's worth of records for min, max and median
     const Previous_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === previous_wy)
     const Historical    = SNOTEL_Filtered.filter(d => d.Snow_Year !== current_wy)
+    const Selected_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === Year_Select)
 
     return Plot.plot({
         //title: "Basin-Wide Average Snow Water Equivalent Trends",
@@ -93,8 +149,8 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
         height: 500,
         color: { // For some reason adding the legend is causing the multi-year lines to disappear
             legend: true,
-            domain: ["Current Water Year", "Median 1991-2020", "Minimum", "Maximum", "Previous Years"],
-            range:  ["black", "#00c01a", "#f54242", "#3765fa", "#aaaaaa"]
+            domain: ["Current Water Year", "Median 1991-2020", "Minimum", "Maximum", "Previous Years", "Selected Year"],
+            range:  ["black", "#00c01a", "#f54242", "#3765fa", "#aaaaaa", "#6a00e4"]
             },
         x: {
              domain: [
@@ -144,6 +200,19 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                 x: "Normalized_Date",
                 y: "Maximum",
                 stroke: "#3765fa",
+                strokeWidth: 3,
+                tip: {
+                    pointer: "xy",
+                    maxRadius: 8,
+                    format: {
+                        x: d => d3.utcFormat("%b %d")(d)
+                    }
+                }
+            }),
+            Plot.line(Selected_Year, {
+                x: "Normalized_Date",
+                y: "Maximum",
+                stroke: "#6a00e4",
                 strokeWidth: 3,
                 tip: {
                     pointer: "xy",
@@ -496,3 +565,6 @@ Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => 
 ::: chart-description
 <font size="2">The number of days from October 1 (the start of the water year) to peak snow pack was calcualted for each year. This chart shows the long-term trend in declining number of days to peak snow pack, reflecting a tightening snow storage system that is receiving less snow and melting sooner than before</font>
 :::
+
+:::
+:::::
