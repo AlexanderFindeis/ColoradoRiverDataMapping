@@ -116,7 +116,3 @@ HUC6_Full <- union_all(UB_HUC6, LB_HUC6) %>%
 st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
 
 print("Snow Pack Data Compilation Complete")
-
-
-## Snow raster
-#SWE_Raster <- terra::rast("C:/Users/a1928/Downloads/4km_SWE_Depth_WY2023_v01.nc")
