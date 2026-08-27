@@ -79,7 +79,8 @@ data_long <- Colorado_Basin_SWE_Full %>%
   ) %>%
   rename(Median_91_20 = `Median...91..20.`, Month_Day = date) %>%
   mutate(Percent_of_Median = (Average_SWE / Median_91_20)*100, 0) %>%
-  filter(Snow_Year > 100) # Removes values for percentile statistics that were pivoted as if they were years
+  # Removes values for percentile statistics that were pivoted as if they were years, removes future dates with null values
+  filter(Snow_Year > 100, !is.na(Average_SWE)) 
 
 write.csv(data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.csv")
 
@@ -100,19 +101,20 @@ write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
 
 
 ##### Join data to geojson
-UB_HUC6 <- st_read("GIS_Data/UpperBasin_HUC6.geojson")
-LB_HUC6 <- st_read("GIS_Data/LowerBasin_HUC6.geojson")
+# !! -- No longer needed. CSV data being joined to geojson in .qmd now -- !!
+# UB_HUC6 <- st_read("GIS_Data/UpperBasin_HUC6.geojson")
+# LB_HUC6 <- st_read("GIS_Data/LowerBasin_HUC6.geojson")
 
-SWE_Current <- read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv") %>%
-    filter(!is.na(Average_SWE)) %>%
-    filter(HUC6 != "Full Basin") %>%
-    group_by(HUC6) %>%
-    filter(Calendar_Date == max(Calendar_Date, na.rm = TRUE)) %>% ungroup()
+# SWE_Current <- read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv") %>%
+#     filter(!is.na(Average_SWE)) %>%
+#     filter(HUC6 != "Full Basin") %>%
+#     group_by(HUC6) %>%
+#     filter(Calendar_Date == max(Calendar_Date, na.rm = TRUE)) %>% ungroup()
 
-HUC6_Full <- union_all(UB_HUC6, LB_HUC6) %>%
-    right_join(SWE_Current, by = c("name" = "HUC6")) %>%
-    mutate(across(c("Average_SWE"), round, 2))
+# HUC6_Full <- union_all(UB_HUC6, LB_HUC6) %>%
+#     right_join(SWE_Current, by = c("name" = "HUC6")) %>%
+#     mutate(across(c("Average_SWE"), round, 2))
 
-st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
+# st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
 
-print("Snow Pack Data Compilation Complete")
+# print("Snow Pack Data Compilation Complete")
