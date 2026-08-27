@@ -102,6 +102,7 @@ Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for a
 ```{=html}
 <br>
 <br>
+<br>
 ```
 ::: floating-container
 ```{ojs}
@@ -119,7 +120,9 @@ viewof Basin_Select = {
   return input;
 }
 ```
-  
+```{=html}
+<br>
+```
 ```{ojs}
 viewof Year_Select = Inputs.select(
   d3.range(2026, 1985, -1),   // descending: 2026, 2025, ... 1986
@@ -129,7 +132,9 @@ viewof Year_Select = Inputs.select(
     format: d => String(d) }
 )
 ```
-
+```{=html}
+<br>
+```
 ```{ojs}
 //| output: false
 max_date = d3.max(SNOTEL, d => d.Calendar_Date_Formatted).toISOString().slice(0, 10)
@@ -383,6 +388,8 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
 ```
 
 ## SWE Percent of Median
+
+### Current Levels
 ```{ojs}
 //| echo: false
 {
@@ -422,10 +429,70 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
       Plot.tip(
         HUC6_geo.features,
         Plot.pointer(Plot.centroid({
-        title:    d => `${d.properties.name}\n${d.properties.Percent_of_Median} in`,
+        title:    d => `${d.properties.name}\n${d.properties.Percent_of_Median} %`,
         geometry: d => d.geometry
             }))
         ),
+      Plot.frame()
+    ]
+  })
+}
+```
+
+### Percent of Median Time Series
+```{ojs}
+html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(SWE_Date)}</div>`
+```
+```{=html}
+<br>
+```
+```{ojs}
+{
+  const dateKey = d3.utcFormat("%Y-%m-%d")(SWE_Date)
+  const dateSlice = Data_By_Date.get(dateKey) ?? new Map()
+  const selected = Basin_Select
+
+  const getValue = name => {
+    const rows = dateSlice.get(name)
+    return rows ? rows[0].Percent_of_Median : null
+  }
+
+  return Plot.plot({
+    width: width,
+    height: 500,
+    projection: { type: "albers", domain: HUC6_geo },
+    color: {
+      legend:      true,
+      marginLeft:  25,
+      label:       "SWE Percent of Median",
+      domain:      [0, 200],
+      interpolate: d3.interpolateRdYlBu
+    },
+    marks: [
+      Plot.geo(HUC6_geo, {
+        fill: d => getValue(d.properties.name),
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+          title: d => {
+            const val = getValue(d.properties.name)
+            return `${d.properties.name}\n${dateKey}\n${val != null ? val + " %" : "No data"}`
+          },
+          geometry: d => d.geometry
+        }))
+      ),
       Plot.frame()
     ]
   })
