@@ -13,6 +13,7 @@ bibliography: references.bib
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
     const date  = new Date(d.Snow_Date + "T00:00:00")
     const month = date.getUTCMonth()
+    const calendar_date = new Date(d.Calendar_Date + "T00:00:00")
 
     return {
         ...d,
@@ -24,6 +25,7 @@ SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d =>
         )),
         Calendar_Year: d.Calendar_Year,
         Snow_Year: d.Snow_Year,
+        Calendar_Date_Formatted: calendar_date,
         HUC6: d.HUC6,
         Minimum: +d.Min,
         Maximum: +d.Max,
@@ -48,11 +50,13 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 # Colorado Basin Snow Pack
 :::
 
+::: {style="text-align: center; max-width: 800px; margin: auto;"}
 Snow pack is an essential supply of water to the Colorado River. Researchers estimate that snow melt accounts for 70% of Colorado River supply [@xiao2021]. As climate change alters weather patterns, reducing snow fall and speeding up snow melt, downstream supply is threatened. The snow season of 2025/2026 was the worst on record for much of the Colorado headwaters as a major heatwave in March caused an already poor year to see an unprecedented collapse in snow levels.
 
 The charts below demonstrate current and historical conditions of snow water equivalent (SWE) measured in inches of water. This data is derived from the National Weather and Climate Center and processed for display [@NWCC].
 
 Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for aggregated data of the entire Colorado River Basin.
+:::
 
 <br>
 
@@ -111,14 +115,23 @@ viewof Basin_Select = {
   return input;
 }
 ```
+  
 ```{ojs}
 viewof Year_Select = Inputs.select(
   d3.range(2026, 1985, -1),   // descending: 2026, 2025, ... 1986
   { 
-    label: "Water Year:", 
-    value: 2026,
+    label: "Snow Year:", 
+    value: 2025,
     format: d => String(d) }
 )
+```
+
+```{ojs}
+//| output: false
+max_date = d3.max(SNOTEL, d => d.Calendar_Date_Formatted).toISOString().slice(0, 10)
+```
+```{ojs}
+viewof SWE_Date = Inputs.date({label: "Select Date", min: "1986-01-01", max: max_date, value: max_date})
 ```
 :::
 :::
@@ -141,7 +154,7 @@ viewof Year_Select = Inputs.select(
     // Use previous year to get a full year's worth of records for min, max and median
     const Previous_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === previous_wy)
     const Historical    = SNOTEL_Filtered.filter(d => d.Snow_Year !== current_wy)
-    const Selected_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === Year_Select)
+    const Selected_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === String(Year_Select))
 
     return Plot.plot({
         //title: "Basin-Wide Average Snow Water Equivalent Trends",
@@ -211,7 +224,7 @@ viewof Year_Select = Inputs.select(
             }),
             Plot.line(Selected_Year, {
                 x: "Normalized_Date",
-                y: "Maximum",
+                y: "Average_SWE",
                 stroke: "#6a00e4",
                 strokeWidth: 3,
                 tip: {
@@ -243,13 +256,68 @@ viewof Year_Select = Inputs.select(
 ::: chart-description
 <font size="2">Daily data trends for snow water equivalent in inches averaged to the HUC6 watershed level. "Full Basin" is an average of Maximum, Minimum and Median statistics from all sub-basins, may not reflect true extremes. Dates arranged to the water year (October 1 to September 30). </font>
 :::
-
+  
 ::: {style="text-align: center;"}
 # Current SWE Maps
 :::
 
 ::: {.panel-tabset}
 ## Current SWE (inches)
+```{ojs}
+// Nest by date first, then by HUC6 id, for O(1) lookup on both dimensions
+Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
+```
+```{ojs}
+{
+  const dateKey = d3.utcFormat("%Y-%m-%d")(SWE_Date)
+  const dateSlice = Data_By_Date.get(dateKey) ?? new Map()
+  const selected = Basin_Select
+
+  const getValue = name => {
+    const rows = dateSlice.get(name)
+    return rows ? rows[0].Average_SWE : null
+  }
+
+  return Plot.plot({
+    width: width,
+    height: 500,
+    projection: { type: "albers", domain: HUC6_geo },
+    color: {
+      legend: true,
+      label: "SWE (in)",
+      domain: [0, 30],
+      interpolate: d3.interpolateRdYlGn
+    },
+    marks: [
+      Plot.geo(HUC6_geo, {
+        fill: d => getValue(d.properties.name),
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+          title: d => {
+            const val = getValue(d.properties.name)
+            return `${d.properties.name}\n${dateKey}\n${val != null ? val + " in" : "No data"}`
+          },
+          geometry: d => d.geometry
+        }))
+      ),
+      Plot.frame()
+    ]
+  })
+}
+```
 ```{ojs}
 //| echo: false
 {
