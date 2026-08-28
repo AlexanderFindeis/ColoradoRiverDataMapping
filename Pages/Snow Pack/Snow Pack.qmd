@@ -1,11 +1,12 @@
 ---
 execute:
   echo: false
+toc: false
 format: 
   html: 
-    page-layout: full
-    grid:
-      body-width: 1000px
+    margin-left: 5%
+    margin-right: 5%
+    page-layout: custom
 bibliography: references.bib
 ---
 
@@ -13,6 +14,7 @@ bibliography: references.bib
 SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
     const date  = new Date(d.Snow_Date + "T00:00:00")
     const month = date.getUTCMonth()
+    const calendar_date = new Date(d.Calendar_Date + "T00:00:00")
 
     return {
         ...d,
@@ -24,6 +26,7 @@ SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d =>
         )),
         Calendar_Year: d.Calendar_Year,
         Snow_Year: d.Snow_Year,
+        Calendar_Date_Formatted: calendar_date,
         HUC6: d.HUC6,
         Minimum: +d.Min,
         Maximum: +d.Max,
@@ -48,31 +51,114 @@ Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
 # Colorado Basin Snow Pack
 :::
 
+::: {style="text-align: center; max-width: 800px; margin: auto;"}
 Snow pack is an essential supply of water to the Colorado River. Researchers estimate that snow melt accounts for 70% of Colorado River supply [@xiao2021]. As climate change alters weather patterns, reducing snow fall and speeding up snow melt, downstream supply is threatened. The snow season of 2025/2026 was the worst on record for much of the Colorado headwaters as a major heatwave in March caused an already poor year to see an unprecedented collapse in snow levels.
 
 The charts below demonstrate current and historical conditions of snow water equivalent (SWE) measured in inches of water. This data is derived from the National Weather and Climate Center and processed for display [@NWCC].
 
 Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for aggregated data of the entire Colorado River Basin.
-
-<br>
-
-```{=html}
-<style>
-  /* Set width of label */
-  form.oi-3a86ea>label {
-  width: 70px;
-  }
-</style>
-```
-::: floating-container
-```{ojs}
-viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
-  { label: "Basin:", value: "Full Basin" })
-```
 :::
 
 <br>
 
+::::: {.columns}
+::: {.column width="15%"}
+```{=html}
+<style>
+  .floating-container form {
+    display: flex;
+    flex-wrap: wrap;   /* lets label drop to its own line if space is tight */
+    width: 100%;
+    min-width: 0;       /* <- overrides flexbox default, allows shrinking */
+    box-sizing: border-box;
+  }
+
+  .floating-container {
+    overflow: hidden;     /* nothing can visually escape this box, period */
+    max-width: 100%;
+  }
+
+  .floating-container select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;   /* "Upper Colorado…" instead of spilling over */
+  }
+</style>
+```
+```{=html}
+<style>
+  /* Target the first column in any columns div */
+  .columns > div:first-child {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    height: fit-content;
+  }
+</style>
+```
+```{=html}
+<style>
+  /* adjust the height of the "Select Date" container */
+  .oi-3a86ea-input > input[type="date"] {
+    height: 50px;
+  }
+</style>
+```
+```{=html}
+<br>
+<br>
+<br>
+```
+::: floating-container
+```{ojs}
+viewof Basin_Select = {
+  const input = Inputs.select(
+    Array.from(new Set(SNOTEL.map(d => d.HUC6))).sort(),
+    { label: "Basin:", value: "Full Basin" }
+  );
+
+  const select = input.querySelector("select");
+  const updateTitle = () => select.title = input.value; `select`
+  updateTitle();
+  input.addEventListener("input", updateTitle); `select`
+
+  return input;
+}
+```
+```{=html}
+<br>
+```
+```{ojs}
+viewof Year_Select = Inputs.select(
+  d3.range(2026, 1985, -1),   // descending: 2026, 2025, ... 1986
+  { 
+    label: "Snow Year:", 
+    value: 2025,
+    format: d => String(d) }
+)
+```
+```{=html}
+<br>
+```
+```{ojs}
+//| output: false
+max_date = d3.max(SNOTEL, d => d.Calendar_Date_Formatted).toISOString().slice(0, 10)
+```
+```{ojs}
+viewof SWE_Date = Inputs.date({label: "Select Date", min: "1986-01-01", max: max_date, value: max_date})
+```
+:::
+:::
+
+::: {.column width="5%"}
+<!-- empty column to create gap -->
+:::
+
+::: {.column width="80%"}
 ::: {style="text-align: center;"}
 # Daily Snow Water Equivalent Trends
 :::
@@ -86,6 +172,7 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
     // Use previous year to get a full year's worth of records for min, max and median
     const Previous_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === previous_wy)
     const Historical    = SNOTEL_Filtered.filter(d => d.Snow_Year !== current_wy)
+    const Selected_Year = SNOTEL_Filtered.filter(d => d.Snow_Year === String(Year_Select))
 
     return Plot.plot({
         //title: "Basin-Wide Average Snow Water Equivalent Trends",
@@ -93,8 +180,8 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
         height: 500,
         color: { // For some reason adding the legend is causing the multi-year lines to disappear
             legend: true,
-            domain: ["Current Water Year", "Median 1991-2020", "Minimum", "Maximum", "Previous Years"],
-            range:  ["black", "#00c01a", "#f54242", "#3765fa", "#aaaaaa"]
+            domain: ["Current Water Year", "Median 1991-2020", "Minimum", "Maximum", "Previous Years", "Selected Year"],
+            range:  ["black", "#00c01a", "#f54242", "#3765fa", "#aaaaaa", "#6a00e4"]
             },
         x: {
              domain: [
@@ -153,6 +240,19 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
                     }
                 }
             }),
+            Plot.line(Selected_Year, {
+                x: "Normalized_Date",
+                y: "Average_SWE",
+                stroke: "#6a00e4",
+                strokeWidth: 3,
+                tip: {
+                    pointer: "xy",
+                    maxRadius: 8,
+                    format: {
+                        x: d => d3.utcFormat("%b %d")(d)
+                    }
+                }
+            }),
             Plot.line(Current_Year, {
                 x: "Normalized_Date",
                 y: "Average_SWE",
@@ -174,13 +274,17 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
 ::: chart-description
 <font size="2">Daily data trends for snow water equivalent in inches averaged to the HUC6 watershed level. "Full Basin" is an average of Maximum, Minimum and Median statistics from all sub-basins, may not reflect true extremes. Dates arranged to the water year (October 1 to September 30). </font>
 :::
-
+```{=html}
+<br>
+```
 ::: {style="text-align: center;"}
-# Current SWE Maps
+# Snow Water Equivalent Maps
 :::
 
 ::: {.panel-tabset}
-## Current SWE (inches)
+## SWE (inches)
+
+### Current SWE
 ```{ojs}
 //| echo: false
 {
@@ -229,7 +333,72 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
   })
 }
 ```
+### SWE Time Series
+```{ojs}
+html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(SWE_Date)}</div>`
+```
+```{=html}
+<br>
+```
+```{ojs}
+// Nest by date first, then by HUC6 id, for O(1) lookup on both dimensions
+Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
+```
+```{ojs}
+{
+  const dateKey = d3.utcFormat("%Y-%m-%d")(SWE_Date)
+  const dateSlice = Data_By_Date.get(dateKey) ?? new Map()
+  const selected = Basin_Select
+
+  const getValue = name => {
+    const rows = dateSlice.get(name)
+    return rows ? rows[0].Average_SWE : null
+  }
+
+  return Plot.plot({
+    width: width,
+    height: 500,
+    projection: { type: "albers", domain: HUC6_geo },
+    color: {
+      legend: true,
+      label: "SWE (in)",
+      domain: [0, 30],
+      interpolate: d3.interpolateRdYlGn
+    },
+    marks: [
+      Plot.geo(HUC6_geo, {
+        fill: d => getValue(d.properties.name),
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+          title: d => {
+            const val = getValue(d.properties.name)
+            return `${d.properties.name}\n${dateKey}\n${val != null ? val + " in" : "No data"}`
+          },
+          geometry: d => d.geometry
+        }))
+      ),
+      Plot.frame()
+    ]
+  })
+}
+```
+
 ## SWE Percent of Median
+
+### Current Levels
 ```{ojs}
 //| echo: false
 {
@@ -248,7 +417,7 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
       marginLeft:  25,
       label:       "SWE Percent of Median",
       domain:      [0, 200],
-      interpolate: d3.interpolateRdYlBu
+      interpolate: d3.interpolateRgbBasis(["#ac0202", "#ffc400", "#2f7c03", "#11cbe4", "#0051bb"])
     },
     marks: [
       // Filled polygons colored by SWE value
@@ -269,10 +438,70 @@ viewof Basin_Select = Inputs.select(Array.from(new Set(SNOTEL.map(d => d.HUC6)))
       Plot.tip(
         HUC6_geo.features,
         Plot.pointer(Plot.centroid({
-        title:    d => `${d.properties.name}\n${d.properties.Percent_of_Median} in`,
+        title:    d => `${d.properties.name}\n${d.properties.Percent_of_Median} %`,
         geometry: d => d.geometry
             }))
         ),
+      Plot.frame()
+    ]
+  })
+}
+```
+
+### Percent of Median Time Series
+```{ojs}
+html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(SWE_Date)}</div>`
+```
+```{=html}
+<br>
+```
+```{ojs}
+{
+  const dateKey = d3.utcFormat("%Y-%m-%d")(SWE_Date)
+  const dateSlice = Data_By_Date.get(dateKey) ?? new Map()
+  const selected = Basin_Select
+
+  const getValue = name => {
+    const rows = dateSlice.get(name)
+    return rows ? rows[0].Percent_of_Median : null
+  }
+
+  return Plot.plot({
+    width: width,
+    height: 500,
+    projection: { type: "albers", domain: HUC6_geo },
+    color: {
+      legend:      true,
+      marginLeft:  25,
+      label:       "SWE Percent of Median",
+      domain:      [0, 200],
+      interpolate: d3.interpolateRgbBasis(["#ac0202", "#ffc400", "#2f7c03", "#11cbe4", "#0051bb"])
+    },
+    marks: [
+      Plot.geo(HUC6_geo, {
+        fill: d => getValue(d.properties.name),
+        fillOpacity: d => selected === "Full Basin"
+          ? 0.7
+          : d.properties.name === selected ? 0.9 : 0.15,
+        stroke:      d => d.properties.name === selected ? "#000000" : "#504f4f",
+        strokeWidth: d => d.properties.name === selected ? 2 : 0.75
+      }),
+      Plot.geo(Basin_States, {
+        fillOpacity: 0,
+        stroke: "#0000007c",
+        strokeWidth: 2,
+        tip: false
+      }),
+      Plot.tip(
+        HUC6_geo.features,
+        Plot.pointer(Plot.centroid({
+          title: d => {
+            const val = getValue(d.properties.name)
+            return `${d.properties.name}\n${dateKey}\n${val != null ? val + " %" : "No data"}`
+          },
+          geometry: d => d.geometry
+        }))
+      ),
       Plot.frame()
     ]
   })
@@ -496,3 +725,6 @@ Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => 
 ::: chart-description
 <font size="2">The number of days from October 1 (the start of the water year) to peak snow pack was calcualted for each year. This chart shows the long-term trend in declining number of days to peak snow pack, reflecting a tightening snow storage system that is receiving less snow and melting sooner than before</font>
 :::
+
+:::
+:::::

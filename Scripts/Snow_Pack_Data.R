@@ -78,8 +78,13 @@ data_long <- Colorado_Basin_SWE_Full %>%
     Calendar_Date = as.Date(paste(Calendar_Year, date, sep = "-"), format = "%Y-%m-%d")
   ) %>%
   rename(Median_91_20 = `Median...91..20.`, Month_Day = date) %>%
-  mutate(Percent_of_Median = (Average_SWE / Median_91_20)*100, 0) %>%
-  filter(Snow_Year > 100) # Removes values for percentile statistics that were pivoted as if they were years
+  mutate(Percent_of_Median = (Average_SWE / Median_91_20)*100,
+         Percent_of_Median = if_else(Average_SWE == 0 & Median_91_20 == 0, 100, Percent_of_Median)
+        #  Percent_of_Median = if_else(is.na(Percent_of_Median), 0, Percent_of_Median),
+        #  Percent_of_Median = if_else(is.infinite(Percent_of_Median), 0, Percent_of_Median)
+        ) %>% # Set NA values to Zero
+  # Removes values for percentile statistics that were pivoted as if they were years, removes future dates with null values
+  filter(Snow_Year > 100, !is.na(Average_SWE)) 
 
 write.csv(data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.csv")
 
@@ -100,6 +105,7 @@ write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
 
 
 ##### Join data to geojson
+# Adds most recent data to geojson for easy display of current conditions
 UB_HUC6 <- st_read("GIS_Data/UpperBasin_HUC6.geojson")
 LB_HUC6 <- st_read("GIS_Data/LowerBasin_HUC6.geojson")
 
