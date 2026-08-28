@@ -100,6 +100,14 @@ Select a sub-basin at the HUC-6 watershed level or the option "Full Basin" for a
 </style>
 ```
 ```{=html}
+<style>
+  /* adjust the height of the "Select Date" container */
+  .oi-3a86ea-input > input[type="date"] {
+    height: 50px;
+  }
+</style>
+```
+```{=html}
 <br>
 <br>
 <br>
