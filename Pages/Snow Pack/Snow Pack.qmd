@@ -1,6 +1,7 @@
 ---
 execute:
   echo: false
+toc: false
 format: 
   html: 
     margin-left: 5%
