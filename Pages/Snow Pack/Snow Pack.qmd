@@ -408,7 +408,7 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
       marginLeft:  25,
       label:       "SWE Percent of Median",
       domain:      [0, 200],
-      interpolate: d3.interpolateRdYlBu
+      interpolate: d3.interpolateRgbBasis(["#ac0202", "#ffc400", "#2f7c03", "#11cbe4", "#0051bb"])
     },
     marks: [
       // Filled polygons colored by SWE value
@@ -466,7 +466,7 @@ html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(
       marginLeft:  25,
       label:       "SWE Percent of Median",
       domain:      [0, 200],
-      interpolate: d3.interpolateRdYlBu
+      interpolate: d3.interpolateRgbBasis(["#ac0202", "#ffc400", "#2f7c03", "#11cbe4", "#0051bb"])
     },
     marks: [
       Plot.geo(HUC6_geo, {
