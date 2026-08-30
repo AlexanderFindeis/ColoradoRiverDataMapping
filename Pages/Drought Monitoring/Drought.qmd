@@ -1,11 +1,12 @@
 ---
 execute:
   echo: false
+toc: false
 format: 
   html: 
-    page-layout: full
-    grid:
-      body-width: 1000px
+    margin-left: 2.5%
+    margin-right: 2.5%
+    page-layout: custom
 project:
   type: website
 ---
@@ -25,12 +26,6 @@ project:
 </style>
 ```
 
-
-```{ojs}
-geoviz = require("geoviz@1.0.0")
-d3 = require("d3@7")
-dicopal = require("dicopal@0.5")
-```
 ```{r}
 #| include: false
 Drought_Stats <- read.csv("Pages/Drought Monitoring/Data/Drought_Stats.csv")
@@ -50,11 +45,28 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
 <br>
 
 ```{=html}
+<style> /* Controls width that columned elements will switch to stacking when screen is made smaller */
+  @media (max-width: 1250px) {
+    .columns {
+      flex-direction: column;
+    }
+    .my-flex-column {
+      width: 100% !important;
+      min-width: 0;
+    }
+  }
+</style>
+```
+
+::::: {.columns}
+::: {.column width="45%" .my-flex-column}
+
+```{=html}
 <div style="font-family: sans-serif; max-width: 900px; margin: 0 auto;">
 
   <h3 style="text-align: center; margin-bottom: 20px;">Current Drought Area</h3>
 
-  <div style="display: grid; grid-template-columns: 220px 1fr 1fr; gap: 0; align-items: center;">
+  <div style="display: grid; grid-template-columns: 150px 1fr 1fr; gap: 0; align-items: center;">
 
     <!-- Header row -->
     <div></div>
@@ -158,10 +170,13 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
   </div>
 </div>
 ```
-  
-<br>
+:::
 
+::: {.column width="5%"}
+<!-- empty column to create gap -->
+:::
 
+::: {.column width="50%" .my-flex-column}
 ```{=html}
 <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet"/>
 <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
@@ -276,3 +291,6 @@ init_map()
   
 [US Drought Monitor GIS Data](https://droughtmonitor.unl.edu/DmData/GISData.aspx)</font>
 :::
+
+:::
+:::::

@@ -357,6 +357,7 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
 
   return Plot.plot({
     width: width,
+    marginLeft: 25,
     height: 500,
     projection: { type: "albers", domain: HUC6_geo },
     color: {
