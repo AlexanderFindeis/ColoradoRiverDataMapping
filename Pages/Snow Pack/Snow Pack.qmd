@@ -291,7 +291,7 @@ viewof SWE_Date = Inputs.date({label: "Select Date", min: "1986-01-01", max: max
   const selected = Basin_Select
 
   return Plot.plot({
-    width:  width,
+    width:  500,
     height: 500,
     marginLeft: 25,
     projection: {
@@ -356,7 +356,7 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
   }
 
   return Plot.plot({
-    width: width,
+    width: 500,
     marginLeft: 25,
     height: 500,
     projection: { type: "albers", domain: HUC6_geo },
@@ -406,7 +406,7 @@ Data_By_Date = d3.group(SNOTEL, d => d.Calendar_Date, d => d.HUC6)
   const selected = Basin_Select
 
   return Plot.plot({
-    width:  width,
+    width:  500,
     height: 500,
     marginLeft: 25,
     projection: {
@@ -468,7 +468,7 @@ html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(
   }
 
   return Plot.plot({
-    width: width,
+    width: 500,
     height: 500,
     projection: { type: "albers", domain: HUC6_geo },
     color: {
@@ -514,71 +514,6 @@ html`<div style="text-align: left;">Data shown for: ${d3.utcFormat("%b %d, %Y")(
 <font size="2">Hover mouse over a sub-basin for current SWE conditions. Use the basin selector to highlight a specific sub-basin on the map.</font>
 :::
 
-```{ojs}
-//| output: false
-// Not being rendered, keeping as a non-output code chunk for reference
-{
-  const div = html`<div style="width:100%; height:700px;"></div>`
-
-  // Allow div to render before initializing map
-  yield div
-
-  const map = L.map(div, { 
-    center: [36.5, -112], 
-    zoom: 6 
-  })
-
-    // Basemap tile layer
-  const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors",
-    maxZoom: 18
-  }).addTo(map)
-
-  // Color scale based on Average SWE
-  const color_scale = d3.scaleSequential()
-  .domain([ 0, 30 // Setting top end of color gradient to 30inches to extend just beyond maximum values observed in past
-  ])
-  .interpolator(d3.interpolateRdYlGn)
-
-  // HUC6 layer
-  const average_swe_layer = L.geoJSON(HUC6_geo, {
-    style: feature => ({
-      color: "#000000",
-      weight: 2,
-      fillColor: color_scale(feature.properties.Average_SWE),
-      fillOpacity: 0.4
-    }),
-    onEachFeature: (feature, layer) => {
-        layer.bindTooltip(
-            `${feature.properties.name}: ${feature.properties.Average_SWE}in`,
-            { sticky: true}
-        )
-    }
-  }).addTo(map)
-
-  const legend = L.control({ position: "bottomleft" })
-
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    // White background
-    div.style.cssText = `
-        background: white; padding: 10px 14px;
-        border-radius: 6px; border: 1px solid #dee2e6;
-        font-size: 12px; font-family: sans-serif;
-        `
-    // Use CSS to create a smooth gradient bar
-    div.innerHTML = '<div style="background: linear-gradient(to left, green, yellow, red); height: 20px; width: 200px;"></div>' +
-                    '<div style="display: flex; justify-content: space-between;"><span>0in</span><span>30in</span></div>';
-    return div;
-  };
-
-  legend.addTo(map);
-
-  // Force Leaflet to recalculate map size after render
-  setTimeout(() => map.invalidateSize(), 100)
-
-}
-```
 
 ::: {style="text-align: center;"}
 # Annual Peak Average Snow Water Equivalent
