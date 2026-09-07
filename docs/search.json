@@ -53,7 +53,7 @@
     "href": "index.html",
     "title": "Major Reservoirs Current Conditions",
     "section": "",
-    "text": "Res_Elv = (await FileAttachment(\"Pages/Reservoirs/Data/Reservoir_Elevation.csv\").csv()).map(d =&gt; ({\n  ...d,\n  Date: new Date(d.Date + \"T00:00:00\")\n}))\nrender_date = d3.max(Res_Elv, d =&gt; d.Date).toLocaleDateString(\"en-US\", {\n  month: \"long\",\n  day: \"numeric\",\n  year: \"numeric\"\n})\nhtml`\n&lt;div style=\"\n  background: #5cabfa2f;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 12px;\n  color: #6c757d;\n  margin-bottom: 16px;\n  text-align: center;\n\"&gt;\n  Data current as of &lt;b&gt;${render_date}&lt;/b&gt;\n&lt;/div&gt;\n`"
+    "text": "Res_Elv = (await FileAttachment(\"Pages/Reservoirs/Data/Reservoir_Elevation.csv\").csv()).map(d =&gt; ({\n  ...d,\n  Date: new Date(d.Date + \"T00:00:00\")\n})).filter(d =&gt; d.Type === \"Recorded\")\nrender_date = d3.max(Res_Elv, d =&gt; d.Date).toLocaleDateString(\"en-US\", {\n  month: \"long\",\n  day: \"numeric\",\n  year: \"numeric\"\n})\nhtml`\n&lt;div style=\"\n  background: #5cabfa2f;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 12px;\n  color: #6c757d;\n  margin-bottom: 16px;\n  text-align: center;\n\"&gt;\n  Data current as of &lt;b&gt;${render_date}&lt;/b&gt;\n&lt;/div&gt;\n`"
   },
   {
     "objectID": "index.html#lake-powell",
