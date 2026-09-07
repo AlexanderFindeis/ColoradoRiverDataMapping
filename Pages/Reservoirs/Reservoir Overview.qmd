@@ -124,15 +124,15 @@ filtered_elv = reservoir_choice === "Total"
 
 ```{ojs}
 // Summary stats from filtered data
-
+elv_data_subset = filtered_elv.filter(d => d.Type === "Recorded")
 elv_stats = {
-  const target      = filtered_elv.find(d => 
-    d.Date.toISOString().slice(0, 10) === "2000-02-06"
+  const target      = elv_data_subset.find(d => 
+    d.Date.toISOString().slice(0, 10) === "2000-01-01"
   ) 
   const elv_2000    = target?.Elevation ?? "N/A"
-  const Date = filtered_elv[filtered_elv.length - 1]?.Date
-    ? filtered_elv[filtered_elv.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
-  const last        = filtered_elv[filtered_elv.length - 1]
+  const Date = elv_data_subset[elv_data_subset.length - 1]?.Date
+    ? elv_data_subset[elv_data_subset.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
+  const last        = elv_data_subset[elv_data_subset.length - 1]
   const current     = last?.Elevation          ?? "N/A"
   const dif_2000    = current !== "N/A" && elv_2000 !== "N/A"
     ? parseFloat((current - elv_2000).toFixed(2)) : "N/A"
@@ -284,7 +284,7 @@ html`
 
   // Build marks array dynamically
   const marks = [
-    Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
+    Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "Type" }),
     //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
 
     // Add a ruleY and text annotation for each reference line
@@ -311,6 +311,11 @@ html`
     y: { grid: true, label: "Reservoir Elevation (ft)", 
          domain: elv_y_domain },
     x: { label: "Date", domain: DateSlider },
+    color: {
+      legend: true,
+      domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
+      range:  ["blue", "black", "red", "green"]
+    },
     marks: marks
   })
 
@@ -524,7 +529,8 @@ viewof DateSlider = {
   if (reservoir_choice === "Total") return html`<div></div>`
 
   const This_Year = filtered_elv
-    .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
+    .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
+                 d.Type == "Recorded")
     .map(d => ({
       ...d,
       Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
@@ -533,7 +539,8 @@ viewof DateSlider = {
 
   const Previous_Year = filtered_elv
     .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date <= new Date("2025-12-31T00:00:00"))
+                 d.Date <= new Date("2025-12-31T00:00:00") &&
+                 d.Type == "Recorded")
     .map(d => ({
       ...d,
       Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
@@ -659,15 +666,15 @@ filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
 
 ```{ojs}
 // Summary stats from filtered data
-
+stor_data_subset = filtered_stor.filter(d => d.Type === "Recorded")
 stor_stats = {
-  const target      = filtered_stor.find(d => 
+  const target      = stor_data_subset.find(d => 
     d.Date.toISOString().slice(0, 10) === "2000-02-06"
   ) 
   const stor_2000   = target?.Storage_MAF ?? "N/A"
-  const Date = filtered_stor[filtered_stor.length - 1]?.Date
-    ? filtered_stor[filtered_stor.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
-  const last        = filtered_stor[filtered_stor.length - 1]
+  const Date = stor_data_subset[stor_data_subset.length - 1]?.Date
+    ? stor_data_subset[stor_data_subset.length - 1].Date.toLocaleDateString("en-US", { month: "long", day: "numeric" }): "N/A"
+  const last        = stor_data_subset[stor_data_subset.length - 1]
   const current     = last?.Storage_MAF          ?? "N/A"
   const perc_full   = last?.Perc_Full            ?? "N/A"
   const dif_2000    = current !== "N/A" && stor_2000 !== "N/A"
@@ -796,8 +803,13 @@ html`
         domain: stor_y_domain
      },
     x: { label: "Date", domain: StorDateSlider },
+    color: {
+      legend: true,
+      domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
+      range:  ["blue", "black", "red", "green"]
+    },
     marks: [
-      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
+      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "Type" }),
          // Add a ruleY and text annotation for each reference line
       ...Stor_refLines.map(ref => Plot.ruleY([ref.y], {
         stroke: ref.color,
@@ -1011,7 +1023,8 @@ viewof StorDateSlider = {
 ```{ojs}
 {
   const This_Year = filtered_stor
-    .filter(d => d.Date >= new Date("2026-01-01T00:00:00"))
+    .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
+                 d.Type == "Recorded")
     .map(d => ({
       ...d,
       Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
@@ -1020,7 +1033,8 @@ viewof StorDateSlider = {
 
   const Previous_Year = filtered_stor
     .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date < new Date("2026-01-01T00:00:00"))
+                 d.Date < new Date("2026-01-01T00:00:00") &&
+                 d.Type == "Recorded")
     .map(d => ({
       ...d,
       Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),

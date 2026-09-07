@@ -104,11 +104,61 @@ Storage <- pmap_dfr(
 message("All data fetched successfully")
 
 
+## 24 month forecast data ---------------------------------------------------------------
+# https://www.usbr.gov/uc/water/hydrodata/crmms/current/7_2026/921/dashboard.html
 
-## Elevation Data
+# Dataframe with reservoirs and forecast dataset IDs
+Forecast.IDs <- data.frame(
+  Reservoir.Name = c("Blue Mesa Reservoir", "Flaming Gorge", "Fontenelle Reservoir", "Lake Havasu", "Lake Mead", "Lake Mohave", "Morrow Point Reservoir", "Navajo Reservoir", "Lake Powell", "Taylor Park Reservoir", "Vallecito Reservoir"),
+  ResID = c("913", "917", "916", "923", "921", "922", "914", "920", "919", "912", "933"),
+  ElvID = as.character(49),
+  StorID = as.character(17),
+  InflowID = as.character(30),
+  OutflowID = as.character(43) 
+)
+
+# Import Elevation Forecast data
+Forecast.Function <- function(Forecast.IDs, Input.Column){
+  # Set the DataID to the specified dataset
+  Forecast.IDs <- Forecast.IDs %>% mutate(DataID = .data[[Input.Column]])
+  # Pull data for each reservoir
+  results <- pmap(Forecast.IDs, function(Reservoir.Name, ResID, DataID, ...) {
+    url = paste0("https://www.usbr.gov/uc/water/hydrodata/crmms/current/7_2026/", ResID,"/csv/",DataID,".csv")
+    # Read data, set field names
+    data.pull <- read.csv(url) %>%
+      mutate(Reservoir = Reservoir.Name, Date = as.Date(date)) %>%
+      select(Reservoir, Date, Most_Probable = X24MS.MOST.PROB, Min_Probable = X24MS.MIN.PROB, Max_Probable = X24MS.MAX.PROB)
+
+    Most <- data.pull %>%
+      select(Reservoir, Date, Result = Most_Probable) %>%
+      mutate(Type = "Most Probable")
+
+    Min <- data.pull %>%
+      select(Reservoir, Date, Result = Min_Probable) %>%
+      mutate(Type = "Minimum Probable")
+
+    Max <- data.pull %>%
+      select(Reservoir, Date, Result = Max_Probable) %>%
+      mutate(Type = "Maximum Probable")
+
+    bind_rows(Most, Min, Max)
+  })
+
+  # Combine all dataframes
+  list_rbind(results)
+}
+
+# Run function to pull forecast data
+Elv.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "ElvID")
+Stor.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "StorID")
+
+
+## Elevation Data --------------------------------------------------------
 print("Compiling data...")
 # Elevation Plot
 Res.Elv <- Elevation %>%
+  mutate(Type = "Recorded") %>%
+  bind_rows(Elv.Forecast) %>%
   rename(Elevation = Result) %>%
   mutate(
     Year = as.integer(substr(Date, 0,4)),
@@ -126,12 +176,14 @@ Res.Elv <- Elevation %>%
 # Average Elevation of each day of the year (e.g. August 1 across all years)
 Elv.Day.Average.10yr <- Res.Elv %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Type == "Recorded") %>%
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
   group_by(Month, Day, Reservoir) %>%
-  summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop")
+  summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop") 
 
 Elv.Day.Average.30yr <- Res.Elv %>%
-    # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Type == "Recorded") %>%
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
   group_by(Month, Day, Reservoir) %>%
   summarise(Elv_Day_Avg_30yr = mean(Elevation, na.rm = TRUE), .groups = "drop")
@@ -159,14 +211,16 @@ write.csv(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.csv")
 
 ## Storage Data
 Res.Stor <- Storage %>%
+  mutate(Type = "Recorded") %>%
+  bind_rows(Stor.Forecast) %>%
   rename(Storage = Result) %>%
   mutate(
     Storage_MAF = Storage / 1000000
   ) %>%
-  select(Date, Storage, Storage_MAF, Reservoir)
+  select(Date, Storage, Storage_MAF, Reservoir, Type)
 
 Res.Total.Stor <- Res.Stor %>%
-  group_by(Date) %>%
+  group_by(Date, Type) %>%
   filter(!is.na(Storage)) %>%
   summarize(
     Storage = sum(Storage, rm.na = T),
@@ -210,14 +264,16 @@ Reservoir.Capacity <- Res.Stor.Bind %>%
 # Average Storage of each day of the year (e.g. August 1 across all years)
 Stor.Day.Average.10yr <- Res.Stor.Bind %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Type == "Recorded") %>%
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
-  group_by(Month, Day, Reservoir) %>%
+  group_by(Month, Day, Reservoir, Type) %>%
   summarise(Stor_Day_Avg_10yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
 Stor.Day.Average.30yr <- Res.Stor.Bind %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  filter(Type == "Recorded") %>%
   filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
-  group_by(Month, Day, Reservoir) %>%
+  group_by(Month, Day, Reservoir, Type) %>%
   summarise(Stor_Day_Avg_30yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
 # Removing for now since it is not being deployed on the site currently
@@ -227,8 +283,8 @@ Stor.Day.Average.30yr <- Res.Stor.Bind %>%
 #   summarise(Stor_Day_Avg_Pre2000 = mean(Storage, na.rm=T))
 
 Res.Stor.Output <- Res.Stor.Bind %>%
-  left_join(Stor.Day.Average.10yr, by = c("Month", "Day", "Reservoir")) %>%
-  left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
+  left_join(Stor.Day.Average.10yr, by = c("Month", "Day", "Reservoir", "Type")) %>%
+  left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir", "Type")) %>%
   #left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
   #
   # Rolling median window resolves the sudden drop in values on December 31
@@ -236,11 +292,11 @@ Res.Stor.Output <- Res.Stor.Bind %>%
   # !! This is working for the Elevation data but not for storage data, working on a solution !!
   #
   arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
+  group_by(Reservoir, Type) %>%
   mutate(Stor_Day_Avg_10yr = zoo::rollmedian(Stor_Day_Avg_10yr, k = 5, fill = NA)) %>%
   mutate(Stor_Day_Avg_30yr = zoo::rollmedian(Stor_Day_Avg_30yr, k = 5, fill = NA)) %>%
   select(-Year, -Month, -Day) %>%
-  group_by(Reservoir) %>%
+  group_by(Reservoir, Type) %>%
   mutate(StorMAF_1yr_Ago = lag(Storage_MAF, n = 365)) %>%
   ungroup() %>%
   left_join(Reservoir.Capacity, by = c("Reservoir")) %>%
@@ -249,15 +305,16 @@ Res.Stor.Output <- Res.Stor.Bind %>%
 write.csv(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.csv")
 
 
-
-### Spatial Data
+### Spatial Data ---------------------------------------------------------------------------------------------------------
 
 latest_storage <- Res.Stor.Output %>%
+  filter(Type == "Recorded") %>%
   group_by(Reservoir) %>%
   arrange(Date) %>%
   slice_tail(n=1)
 
 latest_elevation <- Res.Elv.Output %>%
+  filter(Type == "Recorded") %>%
   group_by(Reservoir) %>%
   arrange(Date) %>%
   slice_tail(n=1)
