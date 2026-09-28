@@ -221,7 +221,9 @@ Res.Stor <- Storage %>%
 
 Res.Total.Stor <- Res.Stor %>%
   group_by(Date, Type) %>%
-  filter(!is.na(Storage)) %>%
+  arrange(Date) %>%
+  mutate(Storage = tidyr::fill(Storage, .direction = "down")) %>%
+  #filter(!is.na(Storage)) %>%
   summarize(
     Storage = sum(Storage, rm.na = T),
     Storage_MAF = sum(Storage_MAF)
