@@ -12,3 +12,4 @@ Scripts/JRC_SurfaceWater_Processing.R
 Scripts/.opentopography.txt
 GIS_Data/EO_2026/
 GIS_Data/EO
+.venv/
