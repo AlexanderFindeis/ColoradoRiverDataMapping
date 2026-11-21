@@ -28,15 +28,15 @@ project:
 
 ```{r}
 #| include: false
-Drought_Stats <- read.csv("Pages/Drought Monitoring/Data/Drought_Stats.csv")
+Drought_Stats <- read.csv("https://data.coloradoriveratlas.org/Drought/Drought_Stats.csv")
 ```
 
 ```{ojs}
 //drought_layer = d3.json("https://droughtmonitor.unl.edu/data/json/usdm_current.json")
-drought_layer = FileAttachment("../../GIS_Data/Current_Drought.geojson").json()
-Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
-Upper_Basin = FileAttachment("../../GIS_Data/UpperBasin_HUC2.geojson").json()
-Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
+drought_layer = await (await fetch("https://data.coloradoriveratlas.org/GISData/Current_Drought.geojson")).json()
+Basin_States = await (await fetch("https://data.coloradoriveratlas.org/GISData/Basin_States.geojson")).json()
+Upper_Basin = await (await fetch("https://data.coloradoriveratlas.org/GISData/UpperBasin_HUC2.geojson")).json()
+Lower_Basin = await(await fetch("https://data.coloradoriveratlas.org/GISData/LowerBasin_HUC2.geojson")).json()
 ```
 ::: {style="text-align: center;"}
 # Current Drought Conditions
@@ -187,10 +187,10 @@ Lower_Basin = FileAttachment("../../GIS_Data/LowerBasin_HUC2.geojson").json()
 async function init_map() {
 
   const [basin, drought, reservoirs, rivers] = await Promise.all([
-    fetch("/GIS_Data/CR_Basin_Merge_HUC2.geojson").then(r => r.json()),
-    fetch("/GIS_Data/Current_Drought.geojson").then(r => r.json()),
-    fetch("/GIS_Data/Reservoirs.geojson").then(r => r.json()),
-    fetch("/GIS_Data/HydroSheds_Rivers.geojson").then(r => r.json())
+    fetch("https://data.coloradoriveratlas.org/GISData/CR_Basin_Merge_HUC2.geojson").then(r => r.json()),
+    fetch("https://data.coloradoriveratlas.org/GISData/Current_Drought.geojson").then(r => r.json()),
+    fetch("https://data.coloradoriveratlas.org/GISData/Reservoirs.geojson").then(r => r.json()),
+    fetch("https://data.coloradoriveratlas.org/GISData/HydroSheds_Rivers.geojson").then(r => r.json())
   ])
 
   const map = new maplibregl.Map({

@@ -13,3 +13,4 @@ Scripts/.opentopography.txt
 GIS_Data/EO_2026/
 GIS_Data/EO
 .venv/
+.Renviron

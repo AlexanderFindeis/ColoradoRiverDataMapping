@@ -83,4 +83,9 @@ Drought_Stats <- data.frame(
   Drought_Area_Percent= c(UB_D0$Percent_D0[1], UB_D1$Percent_D1[1], UB_D2$Percent_D2[1], UB_D3$Percent_D3[1], UB_D4$Percent_D4[1], LB_D0$Percent_D0[1], LB_D1$Percent_D1[1], LB_D2$Percent_D2[1], LB_D3$Percent_D3[1], LB_D4$Percent_D4[1])
 ) %>% replace_na(list(Drought_Area_SqKm = 0, Drought_Area_Percent = 0))
 
-write.csv(Drought_Stats, "Pages/Drought Monitoring/Data/Drought_Stats.csv")
+#write.csv(Drought_Stats, "Pages/Drought Monitoring/Data/Drought_Stats.csv")
+#write_parquet(Drought_Stats, "Pages/Drought Monitoring/Data/Drought_Stats.parquet")
+
+rm(list=setdiff(ls(), c("Drought_Stats")))
+
+upload_csv_to_r2(Drought_Stats, "Drought/Drought_Stats.csv")

@@ -3,8 +3,10 @@ project:
   resources:
     - Data/
     - CNAME
-    - GIS_Data/
+    #- GIS_Data/
   type: website
+  preview:
+    port: 3363
   output-dir: docs
 
 website:

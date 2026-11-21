@@ -61,7 +61,7 @@ Colorado_Basin_SWE_Full <- bind_rows(Upper_Green, White_Yampa, Colorado_Headwate
 ### !!! - Year fields are not calendar years, they are snow years
 ### treating them like calendar years assigns values to fall and winter of this year that haven't happened yet
 ### Need to adjust dates to account for this
-data_long <- Colorado_Basin_SWE_Full %>%
+snow_data_long <- Colorado_Basin_SWE_Full %>%
   group_by(HUC6) %>%
   pivot_longer(
     cols = starts_with("X"),       # select only X-prefixed year columns
@@ -86,7 +86,8 @@ data_long <- Colorado_Basin_SWE_Full %>%
   # Removes values for percentile statistics that were pivoted as if they were years, removes future dates with null values
   filter(Snow_Year > 100, !is.na(Average_SWE)) 
 
-write.csv(data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.csv")
+#write.csv(snow_data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.csv")
+#arrow::write_parquet(data_long, "Pages/Snow Pack/Data/Snow Water Equivalent.parquet")
 
 
 
@@ -101,7 +102,8 @@ Days2Peak <- data_long %>%
            Date = as.Date(paste(Snow_Year, "01", "01", sep = "-"), format = "%Y-%m-%d")) %>%
     select(HUC6, Peak_Avg_SWE=Average_SWE, Snow_Year, Date, Days2Peak)
 
-write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
+#write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
+#arrow::write_parquet(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.parquet")
 
 
 ##### Join data to geojson
@@ -109,7 +111,9 @@ write.csv(Days2Peak, "Pages/Snow Pack/Data/Days_to_Peak.csv")
 UB_HUC6 <- st_read("GIS_Data/UpperBasin_HUC6.geojson")
 LB_HUC6 <- st_read("GIS_Data/LowerBasin_HUC6.geojson")
 
-SWE_Current <- read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv") %>%
+SWE_Current <- snow_data_long %>%
+    #read.csv("Pages/Snow Pack/Data/Snow Water Equivalent.csv")
+    #arrow::read_parquet("Pages/Snow Pack/Data/Snow Water Equivalent.parquet") %>%
     filter(!is.na(Average_SWE)) %>%
     filter(HUC6 != "Full Basin") %>%
     group_by(HUC6) %>%
@@ -119,6 +123,12 @@ HUC6_Full <- union_all(UB_HUC6, LB_HUC6) %>%
     right_join(SWE_Current, by = c("name" = "HUC6")) %>%
     mutate(across(c("Average_SWE"), round, 2))
 
-st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
+#st_write(HUC6_Full, "GIS_Data/SWE_HUC6.geojson", append=FALSE, delete_dsn = TRUE)
 
 print("Snow Pack Data Compilation Complete")
+
+rm(list=setdiff(ls(), c("snow_data_long", "Days2Peak", "HUC6_Full")))
+
+upload_csv_to_r2(snow_data_long, "SnowPack/Snow Water Equivalent.csv")
+upload_csv_to_r2(Days2Peak, "SnowPack/Days_to_Peak.csv")
+upload_geojson_to_r2(HUC6_Full, "GISData/SWE_HUC6.geojson")

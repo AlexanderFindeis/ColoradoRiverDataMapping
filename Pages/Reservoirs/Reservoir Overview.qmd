@@ -41,7 +41,7 @@ html`
 ```{ojs}
 //| echo: false
 // Data
-Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => ({
+Res_Elv = (await d3.csv("https://data.coloradoriveratlas.org/ReservoirData/Reservoir_Elevation.csv")).map(d => ({
   ...d,
   Date: new Date(d.Date + "T00:00:00"), // adjusts for JS messing with time zone
   Elevation: parseFloat((+d.Elevation).toFixed(2)),
@@ -52,7 +52,7 @@ Res_Elv = (await FileAttachment("Data/Reservoir_Elevation.csv").csv()).map(d => 
 ```
 ```{ojs}
 //| echo: false
-Res_Stor = (await FileAttachment("Data/Reservoir_Storage.csv").csv()).map(d =>({
+Res_Stor = (await d3.csv("https://data.coloradoriveratlas.org/ReservoirData/Reservoir_Storage.csv")).map(d => ({
   ...d,
   Date: new Date(d.Date + "T00:00:00"),
   Storage_MAF: parseFloat((+d.Storage_MAF).toFixed(2)),
@@ -541,7 +541,7 @@ viewof DateSlider = {
 
   const Previous_Year = filtered_elv
     .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date <= new Date("2025-12-31T00:00:00") &&
+                 d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data
                  d.Type == "Recorded")
     .map(d => ({
       ...d,
@@ -671,7 +671,7 @@ filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
 stor_data_subset = filtered_stor.filter(d => d.Type === "Recorded")
 stor_stats = {
   const target      = stor_data_subset.find(d => 
-    d.Date.toISOString().slice(0, 10) === "2000-02-06"
+    d.Date.toISOString().slice(0, 10) === "2000-01-01"
   ) 
   const stor_2000   = target?.Storage_MAF ?? "N/A"
   const Date = stor_data_subset[stor_data_subset.length - 1]?.Date
@@ -1035,7 +1035,7 @@ viewof StorDateSlider = {
 
   const Previous_Year = filtered_stor
     .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date < new Date("2026-01-01T00:00:00") &&
+                 d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data causing avg to dip compared to December 30
                  d.Type == "Recorded")
     .map(d => ({
       ...d,
@@ -1297,8 +1297,8 @@ viewof StorDateSlider = {
   // --- Layer update function ---
   function update_layers(year_a, year_b) {
 
-    const path_a = `/GIS_Data/Surface_Water/SW_${year_a}.geojson`
-    const path_b = `/GIS_Data/Surface_Water/SW_${year_b}.geojson`
+    const path_a = `https://data.coloradoriveratlas.org/GISData/Reservoir_Extent/SW_${year_a}.geojson`
+    const path_b = `https://data.coloradoriveratlas.org/GISData/Reservoir_Extent/SW_${year_b}.geojson`
 
     // Update legend labels
     legendA.textContent = `Year A: ${year_a}`

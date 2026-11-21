@@ -11,7 +11,7 @@ bibliography: references.bib
 ---
 
 ```{ojs}
-SNOTEL = (await FileAttachment("Data/Snow Water Equivalent.csv").csv()).map(d => {
+SNOTEL = (await d3.csv("https://data.coloradoriveratlas.org/SnowPack/Snow%20Water%20Equivalent.csv")).map(d => {
     const date  = new Date(d.Snow_Date + "T00:00:00")
     const month = date.getUTCMonth()
     const calendar_date = new Date(d.Calendar_Date + "T00:00:00")
@@ -42,9 +42,9 @@ SNOTEL_Filtered = SNOTEL.filter(d => d.HUC6 === Basin_Select)
 ```
 
 ```{ojs}
-HUC6_geo = FileAttachment("../../GIS_Data/SWE_HUC6.geojson").json()
+HUC6_geo = await (await fetch("https://data.coloradoriveratlas.org/GISData/SWE_HUC6.geojson")).json()
 
-Basin_States = FileAttachment("../../GIS_Data/Basin_States.geojson").json()
+Basin_States = await (await fetch("https://data.coloradoriveratlas.org/GISData/Basin_States.geojson")).json()
 ```
 
 ::: {style="text-align: center;"}
@@ -134,10 +134,10 @@ viewof Basin_Select = {
 ```
 ```{ojs}
 viewof Year_Select = Inputs.select(
-  d3.range(2026, 1985, -1),   // descending: 2026, 2025, ... 1986
+  d3.range(2027, 1985, -1),   // descending: 2026, 2025, ... 1986
   { 
     label: "Snow Year:", 
-    value: 2025,
+    value: 2026,
     format: d => String(d) }
 )
 ```
@@ -165,8 +165,8 @@ viewof SWE_Date = Inputs.date({label: "Select Date", min: "1986-01-01", max: max
 
 ```{ojs}
 {
-    const current_wy  = "2026"
-    const previous_wy = "2025"
+    const current_wy  = "2027"
+    const previous_wy = "2026"
 
     const Current_Year  = SNOTEL_Filtered.filter(d => d.Snow_Year === current_wy)
     // Use previous year to get a full year's worth of records for min, max and median
@@ -594,7 +594,7 @@ yearly_max = {
 :::
 
 ```{ojs}
-Days2Peak_Data = (await FileAttachment("Data/Days_to_Peak.csv").csv()).map(d => ({
+Days2Peak_Data = (await d3.csv("https://data.coloradoriveratlas.org/SnowPack/Days_to_Peak.csv")).map(d => ({
     ...d,
     Date: new Date(d.Date + "T00:00:00"), 
     Peak_Avg_SWE: +d.Peak_AVG_SWE,

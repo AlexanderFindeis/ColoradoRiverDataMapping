@@ -5,6 +5,9 @@ library(lubridate)
 library(sf)
 library(httr)
 library(jsonlite)
+#library(arrow)
+
+source("Scripts/Push_Updates_R2.R")
 
 options(timeout = 300)
 
@@ -149,8 +152,14 @@ Forecast.Function <- function(Forecast.IDs, Input.Column){
 }
 
 # Run function to pull forecast data
-Elv.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "ElvID")
-Stor.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "StorID")
+Elv.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "ElvID") %>%
+  rename(Elevation = Result)
+Stor.Forecast <- Forecast.Function(Forecast.IDs, Input.Column = "StorID") %>%
+  rename(Storage = Result) %>%
+  mutate(
+    Storage_MAF = Storage / 1000000
+  ) %>%
+  select(Date, Storage, Storage_MAF, Reservoir, Type)
 
 
 ## Elevation Data --------------------------------------------------------
@@ -158,7 +167,6 @@ print("Compiling data...")
 # Elevation Plot
 Res.Elv <- Elevation %>%
   mutate(Type = "Recorded") %>%
-  bind_rows(Elv.Forecast) %>%
   rename(Elevation = Result) %>%
   mutate(
     Year = as.integer(substr(Date, 0,4)),
@@ -177,14 +185,14 @@ Res.Elv <- Elevation %>%
 Elv.Day.Average.10yr <- Res.Elv %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
   filter(Type == "Recorded") %>%
-  filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-10)) %>%
   group_by(Month, Day, Reservoir) %>%
   summarise(Elv_Day_Avg_10yr = mean(Elevation, na.rm = TRUE), .groups = "drop") 
 
 Elv.Day.Average.30yr <- Res.Elv %>%
-  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  # Filters data to the past thirty years starting from the previous year (keeping data to only completed data)
   filter(Type == "Recorded") %>%
-  filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-30)) %>%
   group_by(Month, Day, Reservoir) %>%
   summarise(Elv_Day_Avg_30yr = mean(Elevation, na.rm = TRUE), .groups = "drop")
 
@@ -198,21 +206,16 @@ Res.Elv.Output <- Res.Elv %>%
   left_join(Elv.Day.Average.10yr, by = c("Month", "Day", "Reservoir")) %>%
   left_join(Elv.Day.Average.30yr, by = c("Month", "Day", "Reservoir")) %>%
   # left_join(Elv.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
-  # Rolling median window resolves the sudden drop in values on December 31
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir) %>%
-  mutate(Elv_Day_Avg_10yr = zoo::rollmedian(Elv_Day_Avg_10yr, k = 5, fill = NA)) %>%
-  mutate(Elv_Day_Avg_30yr = zoo::rollmedian(Elv_Day_Avg_30yr, k = 5, fill = NA)) %>%
-  select(-Year, -Month, -Day)
+  select(-Year, -Month, -Day) %>%
+  bind_rows(Elv.Forecast)
 
-write.csv(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.csv")
-
+#write.csv(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.csv")
+#arrow::write_parquet(Res.Elv.Output, "Pages/Reservoirs/Data/Reservoir_Elevation.parquet")
 
 
 ## Storage Data
 Res.Stor <- Storage %>%
   mutate(Type = "Recorded") %>%
-  bind_rows(Stor.Forecast) %>%
   rename(Storage = Result) %>%
   mutate(
     Storage_MAF = Storage / 1000000
@@ -267,14 +270,14 @@ Reservoir.Capacity <- Res.Stor.Bind %>%
 Stor.Day.Average.10yr <- Res.Stor.Bind %>%
   # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
   filter(Type == "Recorded") %>%
-  filter(Year <= (max(Year)-1) & Year >= (max(Year)-11)) %>%
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-10)) %>%
   group_by(Month, Day, Reservoir, Type) %>%
   summarise(Stor_Day_Avg_10yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
 Stor.Day.Average.30yr <- Res.Stor.Bind %>%
-  # Filters data to the past ten years starting from the previous year (keeping data to only completed data)
+  # Filters data to the past thirty years starting from the previous year (keeping data to only completed data)
   filter(Type == "Recorded") %>%
-  filter(Year <= (max(Year)-1) & Year >= (max(Year)-31)) %>%
+  filter(Year <= (max(Year)-1) & Year >= (max(Year)-30)) %>%
   group_by(Month, Day, Reservoir, Type) %>%
   summarise(Stor_Day_Avg_30yr = mean(Storage_MAF, na.rm = TRUE), .groups = "drop")
 
@@ -287,24 +290,15 @@ Stor.Day.Average.30yr <- Res.Stor.Bind %>%
 Res.Stor.Output <- Res.Stor.Bind %>%
   left_join(Stor.Day.Average.10yr, by = c("Month", "Day", "Reservoir", "Type")) %>%
   left_join(Stor.Day.Average.30yr, by = c("Month", "Day", "Reservoir", "Type")) %>%
-  #left_join(Stor.Day.Average.Pre2000, by = c("Month", "Day", "Reservoir")) %>%
-  #
-  # Rolling median window resolves the sudden drop in values on December 31
-  #
-  # !! This is working for the Elevation data but not for storage data, working on a solution !!
-  #
-  arrange(Reservoir, Month, Day) %>%
-  group_by(Reservoir, Type) %>%
-  mutate(Stor_Day_Avg_10yr = zoo::rollmedian(Stor_Day_Avg_10yr, k = 5, fill = NA)) %>%
-  mutate(Stor_Day_Avg_30yr = zoo::rollmedian(Stor_Day_Avg_30yr, k = 5, fill = NA)) %>%
-  select(-Year, -Month, -Day) %>%
-  group_by(Reservoir, Type) %>%
   mutate(StorMAF_1yr_Ago = lag(Storage_MAF, n = 365)) %>%
+  select(-Year, -Month, -Day) %>%
   ungroup() %>%
   left_join(Reservoir.Capacity, by = c("Reservoir")) %>%
-  mutate(Percent_Full_MAF = (Storage_MAF / Max_Capacity_MAF)*100)
+  mutate(Percent_Full_MAF = (Storage_MAF / Max_Capacity_MAF)*100) %>%
+  bind_rows(Stor.Forecast)
 
-write.csv(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.csv")
+#write.csv(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.csv")
+#arrow::write_parquet(Res.Stor.Output, "Pages/Reservoirs/Data/Reservoir_Storage.parquet")
 
 
 ### Spatial Data ---------------------------------------------------------------------------------------------------------
@@ -368,6 +362,12 @@ latest_res_data <- latest_storage %>%
 
 latest_res_sf <- st_as_sf(latest_res_data, coords = c("long", "lat"), crs=4326)
 
-st_write(latest_res_sf, "GIS_Data/Reservoirs.geojson", append=FALSE, delete_dsn = TRUE)
+#st_write(latest_res_sf, "GIS_Data/Reservoirs.geojson", append=FALSE, delete_dsn = TRUE)
 
 print("Reservoir Data Preparation Complete")
+
+rm(list=setdiff(ls(), c("Res.Elv.Output", "Res.Stor.Output", "latest_res_sf")))
+
+upload_csv_to_r2(Res.Elv.Output, "ReservoirData/Reservoir_Elevation.csv")
+upload_csv_to_r2(Res.Stor.Output, "ReservoirData/Reservoir_Storage.csv")
+upload_geojson_to_r2(latest_res_sf, "GISData/Reservoirs.geojson")
