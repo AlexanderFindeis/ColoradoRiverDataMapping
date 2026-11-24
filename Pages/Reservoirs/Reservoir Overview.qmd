@@ -1,5 +1,4 @@
 ---
-title: "Overview and Trends at Major Reservoirs"
 toc: false
 execute:
   echo: false
@@ -78,7 +77,7 @@ Res_Stor = (await d3.csv("https://data.coloradoriveratlas.org/ReservoirData/Rese
 
 ```{=html}
 <style>
-  /* Set width of "Reservoir" label */
+  /* Set width between label and dropdown */
   form.oi-3a86ea>label {
   width: 80px;
   }
@@ -86,46 +85,49 @@ Res_Stor = (await d3.csv("https://data.coloradoriveratlas.org/ReservoirData/Rese
 ```
 ```{=html}
 <style>
-  /* Target the first column in any columns div */
-  .columns > div:first-child {
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
-    height: fit-content;
+  /* Set width of dropdown */
+  .observablehq select {
+  width: 60%;
   }
 </style>
 ```
 
-::::: {.columns}
-::: {.column width="15%"}
-<br>
-<br>
+
+
 ```{ojs}
+//| output: false
 viewof reservoir_choice = Inputs.select(
   ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge", "Lake Mohave", "Navajo Reservoir", "Strawberry Reservoir", "Blue Mesa Reservoir", "Lake Havasu", "Granby Reservoir","McPhee Reservoir","Fontenelle Reservoir","Starvation Reservoir","Green Mountain Reservoir","Vallecito Reservoir","Lake Nighthorse","Morrow Point Reservoir","Taylor Park Reservoir","Ruedi Reservoir"
   ],
   { label: "Reservoir:", value: "Lake Mead" }
 )
 ```
-:::
+```{ojs}
+//| output: false
+viewof data_choice = Inputs.select(
+  ["Elevation", "Storage"],
+  { label: "Data Type:", value: "Elevation"}
+)
+```
+```{ojs}
+//| echo: false
+html`<span style="font-size: 2rem; font-weight: bold;"> Reservoir Data Dashboard &emsp;&emsp; </span> <span class="inline-input">${viewof reservoir_choice} &emsp;&emsp; ${viewof data_choice} </span>`
+```
 
-::: {.column width="5%"}
-<!-- empty column to create gap -->
-:::
-
-::: {.column width="80%"}
-::: {#reservoir-tabset .panel-tabset .ojs-track-layout}
-
-## Elevation
 
 ```{ojs}
+// Filter elevation data based on reservoir choice
 filtered_elv = reservoir_choice === "Total"
   ? []
   : Res_Elv.filter(d => d.Reservoir === reservoir_choice)
 ```
+```{ojs}
+// Filter storage data based on reservoir choice
+filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
+```
 
 ```{ojs}
-// Summary stats from filtered data
+// Elevation summary stats from filtered data
 elv_data_subset = filtered_elv.filter(d => d.Type === "Recorded")
 elv_stats = {
   const target      = elv_data_subset.find(d => 
@@ -168,506 +170,7 @@ elv_stats = {
 }
 ```
 ```{ojs}
-// Summary stats cards
-html`
-<div style="
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-">
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #0d6efd;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Elevation</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.current} <span style="font-size:14px; font-weight:400;">ft</span></div>
-    <div style="font-size: 12px; color: ${elv_stats.dif_2000_color}; margin-top: 4px;">${elv_stats.dif_2000}ft | ${elv_stats.perc_2000}% Change Since 2000</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #198754;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Elevation ${elv_stats.Date} Last Year</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.prior_yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
-    <div style="font-size: 12px; color: ${elv_stats.dif_1yr_color}; margin-top: 4px;">${elv_stats.dif_1yr}ft | ${elv_stats.perc_1yr}% Change</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #ffc107;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 10yrs</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
-    <div style="font-size: 12px; color: ${elv_stats.dif_10yr_color}; margin-top: 4px;">${elv_stats.dif_10yr}ft | ${elv_stats.perc_10yr}% Change</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #dc3545;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 30yrs</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
-    <div style="font-size: 12px; color: ${elv_stats.dif_30yr_color}; margin-top: 4px;">${elv_stats.dif_30yr}ft | ${elv_stats.perc_30yr}% Change</div>
-  </div>
-
-</div>
-`
-```
-
-```{ojs}
-//| echo: false
-{
-  // Show message if Total is selected
-  if (reservoir_choice === "Total") {
-    return html`
-      <div style="
-        width: 100%;
-        height: 500px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        border-radius: 6px;
-        font-family: sans-serif;
-        color: #6c757d;
-      ">
-        <div style="text-align: center;">
-          <div style="font-size: 32px; margin-bottom: 12px;">⚠</div>
-          <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">
-            Elevation Total Not Available
-          </div>
-          <div style="font-size: 13px;">
-            Select an individual reservoir to view elevation records.
-          </div>
-        </div>
-      </div>
-    `
-  }
-
-
-  // Using date slider to dynamically adjust y axis range
-  const elv_slider_filtered = filtered_elv.filter(d => 
-  d.Date >= DateSlider[0] && d.Date <= DateSlider[1]
-  )
-  const elv_min = d3.min(elv_slider_filtered, d => d.Elevation)
-  const elv_max = d3.max(elv_slider_filtered, d => d.Elevation)
-  const padding = (elv_max - elv_min) * 0.05
-
-  // Y axis domain
-  const elv_y_domain = reservoir_choice === "Lake Powell" ? [3360, elv_max + padding] 
-  : reservoir_choice === "Lake Mead" ? [890, elv_max + padding]
-  : [elv_min - padding, elv_max + padding]
-
-  // Define reservoir-specific horizontal lines
-  const refLines = reservoir_choice === "Lake Mead" ? [
-    { y: 1075, label: "Tier 1 Shortage - 1075ft", color: "orange" },
-    { y: 1050, label: "Tier 2 Shortage - 1050ft", color: "red" },
-    { y: 1025, label: "Tier 3 Shortage - 1025ft", color: "darkred" },
-    { y: 895,  label: "Dead Pool - 895ft", color: "black" }
-  ] : reservoir_choice === "Lake Powell" ? [
-    { y: 3490, label: "Minimum Power Pool - 3490ft", color: "orange" },
-    { y: 3370, label: "Dead Pool - 3370ft", color: "black" }
-  ] : []  // empty array for "Total" or reservoirs with no reference lines
-
-  // Build marks array dynamically
-  const marks = [
-    Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "Type" }),
-    //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
-
-    // Add a ruleY and text annotation for each reference line
-    ...refLines.map(ref => Plot.ruleY([ref.y], {
-      stroke: ref.color,
-      strokeWidth: 1.5,
-      strokeDasharray: "4,4"
-    })),
-    ...refLines.map(ref => Plot.text([ref.y], {
-      y: ref.y,
-      text: [ref.label],
-      frameAnchor: "middle",
-      dy: -8,
-      fill: ref.color,
-      fontSize: 11
-    })),
-    Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }))
-  ]
-
-  const Elevation_Chart = Plot.plot({
-    title: "Reservoir Elevation",
-    width: width,
-    height: 500,
-    y: { grid: true, label: "Reservoir Elevation (ft)", 
-         domain: elv_y_domain },
-    x: { label: "Date", domain: DateSlider },
-    color: {
-      legend: true,
-      domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
-      range:  ["blue", "black", "red", "green"]
-    },
-    marks: marks
-  })
-
-  return Elevation_Chart
-}
-```
-```{ojs}
-{
-  const Elevation_Chart_Reference = Plot.plot({
-    width: width,
-    height: 100,
-    marks: [
-      Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
-      Plot.rectX([{}], {
-        x1: new Date(DateSlider[0]),   // left edge
-        x2: new Date(DateSlider[1]),   // right edge
-        fill: "#9c9c9c",
-        fillOpacity: 0.15
-      })
-    ]
-  })
-
-  return Elevation_Chart_Reference
-}
-```
-
-```{ojs}
-import { timeRange } from "@jwolondon/time-range-input"
-```
-```{ojs}
-//| echo: false
-min_date = filtered_elv.length > 0
-  ? d3.min(filtered_elv, d => d.Date)
-  : d3.min(Res_Elv, d => d.Date)   // fall back to full dataset
-
-max_date = filtered_elv.length > 0
-  ? d3.max(filtered_elv, d => d.Date)
-  : d3.max(Res_Elv, d => d.Date)
-```
-
-```{ojs}
-//| echo: false
-viewof DateSlider = {
-  // Convert dates to timestamps for numeric slider math
-  const min_ts = min_date.getTime()
-  const max_ts = max_date.getTime()
-
-  // Initial values
-  let start_ts = min_ts
-  let end_ts   = max_ts
-
-  // Helper to format timestamp as display date
-  const fmt = ts => new Date(ts).toLocaleDateString("en-US", {
-    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
-  })
-
-  // Helper to convert timestamp to percentage position
-  const to_pct = ts => ((ts - min_ts) / (max_ts - min_ts)) * 100
-
-  const container = html`
-    <div style="
-      font-family: sans-serif;
-      font-size: 12px;
-      padding: 8px 0 4px 0;
-      width: 100%;
-      user-select: none;
-    ">
-      <!-- Date labels -->
-      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #6c757d;">
-        <span id="start-label">${fmt(start_ts)}</span>
-        <span id="end-label">${fmt(end_ts)}</span>
-      </div>
-
-      <!-- Slider track -->
-      <div id="track" style="
-        position: relative;
-        height: 6px;
-        background: #dee2e6;
-        border-radius: 3px;
-        margin: 10px 20px 10px 40px;
-        cursor: pointer;
-      ">
-        <!-- Selected range highlight -->
-        <div id="range-fill" style="
-          position: absolute;
-          height: 100%;
-          background: steelblue;
-          border-radius: 3px;
-          left: 0%;
-          right: 0%;
-        "></div>
-
-        <!-- Start handle -->
-        <div id="handle-start" style="
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          background: white;
-          border: 2px solid steelblue;
-          border-radius: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          cursor: ew-resize;
-          left: 0%;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          z-index: 2;
-        "></div>
-
-        <!-- End handle -->
-        <div id="handle-end" style="
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          background: white;
-          border: 2px solid steelblue;
-          border-radius: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          cursor: ew-resize;
-          left: 100%;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          z-index: 2;
-        "></div>
-      </div>
-
-      <!-- Min/Max labels -->
-      <div style="display: flex; justify-content: space-between; color: #aaaaaa; font-size: 11px;">
-        <span>${fmt(min_ts)}</span>
-        <span>${fmt(max_ts)}</span>
-      </div>
-    </div>
-  `
-
-  const track        = container.querySelector("#track")
-  const handle_start = container.querySelector("#handle-start")
-  const handle_end   = container.querySelector("#handle-end")
-  const range_fill   = container.querySelector("#range-fill")
-  const start_label  = container.querySelector("#start-label")
-  const end_label    = container.querySelector("#end-label")
-
-  // Update visual positions and fill
-  const update_visuals = () => {
-    const s_pct = to_pct(start_ts)
-    const e_pct = to_pct(end_ts)
-    handle_start.style.left = s_pct + "%"
-    handle_end.style.left   = e_pct + "%"
-    range_fill.style.left   = s_pct + "%"
-    range_fill.style.right  = (100 - e_pct) + "%"
-    start_label.textContent = fmt(start_ts)
-    end_label.textContent   = fmt(end_ts)
-  }
-
-  // Convert mouse x position to timestamp
-  const mouse_to_ts = (e) => {
-    const rect = track.getBoundingClientRect()
-    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    return min_ts + pct * (max_ts - min_ts)
-  }
-
-  // Snap timestamp to nearest day
-  const snap_to_day = ts => {
-    const d = new Date(ts)
-    d.setUTCHours(0, 0, 0, 0)
-    return d.getTime()
-  }
-
-  // Drag logic
-  const make_draggable = (handle, is_start) => {
-    handle.addEventListener("mousedown", e => {
-      e.preventDefault()
-
-      const on_move = e => {
-        const ts = snap_to_day(mouse_to_ts(e))
-        if (is_start) {
-          start_ts = Math.min(ts, end_ts - 86400000)   // keep at least 1 day gap
-        } else {
-          end_ts = Math.max(ts, start_ts + 86400000)
-        }
-        update_visuals()
-        // Dispatch input event to notify OJS of value change
-        container.value = [new Date(start_ts), new Date(end_ts)]
-        container.dispatchEvent(new Event("input"))
-      }
-
-      const on_up = () => {
-        window.removeEventListener("mousemove", on_move)
-        window.removeEventListener("mouseup", on_up)
-      }
-
-      window.addEventListener("mousemove", on_move)
-      window.addEventListener("mouseup", on_up)
-    })
-  }
-
-  make_draggable(handle_start, true)
-  make_draggable(handle_end,   false)
-
-  // Set initial value
-  update_visuals()
-  container.value = [new Date(start_ts), new Date(end_ts)]
-
-  return container
-}
-```
-
-
-
-```{ojs}
-{
-  // Return nothing if Total is selected
-  if (reservoir_choice === "Total") return html`<div></div>`
-
-  const This_Year = filtered_elv
-    .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
-                 d.Type == "Recorded")
-    .map(d => ({
-      ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
-      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
-    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
-
-  const Previous_Year = filtered_elv
-    .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data
-                 d.Type == "Recorded")
-    .map(d => ({
-      ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
-      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
-    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
-
-  const marks = [
-  Plot.lineY(This_Year, { 
-    x: "Normalized_Date", 
-    y: "Elevation", 
-    stroke: "blue",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elevation }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Elevation (ft)": true
-      }
-    }
-   }),
-  Plot.lineY(Previous_Year, { 
-    x: "Normalized_Date", 
-    y: "Elevation", 
-    stroke: "green",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elv_1yr_Ago }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Elevation (ft)": true
-      }
-    }
-    }),
-  Plot.lineY(Previous_Year, { 
-    x: "Normalized_Date", 
-    y: "Elv_Day_Avg_10yr", 
-    stroke: "#ffc107",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elv_Day_Avg_10yr }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Elevation (ft)": true
-      }
-    } 
-    }),
-  Plot.lineY(Previous_Year, { 
-    x: "Normalized_Date", 
-    y: "Elv_Day_Avg_30yr", 
-    stroke: "red",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Elevation (ft)": { value: d => d.Elv_Day_Avg_30yr }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Elevation (ft)": true
-      }
-    }  
-    }),
-  ]
-
-  return Plot.plot({
-    title: "Reservoir Elevation Annual Trends",
-    width: width,
-    height: 500,
-    color: {
-      legend: true,
-      domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
-      range:  ["blue", "green", "#ffc107", "red"]
-    },
-    y: { grid: true, label: "Reservoir Elevation (ft)" },
-    x: { 
-      label: "Date",
-      ticks: d3.utcMonth.every(1),
-      tickFormat: "%b" },
-    marks: marks
-  })
-}
-```
-
-## Storage
-
-```{ojs}
-//| echo: false
-filtered_stor = Res_Stor.filter(d => d.Reservoir === reservoir_choice)
-```
-
-```{ojs}
-// Summary stats from filtered data
+// Storage summary stats from filtered data
 stor_data_subset = filtered_stor.filter(d => d.Type === "Recorded")
 stor_stats = {
   const target      = stor_data_subset.find(d => 
@@ -712,442 +215,133 @@ stor_stats = {
 ```
 ```{ojs}
 // Summary stats cards
-html`
-<div style="
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-">
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #0d6efd;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Storage</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.current} <span style="font-size:14px; font-weight:400;">MAF</span> <span style="font-size:28px; font-weight: 700;">  | ${stor_stats.perc_full}%</span></div>
-    <div style="font-size: 12px; color: ${stor_stats.dif_2000_color}; margin-top: 4px;">${stor_stats.dif_2000}MAF | ${stor_stats.perc_2000}% Change Since 2000</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #198754;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Storage ${stor_stats.Date} Last Year</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.prior_yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
-    <div style="font-size: 12px; color: ${stor_stats.dif_1yr_color}; margin-top: 4px;">${stor_stats.dif_1yr}MAF | ${stor_stats.perc_1yr}% Change</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #ffc107;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 10yrs</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
-    <div style="font-size: 12px; color: ${stor_stats.dif_10yr_color}; margin-top: 4px;">${stor_stats.dif_10yr}MAF | ${stor_stats.perc_10yr}% Change</div>
-  </div>
-
-  <div style="
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #dc3545;
-    border-radius: 6px;
-    padding: 16px;
-  ">
-    <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 30yrs</div>
-    <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
-    <div style="font-size: 12px; color: ${stor_stats.dif_30yr_color}; margin-top: 4px;">${stor_stats.dif_30yr}MAF | ${stor_stats.perc_30yr}% Change</div>
-  </div>
-
-</div>
-`
-```
-
-```{ojs}
-//| echo: false
 {
-  // Using date slider to dynamically adjust y axis range
-  const stor_slider_filtered = filtered_stor.filter(d => 
-  d.Date >= StorDateSlider[0] && d.Date <= StorDateSlider[1]
-  )
-  const stor_min = d3.min(stor_slider_filtered, d => d.Storage_MAF)
-  const stor_max = d3.max(stor_slider_filtered, d => d.Storage_MAF)
-  const stor_padding = (stor_max - stor_min) * 0.05
-
-  // Y axis domain
-  const stor_y_domain = [0, stor_max + stor_padding]
-
-  // Define reservoir-specific horizontal lines
-  const Stor_refLines = reservoir_choice === "Lake Mead" ? [
-    { y: 9.601, label: "Tier 1 Shortage - 9.6maf", color: "orange" },
-    { y: 7.683, label: "Tier 2 Shortage - 7.68maf", color: "red" },
-    { y: 5.981, label: "Tier 3 Shortage - 5.98maf", color: "darkred" },
-    { y: 0,  label: "Dead Pool - 0maf active storage", color: "black" }
-  ] : reservoir_choice === "Lake Powell" ? [
-    { y: 4, label: "Minimum Power Pool - ~4maf", color: "orange" },
-    { y: 0, label: "Dead Pool - 0maf active storage", color: "black" }
-  ] : []  // empty array for "Total" or reservoirs with no reference lines
-
-  const Storage_Chart = Plot.plot({
-    title: "Reservoir Storage",
-    width: width,
-    height: 500,
-    y: { grid: true, label: "Storage (Million Acre-Feet)",
-        domain: stor_y_domain
-     },
-    x: { label: "Date", domain: StorDateSlider },
-    color: {
-      legend: true,
-      domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
-      range:  ["blue", "black", "red", "green"]
-    },
-    marks: [
-      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "Type" }),
-         // Add a ruleY and text annotation for each reference line
-      ...Stor_refLines.map(ref => Plot.ruleY([ref.y], {
-        stroke: ref.color,
-        strokeWidth: 1.5,
-        strokeDasharray: "4,4"
-      })),
-      ...Stor_refLines.map(ref => Plot.text([ref.y], {
-        y: ref.y,
-        text: [ref.label],
-        frameAnchor: "middle",
-        dy: -8,
-        fill: ref.color,
-        fontSize: 11
-      })),
-      Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
-    ]
-  })
-  return Storage_Chart
-}
-```
-```{ojs}
-{
-  const Storage_Chart_Reference = Plot.plot({
-    width: width,
-    height: 100,
-    marks: [
-      Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
-      Plot.rectX([{}], {
-        x1: new Date(StorDateSlider[0]),   // left edge
-        x2: new Date(StorDateSlider[1]),   // right edge
-        fill: "#9c9c9c",
-        fillOpacity: 0.15
-      })
-    ]
-  })
-
-  return Storage_Chart_Reference
-}
-```
-
-```{ojs}
-stor_min_date = d3.min(filtered_stor, d => d.Date)
-stor_max_date = d3.max(filtered_stor, d => d.Date)
-```
-```{ojs}
-viewof StorDateSlider = {
-  // Convert dates to timestamps for numeric slider math
-  const min_ts = stor_min_date.getTime()
-  const max_ts = stor_max_date.getTime()
-
-  // Initial values
-  let start_ts = min_ts
-  let end_ts   = max_ts
-
-  // Helper to format timestamp as display date
-  const fmt = ts => new Date(ts).toLocaleDateString("en-US", {
-    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
-  })
-
-  // Helper to convert timestamp to percentage position
-  const to_pct = ts => ((ts - min_ts) / (max_ts - min_ts)) * 100
-
-  const container = html`
-    <div style="
-      font-family: sans-serif;
-      font-size: 12px;
-      padding: 8px 0 4px 0;
-      width: 100%;
-      user-select: none;
-    ">
-      <!-- Date labels -->
-      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #6c757d;">
-        <span id="start-label">${fmt(start_ts)}</span>
-        <span id="end-label">${fmt(end_ts)}</span>
-      </div>
-
-      <!-- Slider track -->
-      <div id="track" style="
-        position: relative;
-        height: 6px;
-        background: #dee2e6;
-        border-radius: 3px;
-        margin: 10px 20px 10px 40px;
-        cursor: pointer;
+  // Show elevation stat cards if elevation selected
+  if (data_choice === "Elevation") {
+    return html`
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 2px;
       ">
-        <!-- Selected range highlight -->
-        <div id="range-fill" style="
-          position: absolute;
-          height: 100%;
-          background: steelblue;
-          border-radius: 3px;
-          left: 0%;
-          right: 0%;
-        "></div>
 
-        <!-- Start handle -->
-        <div id="handle-start" style="
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          background: white;
-          border: 2px solid steelblue;
-          border-radius: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          cursor: ew-resize;
-          left: 0%;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          z-index: 2;
-        "></div>
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #0d6efd;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Elevation</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.current} <span style="font-size:14px; font-weight:400;">ft</span></div>
+          <div style="font-size: 12px; color: ${elv_stats.dif_2000_color}; margin-top: 4px;">${elv_stats.dif_2000}ft | ${elv_stats.perc_2000}% Change Since 2000</div>
+        </div>
 
-        <!-- End handle -->
-        <div id="handle-end" style="
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          background: white;
-          border: 2px solid steelblue;
-          border-radius: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          cursor: ew-resize;
-          left: 100%;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          z-index: 2;
-        "></div>
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #198754;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Elevation ${elv_stats.Date} Last Year</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.prior_yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+          <div style="font-size: 12px; color: ${elv_stats.dif_1yr_color}; margin-top: 4px;">${elv_stats.dif_1yr}ft | ${elv_stats.perc_1yr}% Change</div>
+        </div>
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #ffc107;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 10yrs</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+          <div style="font-size: 12px; color: ${elv_stats.dif_10yr_color}; margin-top: 4px;">${elv_stats.dif_10yr}ft | ${elv_stats.perc_10yr}% Change</div>
+        </div>
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #dc3545;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${elv_stats.Date} Average Past 30yrs</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${elv_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">ft</span></div>
+          <div style="font-size: 12px; color: ${elv_stats.dif_30yr_color}; margin-top: 4px;">${elv_stats.dif_30yr}ft | ${elv_stats.perc_30yr}% Change</div>
+        </div>
+
       </div>
+    `
+  }
 
-      <!-- Min/Max labels -->
-      <div style="display: flex; justify-content: space-between; color: #aaaaaa; font-size: 11px;">
-        <span>${fmt(min_ts)}</span>
-        <span>${fmt(max_ts)}</span>
+  if (data_choice === "Storage") {
+    return html`
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 2px;
+      ">
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #0d6efd;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Current Storage</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.current} <span style="font-size:14px; font-weight:400;">MAF</span> <span style="font-size:28px; font-weight: 700;">  | ${stor_stats.perc_full}%</span></div>
+          <div style="font-size: 12px; color: ${stor_stats.dif_2000_color}; margin-top: 4px;">${stor_stats.dif_2000}MAF | ${stor_stats.perc_2000}% Change Since 2000</div>
+        </div>
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #198754;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">Storage ${stor_stats.Date} Last Year</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.prior_yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+          <div style="font-size: 12px; color: ${stor_stats.dif_1yr_color}; margin-top: 4px;">${stor_stats.dif_1yr}MAF | ${stor_stats.perc_1yr}% Change</div>
+        </div>
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #ffc107;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 10yrs</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_10yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+          <div style="font-size: 12px; color: ${stor_stats.dif_10yr_color}; margin-top: 4px;">${stor_stats.dif_10yr}MAF | ${stor_stats.perc_10yr}% Change</div>
+        </div>
+
+        <div style="
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-left: 4px solid #dc3545;
+          border-radius: 6px;
+          padding: 16px;
+        ">
+          <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em;">${stor_stats.Date} Average Past 30yrs</div>
+          <div style="font-size: 28px; font-weight: 700; margin-top: 4px;">${stor_stats.avg_30yr} <span style="font-size:14px; font-weight:400;">MAF</span></div>
+          <div style="font-size: 12px; color: ${stor_stats.dif_30yr_color}; margin-top: 4px;">${stor_stats.dif_30yr}MAF | ${stor_stats.perc_30yr}% Change</div>
+        </div>
+
       </div>
-    </div>
-  `
-
-  const track        = container.querySelector("#track")
-  const handle_start = container.querySelector("#handle-start")
-  const handle_end   = container.querySelector("#handle-end")
-  const range_fill   = container.querySelector("#range-fill")
-  const start_label  = container.querySelector("#start-label")
-  const end_label    = container.querySelector("#end-label")
-
-  // Update visual positions and fill
-  const update_visuals = () => {
-    const s_pct = to_pct(start_ts)
-    const e_pct = to_pct(end_ts)
-    handle_start.style.left = s_pct + "%"
-    handle_end.style.left   = e_pct + "%"
-    range_fill.style.left   = s_pct + "%"
-    range_fill.style.right  = (100 - e_pct) + "%"
-    start_label.textContent = fmt(start_ts)
-    end_label.textContent   = fmt(end_ts)
+    `
   }
-
-  // Convert mouse x position to timestamp
-  const mouse_to_ts = (e) => {
-    const rect = track.getBoundingClientRect()
-    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    return min_ts + pct * (max_ts - min_ts)
-  }
-
-  // Snap timestamp to nearest day
-  const snap_to_day = ts => {
-    const d = new Date(ts)
-    d.setUTCHours(0, 0, 0, 0)
-    return d.getTime()
-  }
-
-  // Drag logic
-  const make_draggable = (handle, is_start) => {
-    handle.addEventListener("mousedown", e => {
-      e.preventDefault()
-
-      const on_move = e => {
-        const ts = snap_to_day(mouse_to_ts(e))
-        if (is_start) {
-          start_ts = Math.min(ts, end_ts - 86400000)   // keep at least 1 day gap
-        } else {
-          end_ts = Math.max(ts, start_ts + 86400000)
-        }
-        update_visuals()
-        // Dispatch input event to notify OJS of value change
-        container.value = [new Date(start_ts), new Date(end_ts)]
-        container.dispatchEvent(new Event("input"))
-      }
-
-      const on_up = () => {
-        window.removeEventListener("mousemove", on_move)
-        window.removeEventListener("mouseup", on_up)
-      }
-
-      window.addEventListener("mousemove", on_move)
-      window.addEventListener("mouseup", on_up)
-    })
-  }
-
-  make_draggable(handle_start, true)
-  make_draggable(handle_end,   false)
-
-  // Set initial value
-  update_visuals()
-  container.value = [new Date(start_ts), new Date(end_ts)]
-
-  return container
 }
 ```
-
-
-
-```{ojs}
-{
-  const This_Year = filtered_stor
-    .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
-                 d.Type == "Recorded")
-    .map(d => ({
-      ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
-      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
-    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
-
-  const Previous_Year = filtered_stor
-    .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
-                 d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data causing avg to dip compared to December 30
-                 d.Type == "Recorded")
-    .map(d => ({
-      ...d,
-      Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
-      Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
-    })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
-
-  const marks = [
-  Plot.lineY(This_Year, { 
-    x: "Normalized_Date", 
-    y: "Storage_MAF",       
-    stroke: "blue",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Storage_MAF }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Storage (MAF)": true
-      }
-    } 
-   }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Storage_MAF",       stroke: "green",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Storage_MAF }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Storage (MAF)": true
-      }
-    } 
-   }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Stor_Day_Avg_10yr }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Storage (MAF)": true
-      }
-    } 
-   }),
-  Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red",
-    channels: {
-        "Day":      { value: d => d.Month_Day },
-        "Storage (MAF)": { value: d => d.Stor_Day_Avg_30yr }
-      },
-    tip: {
-      pointer: "xy",
-      maxRadius: 8,
-      format: {
-        x: false,
-        y: false,
-        y1: false,
-        y2: false,
-        fill: false,
-        "Day": true,
-        "Storage (MAF)": true
-      }
-    } 
-   }),
-  ]
-
-  return Plot.plot({
-    title: "Reservoir Storage Annual Trends",
-    width: width,
-    height: 500,
-    color: {
-      legend: true,
-      domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
-      range:  ["blue", "green", "#ffc107", "red"]
-    },
-    y: { grid: true, label: "Reservoir Storage (MAF)" },
-    x: { 
-      label: "Date",
-      ticks: d3.utcMonth.every(1),
-      tickFormat: "%b %d" 
-      },
-    marks: marks
-  })
-}
-```
-:::
-
-## Reservoir Extent
-
+::: {.grid}
+::: {.g-col-12 .g-col-md-6}
 ```{=html}
 <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet"/>
 <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
@@ -1403,9 +597,692 @@ viewof StorDateSlider = {
 </script>
 ```
 ::: chart-description
-Surface water extent data is from the JRC Global Surface Water Dataset, using satellite data to map surface water from 1984 to 2020. Years after 2020 are created using data from the Sentinel-2 satellite through the OpenEO API. Normalized Difference Water Index was calculated and vectorized to create polygons of surface water extent for included reservoirs, using the median value for each pixel across the entire year. The current year is the median of the past two months to approximate current levels and account for discrepencies and cloud cover in individual collections.
+<font size="1">Surface water extent data is from the JRC Global Surface Water Dataset, using satellite data to map surface water from 1984 to 2020. Years after 2020 are created using data from the Sentinel-2 satellite through the OpenEO API. Normalized Difference Water Index was calculated and vectorized to create polygons of surface water extent for included reservoirs, using the median value for each pixel across the entire year. The current year is the median of the past two months to approximate current levels and account for discrepencies and cloud cover in individual collections.</font>
 :::
 :::
-:::::
+
+::: {.g-col-12 .g-col-md-6}
+```{ojs}
+{
+  if (data_choice === "Elevation") {
+    // Return nothing if Total is selected
+    if (reservoir_choice === "Total") return html`<div></div>`
+
+    const This_Year = filtered_elv
+      .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
+                  d.Type == "Recorded")
+      .map(d => ({
+        ...d,
+        Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+        Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
+      })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+    const Previous_Year = filtered_elv
+      .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
+                  d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data
+                  d.Type == "Recorded")
+      .map(d => ({
+        ...d,
+        Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+        Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
+      })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+    const marks = [
+    Plot.lineY(This_Year, { 
+      x: "Normalized_Date", 
+      y: "Elevation", 
+      stroke: "blue",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Elevation (ft)": { value: d => d.Elevation }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Elevation (ft)": true
+        }
+      }
+    }),
+    Plot.lineY(Previous_Year, { 
+      x: "Normalized_Date", 
+      y: "Elevation", 
+      stroke: "green",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Elevation (ft)": { value: d => d.Elv_1yr_Ago }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Elevation (ft)": true
+        }
+      }
+      }),
+    Plot.lineY(Previous_Year, { 
+      x: "Normalized_Date", 
+      y: "Elv_Day_Avg_10yr", 
+      stroke: "#ffc107",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Elevation (ft)": { value: d => d.Elv_Day_Avg_10yr }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Elevation (ft)": true
+        }
+      } 
+      }),
+    Plot.lineY(Previous_Year, { 
+      x: "Normalized_Date", 
+      y: "Elv_Day_Avg_30yr", 
+      stroke: "red",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Elevation (ft)": { value: d => d.Elv_Day_Avg_30yr }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Elevation (ft)": true
+        }
+      }  
+      }),
+    ]
+
+    return Plot.plot({
+      title: "Reservoir Elevation Annual Trends",
+      width: width >= 768 ? width / 2 - 20 : width,
+      height: 600,
+      color: {
+        legend: true,
+        domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
+        range:  ["blue", "green", "#ffc107", "red"]
+      },
+      y: { grid: true, label: "Reservoir Elevation (ft)" },
+      x: { 
+        label: "Date",
+        ticks: d3.utcMonth.every(1),
+        tickFormat: "%b" },
+      marks: marks
+    })
+  }
+
+  if (data_choice === "Storage") {
+      const This_Year = filtered_stor
+      .filter(d => d.Date >= new Date("2026-01-01T00:00:00") &&
+                  d.Type == "Recorded")
+      .map(d => ({
+        ...d,
+        Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+        Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
+      })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+    const Previous_Year = filtered_stor
+      .filter(d => d.Date >= new Date("2025-01-01T00:00:00") && 
+                  d.Date <= new Date("2025-12-30T00:00:00") && // December 31 cut out due to missing data causing avg to dip compared to December 30
+                  d.Type == "Recorded")
+      .map(d => ({
+        ...d,
+        Normalized_Date: new Date(2000, d.Date.getMonth(), d.Date.getDate()),
+        Month_Day: d.Date.toLocaleString("en-US", { month: "short", day: "2-digit", timeZone: "UTC" })
+      })).sort((a, b) => a.Normalized_Date - b.Normalized_Date)
+
+    const marks = [
+    Plot.lineY(This_Year, { 
+      x: "Normalized_Date", 
+      y: "Storage_MAF",       
+      stroke: "blue",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Storage (MAF)": { value: d => d.Storage_MAF }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Storage (MAF)": true
+        }
+      } 
+    }),
+    Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Storage_MAF",       stroke: "green",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Storage (MAF)": { value: d => d.Storage_MAF }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Storage (MAF)": true
+        }
+      } 
+    }),
+    Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_10yr", stroke: "#ffc107",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Storage (MAF)": { value: d => d.Stor_Day_Avg_10yr }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Storage (MAF)": true
+        }
+      } 
+    }),
+    Plot.lineY(Previous_Year,  { x: "Normalized_Date", y: "Stor_Day_Avg_30yr", stroke: "red",
+      channels: {
+          "Day":      { value: d => d.Month_Day },
+          "Storage (MAF)": { value: d => d.Stor_Day_Avg_30yr }
+        },
+      tip: {
+        pointer: "xy",
+        maxRadius: 8,
+        format: {
+          x: false,
+          y: false,
+          y1: false,
+          y2: false,
+          fill: false,
+          "Day": true,
+          "Storage (MAF)": true
+        }
+      } 
+    }),
+    ]
+
+    return Plot.plot({
+      title: "Reservoir Storage Annual Trends",
+      width: width >= 768 ? width / 2 - 20 : width,
+      height: 600,
+      color: {
+        legend: true,
+        domain: ["This Year", "Last Year", "10yr Average", "30yr Average"],
+        range:  ["blue", "green", "#ffc107", "red"]
+      },
+      y: { grid: true, label: "Reservoir Storage (MAF)" },
+      x: { 
+        label: "Date",
+        ticks: d3.utcMonth.every(1),
+        tickFormat: "%b %d" 
+        },
+      marks: marks
+    })
+  }
+}
+```
+:::
+:::
 <br>
+<br>
+
+```{ojs}
+//| output: false
+// Bound copy of selectors
+reservoir_select_copy = Inputs.bind(Inputs.select(
+  ["Total", "Lake Mead", "Lake Powell", "Flaming Gorge", "Lake Mohave", "Navajo Reservoir", "Strawberry Reservoir", "Blue Mesa Reservoir", "Lake Havasu", "Granby Reservoir","McPhee Reservoir","Fontenelle Reservoir","Starvation Reservoir","Green Mountain Reservoir","Vallecito Reservoir","Lake Nighthorse","Morrow Point Reservoir","Taylor Park Reservoir","Ruedi Reservoir"
+  ],
+  { label: "Reservoir:" }), viewof reservoir_choice)
+```
+```{ojs}
+//| output: false
+data_choice_copy = Inputs.bind(Inputs.select(
+  ["Elevation", "Storage"],
+  { label: "Data Type:", value: "Elevation"}), viewof data_choice)
+```
+```{ojs}
+//| echo: false
+html`<span style="font-size: 1.7rem; font-weight: bold;"> Reservoir ${data_choice} Historic Data &emsp;&emsp; </span> <span class="inline-input">${reservoir_select_copy} &emsp;&emsp; ${data_choice_copy} </span>`
+```
+```{=html}
+<style>
+  .inline-input form {
+    display: inline-flex;
+    margin: 0;
+    vertical-align: middle;
+  }
+</style>
+```
+
+
+```{ojs}
+//| echo: false
+{
+  // Data charts
+  // Show message if Total is selected
+  if (data_choice === "Elevation" && reservoir_choice === "Total") {
+    return html`
+      <div style="
+        width: 100%;
+        height: 800px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-family: sans-serif;
+        color: #6c757d;
+      ">
+        <div style="text-align: center;">
+          <div style="font-size: 32px; margin-bottom: 12px;">⚠</div>
+          <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">
+            Elevation Total Not Available
+          </div>
+          <div style="font-size: 13px;">
+            Select an individual reservoir to view elevation records.
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  if (data_choice === "Elevation") {
+    // Using date slider to dynamically adjust y axis range
+    const elv_slider_filtered = filtered_elv.filter(d => 
+    d.Date >= DateSlider[0] && d.Date <= DateSlider[1]
+    )
+    const elv_min = d3.min(elv_slider_filtered, d => d.Elevation)
+    const elv_max = d3.max(elv_slider_filtered, d => d.Elevation)
+    const padding = (elv_max - elv_min) * 0.05
+
+    // Y axis domain
+    const elv_y_domain = reservoir_choice === "Lake Powell" ? [3360, elv_max + padding] 
+    : reservoir_choice === "Lake Mead" ? [890, elv_max + padding]
+    : [elv_min - padding, elv_max + padding]
+
+    // Define reservoir-specific horizontal lines
+    const refLines = reservoir_choice === "Lake Mead" ? [
+      { y: 1075, label: "Tier 1 Shortage - 1075ft", color: "orange" },
+      { y: 1050, label: "Tier 2 Shortage - 1050ft", color: "red" },
+      { y: 1025, label: "Tier 3 Shortage - 1025ft", color: "darkred" },
+      { y: 895,  label: "Dead Pool - 895ft", color: "black" }
+    ] : reservoir_choice === "Lake Powell" ? [
+      { y: 3490, label: "Minimum Power Pool - 3490ft", color: "orange" },
+      { y: 3370, label: "Dead Pool - 3370ft", color: "black" }
+    ] : []  // empty array for "Total" or reservoirs with no reference lines
+
+    // Build marks array dynamically
+    const marks = [
+      Plot.lineY(filtered_elv, { x: "Date", y: "Elevation", stroke: "Type" }),
+      //Plot.crosshair(filtered_elv, {x: "Date", y: "Elevation", color: "red", opacity: 0.5}),
+
+      // Add a ruleY and text annotation for each reference line
+      ...refLines.map(ref => Plot.ruleY([ref.y], {
+        stroke: ref.color,
+        strokeWidth: 1.5,
+        strokeDasharray: "4,4"
+      })),
+      ...refLines.map(ref => Plot.text([ref.y], {
+        y: ref.y,
+        text: [ref.label],
+        frameAnchor: "middle",
+        dy: -8,
+        fill: ref.color,
+        fontSize: 11
+      })),
+      Plot.tip(filtered_elv, Plot.pointerX({ x: "Date", y: "Elevation" }))
+    ]
+
+    const Elevation_Chart = Plot.plot({
+      //title: "Reservoir Elevation",
+      width: width,
+      height: 600,
+      y: { grid: true, label: "Reservoir Elevation (ft)", 
+          domain: elv_y_domain },
+      x: { label: "Date", domain: DateSlider },
+      color: {
+        legend: true,
+        domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
+        range:  ["blue", "black", "red", "green"]
+      },
+      marks: marks
+    })
+
+    return Elevation_Chart
+  }
+
+  if (data_choice === "Storage") {
+    // Using date slider to dynamically adjust y axis range
+    const stor_slider_filtered = filtered_stor.filter(d => 
+    d.Date >= DateSlider[0] && d.Date <= DateSlider[1]
+    )
+    const stor_min = d3.min(stor_slider_filtered, d => d.Storage_MAF)
+    const stor_max = d3.max(stor_slider_filtered, d => d.Storage_MAF)
+    const stor_padding = (stor_max - stor_min) * 0.05
+
+    // Y axis domain
+    const stor_y_domain = [0, stor_max + stor_padding]
+
+    // Define reservoir-specific horizontal lines
+    const Stor_refLines = reservoir_choice === "Lake Mead" ? [
+      { y: 9.601, label: "Tier 1 Shortage - 9.6maf", color: "orange" },
+      { y: 7.683, label: "Tier 2 Shortage - 7.68maf", color: "red" },
+      { y: 5.981, label: "Tier 3 Shortage - 5.98maf", color: "darkred" },
+      { y: 0,  label: "Dead Pool - 0maf active storage", color: "black" }
+    ] : reservoir_choice === "Lake Powell" ? [
+      { y: 4, label: "Minimum Power Pool - ~4maf", color: "orange" },
+      { y: 0, label: "Dead Pool - 0maf active storage", color: "black" }
+    ] : []  // empty array for "Total" or reservoirs with no reference lines
+
+    const Storage_Chart = Plot.plot({
+      //title: "Reservoir Storage",
+      width: width,
+      height: 600,
+      y: { grid: true, label: "Storage (Million Acre-Feet)",
+          domain: stor_y_domain
+      },
+      x: { label: "Date", domain: DateSlider },
+      color: {
+        legend: true,
+        domain: ["Recorded", "Most Probable", "Minimum Probable", "Maximum Probable"],
+        range:  ["blue", "black", "red", "green"]
+      },
+      marks: [
+        Plot.lineY(filtered_stor, { x: "Date", y: "Storage_MAF", stroke: "Type" }),
+          // Add a ruleY and text annotation for each reference line
+        ...Stor_refLines.map(ref => Plot.ruleY([ref.y], {
+          stroke: ref.color,
+          strokeWidth: 1.5,
+          strokeDasharray: "4,4"
+        })),
+        ...Stor_refLines.map(ref => Plot.text([ref.y], {
+          y: ref.y,
+          text: [ref.label],
+          frameAnchor: "middle",
+          dy: -8,
+          fill: ref.color,
+          fontSize: 11
+        })),
+        Plot.tip(filtered_stor, Plot.pointerX({ x: "Date", y: "Storage_MAF" }))
+      ]
+    })
+    
+    return Storage_Chart
+  }
+}
+```
+```{ojs}
+// Reference chart for showing where in the time series the current plot is showing
+{
+  const reference_elv = filtered_elv.filter(d => 
+    d.Type === "Recorded" | d.Type === "Most Probable"
+    )
+
+  const Elevation_Chart_Reference = Plot.plot({
+    width: width,
+    height: 100,
+    marks: [
+      Plot.lineY(reference_elv, { x: "Date", y: "Elevation", stroke: "blue" }),
+      Plot.rectX([{}], {
+        x1: new Date(DateSlider[0]),   // left edge
+        x2: new Date(DateSlider[1]),   // right edge
+        fill: "#9c9c9c",
+        fillOpacity: 0.15
+      })
+    ]
+  })
+
+  const reference_stor = filtered_stor.filter(d =>
+    d.Type === "Recorded" | d.Type === "Most Probable"
+  )
+
+  const Storage_Chart_Reference = Plot.plot({
+    width: width,
+    height: 100,
+    marks: [
+      Plot.lineY(reference_stor, { x: "Date", y: "Storage_MAF", stroke: "blue" }),
+      Plot.rectX([{}], {
+        x1: new Date(DateSlider[0]),   // left edge
+        x2: new Date(DateSlider[1]),   // right edge
+        fill: "#9c9c9c",
+        fillOpacity: 0.15
+      })
+    ]
+  })
+
+  if (data_choice === "Elevation") {
+    return Elevation_Chart_Reference
+  }
+
+  if (data_choice === "Storage") {
+    return Storage_Chart_Reference
+  }
+}
+```
+
+```{ojs}
+// Set date values
+min_date = filtered_elv.length > 0
+  ? d3.min(filtered_elv, d => d.Date)
+  : d3.min(Res_Elv, d => d.Date)   // fall back to full dataset
+
+max_date = filtered_elv.length > 0
+  ? d3.max(filtered_elv, d => d.Date)
+  : d3.max(Res_Elv, d => d.Date)
+```
+
+```{ojs}
+// Date slider
+
+viewof DateSlider = {
+  // Initial bounds come from the full, unfiltered data (static)
+  let min_ts = d3.min(Res_Elv, d => d.Date).getTime()
+  let max_ts = d3.max(Res_Elv, d => d.Date).getTime()
+
+  // Selection state lives here and survives bounds updates
+  // Set starting slider time to rough start of drought
+  const default_start = Date.UTC(2000, 0, 1)   // 2000-01-01 in UTC
+  let start_ts = Math.min(Math.max(default_start, min_ts), max_ts - 86400000)
+  // Set slider end to max date
+  let end_ts   = max_ts
+
+  const fmt = ts => new Date(ts).toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
+  })
+
+  // Clamp to 0-100 so a handle never leaves the track if bounds shrink past it
+  const to_pct = ts => {
+    if (max_ts === min_ts) return 0
+    return Math.max(0, Math.min(100, ((ts - min_ts) / (max_ts - min_ts)) * 100))
+  }
+
+  const container = html`
+    <div style="
+      font-family: sans-serif;
+      font-size: 12px;
+      padding: 8px 0 4px 0;
+      width: 100%;
+      user-select: none;
+    ">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #6c757d;">
+        <span id="start-label">${fmt(start_ts)}</span>
+        <span id="end-label">${fmt(end_ts)}</span>
+      </div>
+
+      <div id="track" style="
+        position: relative;
+        height: 6px;
+        background: #dee2e6;
+        border-radius: 3px;
+        margin: 10px 20px 10px 40px;
+        cursor: pointer;
+      ">
+        <div id="range-fill" style="
+          position: absolute;
+          height: 100%;
+          background: steelblue;
+          border-radius: 3px;
+          left: 0%;
+          right: 0%;
+        "></div>
+
+        <div id="handle-start" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 0%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+
+        <div id="handle-end" style="
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 2px solid steelblue;
+          border-radius: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          cursor: ew-resize;
+          left: 100%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          z-index: 2;
+        "></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; color: #aaaaaa; font-size: 11px;">
+        <span id="min-label">${fmt(min_ts)}</span>
+        <span id="max-label">${fmt(max_ts)}</span>
+      </div>
+    </div>
+  `
+
+  const track        = container.querySelector("#track")
+  const handle_start = container.querySelector("#handle-start")
+  const handle_end   = container.querySelector("#handle-end")
+  const range_fill   = container.querySelector("#range-fill")
+  const start_label  = container.querySelector("#start-label")
+  const end_label    = container.querySelector("#end-label")
+  const min_label    = container.querySelector("#min-label")
+  const max_label    = container.querySelector("#max-label")
+
+  const update_visuals = () => {
+    const s_pct = to_pct(start_ts)
+    const e_pct = to_pct(end_ts)
+    handle_start.style.left = s_pct + "%"
+    handle_end.style.left   = e_pct + "%"
+    range_fill.style.left   = s_pct + "%"
+    range_fill.style.right  = (100 - e_pct) + "%"
+    start_label.textContent = fmt(start_ts)
+    end_label.textContent   = fmt(end_ts)
+    min_label.textContent   = fmt(min_ts)
+    max_label.textContent   = fmt(max_ts)
+  }
+
+  const mouse_to_ts = (e) => {
+    const rect = track.getBoundingClientRect()
+    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    return min_ts + pct * (max_ts - min_ts)
+  }
+
+  const snap_to_day = ts => {
+    const d = new Date(ts)
+    d.setUTCHours(0, 0, 0, 0)
+    return d.getTime()
+  }
+
+  const make_draggable = (handle, is_start) => {
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault()
+
+      const on_move = e => {
+        const ts = snap_to_day(mouse_to_ts(e))
+        if (is_start) {
+          start_ts = Math.min(ts, end_ts - 86400000)
+        } else {
+          end_ts = Math.max(ts, start_ts + 86400000)
+        }
+        update_visuals()
+        container.value = [new Date(start_ts), new Date(end_ts)]
+        container.dispatchEvent(new Event("input"))
+      }
+
+      const on_up = () => {
+        window.removeEventListener("mousemove", on_move)
+        window.removeEventListener("mouseup", on_up)
+      }
+
+      window.addEventListener("mousemove", on_move)
+      window.addEventListener("mouseup", on_up)
+    })
+  }
+
+  make_draggable(handle_start, true)
+  make_draggable(handle_end,   false)
+
+  // NEW: update the track bounds only; selection is left alone
+  // and no "input" event is fired because the value hasn't changed
+  container.setBounds = (new_min, new_max) => {
+    min_ts = new_min.getTime()
+    max_ts = new_max.getTime()
+    update_visuals()
+  }
+
+  update_visuals()
+  container.value = [new Date(start_ts), new Date(end_ts)]
+
+  return container
+}
+```
+```{ojs}
+//| output: false
+// set the min and max boudaries of the date slider based on reservoir, sends to code chunk above without rerendering whole slider
+{
+  viewof DateSlider.setBounds(min_date, max_date)
+}
+```
 <br>
